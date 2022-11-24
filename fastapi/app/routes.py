@@ -7,5 +7,5 @@ router = APIRouter()
 router.include_router(
     user_controller.router,
     prefix='/user',
-    tags=['users']
+    tags=['user']
 )
