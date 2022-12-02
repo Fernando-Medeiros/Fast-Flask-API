@@ -13,7 +13,7 @@ class TestUser:
 
         match field:
             case 'name':
-                user['name'] = '123567GA 13'
+                user['name'] = 'Fernando 22 Medeiros'
             case 'email':
                 user['email'] = '@gmail.com'
             case 'password':

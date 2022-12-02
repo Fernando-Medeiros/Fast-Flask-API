@@ -12,10 +12,13 @@ DB_URL = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite')
 database = databases.Database(DB_URL)
 metadata = sqlalchemy.MetaData()
 
-def conf_database(test: bool = False):
+
+def conf_database():
     engine = sqlalchemy.create_engine(DB_URL)
+    metadata.create_all(engine)
 
-    if test:
-        metadata.drop_all(engine)
 
+def conf_database_test():
+    engine = sqlalchemy.create_engine(DB_URL)
+    metadata.drop_all(engine)
     metadata.create_all(engine)
