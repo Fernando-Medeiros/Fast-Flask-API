@@ -8,6 +8,7 @@ Aplicação WEB - API usando FastAPI
 
 ## Requisitos
 
+- Git
 - Python 3.10
 - Um editor de códigos como VSCode, Sublime, Vim, Pycharm, Micro...
 
@@ -32,7 +33,7 @@ Ative o ambiente
 # Linux Bash
 source .venv/bin/activate
 # Windows Power Shell
-.\venv\Scripts\activate.ps1
+./.venv/bin/activate.ps1
 ```
 
 Instale as dependências
