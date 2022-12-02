@@ -8,9 +8,7 @@ class TestUser:
         }
 
     def invalid_user(self, field: str = 'email') -> dict:
-        
         user = self.valid_user()
-
         match field:
             case 'name':
                 user['name'] = 'Fernando 22 Medeiros'
