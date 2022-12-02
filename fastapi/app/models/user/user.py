@@ -27,3 +27,11 @@ class UserModel(ormar.Model):
             r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9]+(\.[A-Z|a-z]{2,})+').match(value):
             raise HTTPException(status_code=400, detail='The user email format is invalid!')
         return value
+
+
+    @validator('name')
+    def validate_name(cls, value):
+        if not re.compile(
+            r'^[A-Z|a-z]+( |de|da)+[a-z|A-Z]').match(value):
+            raise HTTPException(status_code=400, detail='The user name format is invalid!')
+        return value
