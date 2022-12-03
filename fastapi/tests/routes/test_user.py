@@ -7,7 +7,7 @@ utils = TestUser()
 
 def test_post_valid_user(client: TestClient) -> None:
     body = utils.valid_user()
-    response = client.post('/user/', json=body)
+    response = client.post('/auth/', json=body)
     context = response.json()
 
     assert response.status_code == 200
@@ -16,20 +16,20 @@ def test_post_valid_user(client: TestClient) -> None:
 
 def test_post_invalid_name(client: TestClient) -> None:
     body = utils.invalid_user('name')
-    response = client.post('/user/', json=body)
+    response = client.post('/auth/', json=body)
 
     assert response.status_code == 400
     
 
 def test_post_invalid_email(client: TestClient) -> None:
     body = utils.invalid_user('email')
-    response = client.post('/user/', json=body)
+    response = client.post('/auth/', json=body)
 
     assert response.status_code == 400
 
 
 def test_post_invalid_password(client: TestClient) -> None:
     body = utils.invalid_user('password')
-    response = client.post('/user/', json=body)
+    response = client.post('/auth/', json=body)
 
     assert response.status_code == 400

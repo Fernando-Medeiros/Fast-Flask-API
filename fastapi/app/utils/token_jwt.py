@@ -3,12 +3,13 @@ from datetime import datetime, timedelta
 
 from jose import jwt
 
+SECRET_KEY: str = os.getenv('SECRET_KEY', '159753852456')
+ALGORITHM: str = os.getenv('JWT_ALGORITHM', 'HS512')
+EXPIRE_HOURS: int = int(os.getenv('ACCESS_TOKEN_EXPIRE_HOURS', '3'))        
 
-class TokenJwt:
-    SECRET_KEY: str = os.getenv('SECRET_KEY', '159753852456')
-    ALGORITHM: str = os.getenv('JWT_ALGORITHM', 'HS512')
-    EXPIRE_HOURS: int = int(os.getenv('ACCESS_TOKEN_EXPIRE_HOURS', '3'))
 
+class CreateTokenJwt:
+   
     def expire(self, hours: int = EXPIRE_HOURS) -> datetime:
         return datetime.utcnow() + timedelta(hours=hours)
 
@@ -23,5 +24,11 @@ class TokenJwt:
 
     def create_token(self, **kwargs) -> str:
         to_encode: dict = self.body(**kwargs)
-        encode_jwt = jwt.encode(to_encode, self.SECRET_KEY, self.ALGORITHM)
+        encode_jwt = jwt.encode(to_encode, SECRET_KEY, ALGORITHM)
         return encode_jwt
+
+
+class DecodeTokenJwt:
+
+    def decode(self, token) -> dict:
+        return jwt.decode(token, SECRET_KEY, ALGORITHM)

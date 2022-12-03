@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from app.utils.jwt_security import TokenJwt
-from jose import jwt
+from app.utils.token_jwt import CreateTokenJwt, DecodeTokenJwt
 
 from ..utils.token import TestToken
 
-token = TokenJwt()
+token = CreateTokenJwt()
 utils = TestToken()
+
 
 def test_token_expire() -> None:
     expire = token.expire()
@@ -34,6 +34,6 @@ def test_token_create() -> None:
 def test_token_decode() -> None:
     context = utils.create_context()
     create_token = token.create_token(**context)
-    t_decode = jwt.decode(create_token, token.SECRET_KEY, token.ALGORITHM)
+    t_decode = DecodeTokenJwt().decode(create_token)
     
     assert [t_decode[key] for key in context]
