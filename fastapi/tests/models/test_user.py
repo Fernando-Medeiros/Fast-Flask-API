@@ -7,24 +7,26 @@ from werkzeug.security import check_password_hash
 
 from fastapi import HTTPException
 
+utils = TestUser()
 
 # UserModel
 def test_model_valid_user() -> None:
-    attr: dict = TestUser().valid_user()
+    attr: dict = utils.valid_user()
     user = UserModel(**attr)
 
 
 def test_model_invalid_user() -> None:
     with pytest.raises(HTTPException):
-        attr: dict = TestUser().invalid_user()
+        attr: dict = utils.invalid_user()
         user = UserModel(**attr)
 
 
 def test_model_save_user() -> None:
-    attr: dict = TestUser().valid_user()
+    attr: dict = utils.valid_user()
     user = UserModel(**attr)
     event = asyncio.new_event_loop()
-    event.run_until_complete(user.save())
+    
+    assert event.run_until_complete(user.save()) == user
 
 
 def test_model_delete_user() -> None:
@@ -40,16 +42,16 @@ def test_model_delete_user() -> None:
 
 # UserRequest 
 def test_model_user_request() -> None:
-    attr: dict = TestUser().valid_user()
+    attr: dict = utils.valid_user()
     user = UserRequest(**attr)
 
-    assert user.email == attr['email']
+    assert [user.dict()[key] == value for key, value in attr.items()]
     assert check_password_hash(user.password, attr['password'])
 
 
 # UserResponse
 def test_model_user_response() -> None:
-    attr: dict = TestUser().valid_user()
+    attr: dict = utils.valid_user()
     event = asyncio.new_event_loop()
     
     u_request = UserRequest(**attr)
