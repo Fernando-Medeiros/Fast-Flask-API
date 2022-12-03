@@ -5,7 +5,7 @@ from ..utils.user import TestUser
 user_utils = TestUser()
 
 
-def test_post_valid(client: TestClient) -> None:
+def test_post_valid_user(client: TestClient) -> None:
     body = user_utils.valid_user()
     response = client.post('/user/', json=body)
     context = response.json()
