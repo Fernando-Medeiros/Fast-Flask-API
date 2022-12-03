@@ -33,49 +33,68 @@ O objetivo deste projeto está em aplicar os meus conhecimentos atuais no embien
 ```console
 .
 ├── docs
-│   └── README.md
+│   └── README.md
 ├── fastapi
-│   ├── app
-│   │   ├── controllers
-│   │   │   └── user_controller.py
-│   │   ├── __init__.py
-│   │   ├── models
-│   │   │   ├── __init__.py
-│   │   │   ├── requests
-│   │   │   ├── responses
-│   │   │   └── user.py
-│   │   └── routes.py
-│   ├── docs
-│   │   └── README.md
-│   ├── requirements.txt
-│   └── tests
-│       ├── conftest.py
-│       ├── __init__.py
-│       ├── models
-│       │   └── __init__.py
-│       └── routes
-│           └── __init__.py
+│   ├── app
+│   │   ├── controllers
+│   │   │   ├── decorators
+│   │   │   │   └── post_user.py
+│   │   │   ├── exceptions
+│   │   │   │   └── id_not_found.py
+│   │   │   └── user_controller.py
+│   │   ├── __init__.py
+│   │   ├── models
+│   │   │   ├── post
+│   │   │   │   └── __init__.py
+│   │   │   └── user
+│   │   │       ├── __init__.py
+│   │   │       ├── user.py
+│   │   │       ├── user_request.py
+│   │   │       └── user_response.py
+│   │   ├── routes.py
+│   │   └── utils
+│   │       └── jwt_security.py
+│   ├── docs
+│   │   ├── README.md
+│   │   └── tasks.md
+│   ├── requirements.txt
+│   ├── setup.py
+│   └── tests
+│       ├── conftest.py
+│       ├── __init__.py
+│       ├── models
+│       │   ├── __init__.py
+│       │   └── test_user.py
+│       ├── routes
+│       │   ├── __init__.py
+│       │   └── test_user.py
+│       ├── unity
+│       │   ├── __init__.py
+│       │   └── test_token_jwt.py
+│       └── utils
+│           ├── token.py
+│           └── user.py
 ├── flask
-│   ├── app
-│   │   ├── controllers
-│   │   │   └── user_controller.py
-│   │   ├── __init__.py
-│   │   ├── models
-│   │   │   ├── __init__.py
-│   │   │   ├── requests
-│   │   │   ├── responses
-│   │   │   └── user.py
-│   │   └── routes.py
-│   ├── docs
-│   │   └── README.md
-│   ├── requirements.txt
-│   └── tests
-│       ├── conftest.py
-│       ├── __init__.py
-│       ├── models
-│       │   └── __init__.py
-│       └── routes
-│           └── __init__.py
+│   ├── app
+│   │   ├── controllers
+│   │   │   └── user_controller.py
+│   │   ├── __init__.py
+│   │   ├── models
+│   │   │   ├── __init__.py
+│   │   │   ├── requests
+│   │   │   ├── responses
+│   │   │   └── user.py
+│   │   └── routes.py
+│   ├── docs
+│   │   └── README.md
+│   ├── requirements.txt
+│   └── tests
+│       ├── conftest.py
+│       ├── __init__.py
+│       ├── models
+│       │   └── __init__.py
+│       └── routes
+│           └── __init__.py
 ├── LICENSE
 ├── requirements-test.txt
 └── runtime.txt

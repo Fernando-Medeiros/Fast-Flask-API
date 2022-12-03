@@ -8,7 +8,11 @@
       - [x] UserModel
       - [x] UserResponse
       - [x] UserRequest
-    
+    - [x] Token JWT
+      - [x] Expire
+      - [x] Body
+      - [x] Encode
+      - [x] Decode 
 
 # Tests
 
@@ -17,4 +21,11 @@
       - [x] Post
       - [ ] Login   
     - [ ] Model
-      - [ ] UserModel
+      - [x] UserModel
+      - [x] UserRequest
+      - [x] UserResponse
+    - [x] Token JWT
+      - [x] Expire
+      - [x] Body
+      - [x] Encode
+      - [x] Decode
