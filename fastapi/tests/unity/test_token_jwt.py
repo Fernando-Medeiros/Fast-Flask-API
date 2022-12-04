@@ -12,7 +12,6 @@ def test_token_expire() -> None:
     expire = token.expire()
     
     assert type(expire) == datetime
-    assert expire.day == datetime.utcnow().day
     assert expire.hour != datetime.utcnow().hour
 
 

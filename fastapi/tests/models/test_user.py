@@ -2,16 +2,16 @@ import asyncio
 
 import pytest
 from app.models.user import UserModel, UserRequest, UserResponse
-from tests.utils.user import TestUser
+from tests.utils.user import CaseCreate
 from werkzeug.security import check_password_hash
 
 from fastapi import HTTPException
 
-utils = TestUser()
+utils = CaseCreate()
 
 # UserModel
 def test_model_valid_user() -> None:
-    attr: dict = utils.valid_user()
+    attr: dict = utils.valid_user
     user = UserModel(**attr)
 
 
@@ -22,7 +22,7 @@ def test_model_invalid_user() -> None:
 
 
 def test_model_save_user() -> None:
-    attr: dict = utils.valid_user()
+    attr: dict = utils.valid_user
     user = UserModel(**attr)
     event = asyncio.new_event_loop()
     
@@ -42,7 +42,7 @@ def test_model_delete_user() -> None:
 
 # UserRequest 
 def test_model_user_request() -> None:
-    attr: dict = utils.valid_user()
+    attr: dict = utils.valid_user
     user = UserRequest(**attr)
 
     assert [user.dict()[key] == value for key, value in attr.items()]
@@ -51,7 +51,7 @@ def test_model_user_request() -> None:
 
 # UserResponse
 def test_model_user_response() -> None:
-    attr: dict = utils.valid_user()
+    attr: dict = utils.valid_user
     event = asyncio.new_event_loop()
     
     u_request = UserRequest(**attr)
