@@ -10,6 +10,7 @@ Aplicação WEB - API usando FastAPI
 
 - Git
 - Python 3.10
+- virtualenv
 - Um editor de códigos como VSCode, Sublime, Vim, Pycharm, Micro...
 
 
@@ -67,25 +68,45 @@ pip install -r requirements-test.txt
 ```console
 .
 ├── app
-│   ├── controllers
-│   │   └── user_controller.py
-│   ├── __init__.py
-│   ├── models
-│   │   ├── __init__.py
-│   │   ├── requests
-│   │   ├── responses
-│   │   └── user.py
-│   └── routes.py
+│   ├── controllers
+│   │   ├── decorators
+│   │   │   └── post_user.py
+│   │   └── user_controller.py
+│   ├── __init__.py
+│   ├── models
+│   │   ├── post
+│   │   │   └── __init__.py
+│   │   └── user
+│   │       ├── __init__.py
+│   │       ├── user.py
+│   │       ├── user_request.py
+│   │       └── user_response.py
+│   ├── routes.py
+│   └── utils
+│       ├── login_required.py
+│       └── token_jwt.py
 ├── docs
-│   └── README.md
+│   ├── README.md
+│   └── tasks.md
 ├── requirements.txt
+├── setup.py
 └── tests
     ├── conftest.py
     ├── __init__.py
     ├── models
-    │   └── __init__.py
-    └── routes
-        └── __init__.py
+    │   ├── __init__.py
+    │   └── test_user.py
+    ├── routes
+    │   ├── __init__.py
+    │   └── test_user.py
+    ├── unity
+    │   ├── __init__.py
+    │   └── test_token_jwt.py
+    └── utils
+        ├── token.py
+        └── user.py
+
+13 directories, 25 files
 ```
 
 
@@ -107,3 +128,10 @@ Acesse o docs de endpoints do Fastapi em:
 
 http://127.0.0.1:8000/docs#/ ou http://127.0.0.1:8000/redoc/
 
+
+## Rodar os Testes
+
+```console
+cd fastapi/tests
+pytest
+```

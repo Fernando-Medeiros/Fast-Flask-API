@@ -39,8 +39,6 @@ O objetivo deste projeto está em aplicar os meus conhecimentos atuais no embien
 │   │   ├── controllers
 │   │   │   ├── decorators
 │   │   │   │   └── post_user.py
-│   │   │   ├── exceptions
-│   │   │   │   └── id_not_found.py
 │   │   │   └── user_controller.py
 │   │   ├── __init__.py
 │   │   ├── models
@@ -53,7 +51,8 @@ O objetivo deste projeto está em aplicar os meus conhecimentos atuais no embien
 │   │   │       └── user_response.py
 │   │   ├── routes.py
 │   │   └── utils
-│   │       └── jwt_security.py
+│   │       ├── login_required.py
+│   │       └── token_jwt.py
 │   ├── docs
 │   │   ├── README.md
 │   │   └── tasks.md
@@ -98,4 +97,6 @@ O objetivo deste projeto está em aplicar os meus conhecimentos atuais no embien
 ├── LICENSE
 ├── requirements-test.txt
 └── runtime.txt
+
+25 directories, 40 files
 ```
