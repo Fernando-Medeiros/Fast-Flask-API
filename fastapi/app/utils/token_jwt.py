@@ -10,16 +10,16 @@ EXPIRE_HOURS: int = int(os.getenv('ACCESS_TOKEN_EXPIRE_HOURS', '3'))
 
 class CreateTokenJwt:
    
-    def expire(self, hours: int = EXPIRE_HOURS) -> datetime:
+    def expire(self, hours: int = EXPIRE_HOURS) -> datetime: 
         return datetime.utcnow() + timedelta(hours=hours)
 
 
     def body(self, **kwargs) -> dict:
-        content = {'expire': str(self.expire())}   
+        content = {'expire': str(self.expire()), 'scope': 'access_token'}   
         if kwargs:
             for key, value in kwargs.items():
                 content[key] = value
-        return content
+        return content.copy()
 
 
     def create_token(self, **kwargs) -> str:
