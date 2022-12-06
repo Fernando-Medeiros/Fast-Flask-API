@@ -4,7 +4,17 @@ Aplicação WEB - API usando Flask
 
 > - Para construir o projeto isolei cada aplicação em seu próprio ecosistema e embiente virtual. 
 > - Ambos possuem a mesma estrutura e finalidade, porém aplicadas em Frameworks diferentes.
-    
+
+---
+- [Flask - API](#flask---api)
+  - [Requisitos](#requisitos)
+  - [Ambiente](#ambiente)
+  - [Funcionalidades](#funcionalidades)
+    - [Usuários](#usuários)
+    - [Postagens](#postagens)
+  - [Estrutura](#estrutura)
+  - [O Projeto](#o-projeto)
+---
 
 ## Requisitos
 

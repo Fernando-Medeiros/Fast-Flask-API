@@ -9,10 +9,10 @@
   - [x] Body
   - [x] Encode
   - [x] Decode
-- [x] Models
-  - [x] Token
-  - [x] TokenData
-  - [x] TokenRefresh
+- [ ] Models
+  - [ ] Token
+  - [ ] TokenData
+  - [ ] TokenRefresh
 
 ---
 ## User
@@ -26,7 +26,7 @@
   - [x] UserModel
   - [x] UserResponse
   - [x] UserRequest      
-      
+  
 ---
 ## Post
 - [ ] Routes

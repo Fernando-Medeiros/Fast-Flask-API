@@ -4,7 +4,21 @@ Aplicação WEB - API usando FastAPI
 
 > - Para construir o projeto isolei cada aplicação em seu próprio ecosistema e embiente virtual. 
 > - Ambos possuem a mesma estrutura e finalidade, porém aplicadas em Frameworks diferentes.
-    
+
+---
+## Resumo 
+- [FastAPI](#fastapi)
+  - [Resumo](#resumo)
+  - [Requisitos](#requisitos)
+  - [Ambiente](#ambiente)
+  - [Funcionalidades](#funcionalidades)
+    - [Usuários](#usuários)
+    - [Postagens](#postagens)
+  - [Estrutura](#estrutura)
+  - [O Projeto](#o-projeto)
+  - [Rodar os Testes](#rodar-os-testes)
+  - [Endpoints](#endpoints)
+---
 
 ## Requisitos
 
@@ -135,3 +149,7 @@ http://127.0.0.1:8000/docs#/ ou http://127.0.0.1:8000/redoc/
 cd fastapi/tests
 pytest
 ```
+
+## Endpoints
+
+![](endpoints.png)
