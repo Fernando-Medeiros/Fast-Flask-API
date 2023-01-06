@@ -16,13 +16,14 @@ def client():
 
 @pytest.fixture(scope='function')
 def client_auth():
+    conf_database_test()
     client = TestClient(app())    
     utils = CaseAuth()
     
-    client.post('/auth/', json=utils.data)
-    login = client.post('/auth/login', data=utils.data, headers=utils.header)
+    client.post('/user/', json=utils.valid_user)
+    login = client.post('/auth/token', data=utils.data, headers=utils.header)
     token = login.json()['access_token']
     
     client.headers['Authorization'] = f'bearer {token}'
-    conf_database_test()
+
     return client

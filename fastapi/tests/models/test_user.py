@@ -10,18 +10,21 @@ from fastapi import HTTPException
 utils = CaseCreate()
 
 # UserModel
-def test_model_valid_user() -> None:
+@pytest.mark.userModel
+def test_model_valid_user():
     attr: dict = utils.valid_user
     user = UserModel(**attr)
 
 
-def test_model_invalid_user() -> None:
+@pytest.mark.userModel
+def test_model_invalid_user():
     with pytest.raises(HTTPException):
         attr: dict = utils.invalid_user()
         user = UserModel(**attr)
 
 
-def test_model_save_user() -> None:
+@pytest.mark.userModel
+def test_model_save_user():
     attr: dict = utils.valid_user
     user = UserModel(**attr)
     event = asyncio.new_event_loop()
@@ -29,19 +32,22 @@ def test_model_save_user() -> None:
     assert event.run_until_complete(user.save()) == user
 
 
-def test_model_delete_user() -> None:
+@pytest.mark.userModel
+def test_model_delete_user():
     event = asyncio.new_event_loop()
-    get_user = event.run_until_complete(UserModel.objects.get(id=1))
+    get_user = event.run_until_complete(UserModel.objects.get(id=2))
     
-    assert get_user.id == 1
+    assert get_user.id == 2
     event.run_until_complete(get_user.delete())
 
     with pytest.raises(Exception):
-        event.run_until_complete(UserModel.objects.get(id=1))
+        event.run_until_complete(UserModel.objects.get(id=2))
 
 
 # UserRequest 
-def test_model_user_request() -> None:
+@pytest.mark.userModel
+@pytest.mark.userModelRequest
+def test_model_user_request():
     attr: dict = utils.valid_user
     user = UserRequest(**attr)
 
@@ -50,7 +56,9 @@ def test_model_user_request() -> None:
 
 
 # UserResponse
-def test_model_user_response() -> None:
+@pytest.mark.userModel
+@pytest.mark.userModelResponse
+def test_model_user_response():
     attr: dict = utils.valid_user
     event = asyncio.new_event_loop()
     

@@ -27,12 +27,20 @@ class CaseLogin(CaseInvalid):
         'email': 'usersouza@gmail.com',
         'password': 'test123'
         }
+    valid_login = {
+        'username': 'usersouza@gmail.com',
+        'password': 'test123'
+    }
 
 
 class CaseAuth:
-    data = {
+    valid_user = {
         'name': 'user das neves',
         'email': 'userneves@gmail.com',
+        'password': 'test123'
+    }
+    data = {
+        'username': 'userneves@gmail.com',
         'password': 'test123'
     }    
     header = {
