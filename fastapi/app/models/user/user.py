@@ -15,7 +15,9 @@ class UserModel(ormar.Model):
         tablename = 'users'
 
     id = ormar.Integer(primary_key=True, autoincrement=True)
-    name = ormar.String(max_length=50, null=False)
+    first_name = ormar.String(max_length=15, null=False)
+    last_name = ormar.String(max_length=15, null=False)
+    username = ormar.String(max_length=30, unique=True, null=False)
     email = ormar.String(max_length=100, unique=True, null=False)
     password = ormar.String(max_length=255, null=False)
     access = ormar.JSON(default=['user'])
@@ -29,9 +31,24 @@ class UserModel(ormar.Model):
         return value
 
 
-    @validator('name')
-    def validate_name(cls, value):
+    @validator('first_name')
+    def validate_first_name(cls, value):
         if not re.compile(
-            r'^[A-Z|a-z]+( |de|da)+[a-z|A-Z]').match(value):
-            raise HTTPException(status_code=400, detail='The user name format is invalid!')
+            r'^[A-Za-z]+[A-Za-z]$').match(value):
+            raise HTTPException(status_code=400, detail='The first name format is invalid!')
+        return value
+    
+
+    @validator('last_name')
+    def validate_last_name(cls, value):
+        if not re.compile(
+            r'^[A-Za-z]+[A-Za-z]$').match(value):
+            raise HTTPException(status_code=400, detail='The last name format is invalid!')
+        return value
+
+    @validator('username')
+    def validate_username(cls, value):
+        if not re.compile(
+            r'^[A-Za-z]+[A-Za-z]$').match(value):
+            raise HTTPException(status_code=400, detail='The username format is invalid!')
         return value

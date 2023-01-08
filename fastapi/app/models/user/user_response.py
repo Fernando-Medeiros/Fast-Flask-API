@@ -5,6 +5,8 @@ from pydantic import BaseModel
 
 class UserResponse(BaseModel):
     id: int
-    name: str
+    first_name: str
+    last_name: str
+    username: str
     email: str
     access: List[str]
