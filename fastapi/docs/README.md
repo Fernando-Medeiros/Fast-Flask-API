@@ -1,31 +1,59 @@
 # FastAPI
 
+
+![](endpoints.png)
+
 Aplicação WEB - API usando FastAPI
+
+O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas routes e diferentes tipos de Relacionamentos do banco de dados.
 
 > - Para construir o projeto isolei cada aplicação em seu próprio ecosistema e embiente virtual. 
 > - Ambos possuem a mesma estrutura e finalidade, porém aplicadas em Frameworks diferentes.
+
+> [Progresso das **Tarefas**](tasks.md)
+
+> [Progresso dos **Testes**](tests.md)
 
 ---
 ## Resumo 
 - [FastAPI](#fastapi)
   - [Resumo](#resumo)
-  - [Requisitos](#requisitos)
-  - [Ambiente](#ambiente)
   - [Funcionalidades](#funcionalidades)
     - [Usuários](#usuários)
     - [Postagens](#postagens)
+  - [Requisitos](#requisitos)
+  - [Ambiente](#ambiente)
+  - [Iniciar o servidor](#iniciar-o-servidor)
+  - [Testes](#testes)
   - [Estrutura](#estrutura)
-  - [O Projeto](#o-projeto)
-  - [Rodar os Testes](#rodar-os-testes)
-  - [Endpoints](#endpoints)
 ---
+
+## Funcionalidades
+
+### Usuários
+
+- Registro de novos usuários
+- Autenticação de usuários
+- Atualizar dados
+- Deletar conta
+
+### Postagens
+
+- Criação de novo post
+- Edição de post
+- Remoção de post
+- Listagem de posts geral (home)
+- Listagem de posts seguidos (timeline)
+- Likes em postagens
+- Postagem pode ser resposta a outra postagem
+
 
 ## Requisitos
 
 - Git
 - Python 3.10
-- virtualenv
-- Um editor de códigos como VSCode, Sublime, Vim, Pycharm, Micro...
+- virtualenv ou semelhante
+- Um editor de códigos como VSCode, Sublime, Vim, Pycharm ...
 
 
 ## Ambiente
@@ -59,74 +87,7 @@ pip install -r requirements.txt
 pip install -r requirements-test.txt
 ```
 
-
-## Funcionalidades
-
-### Usuários
-
-- Registro de novos usuários
-- Autenticação de usuários
-
-### Postagens
-
-- Criação de novo post
-- Edição de post
-- Remoção de post
-- Listagem de posts geral (home)
-- Listagem de posts seguidos (timeline)
-- Likes em postagens
-- Postagem pode ser resposta a outra postagem
-
-## Estrutura
-
-```console
-.
-├── app
-│   ├── controllers
-│   │   ├── decorators
-│   │   │   └── post_user.py
-│   │   └── user_controller.py
-│   ├── __init__.py
-│   ├── models
-│   │   ├── post
-│   │   │   └── __init__.py
-│   │   └── user
-│   │       ├── __init__.py
-│   │       ├── user.py
-│   │       ├── user_request.py
-│   │       └── user_response.py
-│   ├── routes.py
-│   └── utils
-│       ├── login_required.py
-│       └── token_jwt.py
-├── docs
-│   ├── README.md
-│   └── tasks.md
-├── requirements.txt
-├── setup.py
-└── tests
-    ├── conftest.py
-    ├── __init__.py
-    ├── models
-    │   ├── __init__.py
-    │   └── test_user.py
-    ├── routes
-    │   ├── __init__.py
-    │   └── test_user.py
-    ├── unity
-    │   ├── __init__.py
-    │   └── test_token_jwt.py
-    └── utils
-        ├── token.py
-        └── user.py
-
-13 directories, 25 files
-```
-
-
-## O Projeto
-
-O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas routes e diferentes tipos de Relacionamentos do banco de dados.
+## Iniciar o servidor
 
 Inicie o localhost
 
@@ -143,13 +104,65 @@ Acesse o docs de endpoints do Fastapi em:
 http://127.0.0.1:8000/docs#/ ou http://127.0.0.1:8000/redoc/
 
 
-## Rodar os Testes
+## Testes
 
 ```console
 cd fastapi/tests
 pytest
 ```
 
-## Endpoints
+## Estrutura
 
-![](endpoints.png)
+```console
+.
+├── app
+│   ├── controllers
+│   │   ├── auth.py
+│   │   ├── decorators
+│   │   │   ├── auth_controller.py
+│   │   │   └── user_controller.py
+│   │   ├── post.py
+│   │   └── user.py
+│   ├── __init__.py
+│   ├── models
+│   │   ├── post
+│   │   │   └── __init__.py
+│   │   ├── token
+│   │   │   ├── __init__.py
+│   │   │   └── token_model.py
+│   │   └── user
+│   │       ├── __init__.py
+│   │       ├── user.py
+│   │       ├── user_request.py
+│   │       └── user_response.py
+│   ├── routes.py
+│   └── utils
+│       ├── login_required.py
+│       └── token_jwt.py
+├── docs
+│   ├── endpoints.png
+│   ├── README.md
+│   ├── tasks.md
+│   └── tests.md
+├── requirements.txt
+├── setup.py
+└── tests
+    ├── conftest.py
+    ├── __init__.py
+    ├── models
+    │   ├── __init__.py
+    │   └── test_user.py
+    ├── pytest.ini
+    ├── routes
+    │   ├── __init__.py
+    │   ├── test_auth.py
+    │   └── test_user.py
+    ├── unity
+    │   ├── __init__.py
+    │   └── test_token_jwt.py
+    └── utils
+        ├── token.py
+        └── user.py
+
+14 directories, 34 files
+```

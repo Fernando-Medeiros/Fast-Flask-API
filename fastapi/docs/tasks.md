@@ -16,12 +16,12 @@
 
 ---
 ## User
-- [ ] Routes 
+- [x] Routes 
   - [x] Create
-  - [ ] Get-all
-  - [ ] Get-by-username
-  - [ ] Delete
-  - [ ] Update   
+  - [x] Get-all
+  - [x] Get-by-username
+  - [x] Delete
+  - [x] Update   
 - [x] Models
   - [x] UserModel
   - [x] UserResponse
