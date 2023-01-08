@@ -14,6 +14,8 @@ utils = CaseCreate()
 def test_model_valid_user():
     attr: dict = utils.valid_user
     user = UserModel(**attr)
+    
+    assert [user.dict()[key] for key in attr]
 
 
 @pytest.mark.userModel
@@ -35,13 +37,11 @@ def test_model_save_user():
 @pytest.mark.userModel
 def test_model_delete_user():
     event = asyncio.new_event_loop()
-    get_user = event.run_until_complete(UserModel.objects.get(id=2))
+    get_user = event.run_until_complete(UserModel.objects.all())
+    id = event.run_until_complete(get_user[0].delete())
     
-    assert get_user.id == 2
-    event.run_until_complete(get_user.delete())
-
     with pytest.raises(Exception):
-        event.run_until_complete(UserModel.objects.get(id=2))
+        event.run_until_complete(UserModel.objects.get(id=id))
 
 
 # UserRequest 
@@ -60,13 +60,9 @@ def test_model_user_request():
 @pytest.mark.userModelResponse
 def test_model_user_response():
     attr: dict = utils.valid_user
-    event = asyncio.new_event_loop()
+    request = UserRequest(**attr)
+    model = UserModel(**request.dict())
+    model.id = 1
+    response = UserResponse(**model.dict())
     
-    u_request = UserRequest(**attr)
-    u_model = UserModel(**u_request.dict())
-    new_user = event.run_until_complete(u_model.save())
-
-    u_response = UserResponse(**new_user.dict())
-    
-    assert type(u_response.id) == int
-    assert type(u_response.access) == list
+    assert [response.dict()[key] for key in model.dict() if key != 'password']

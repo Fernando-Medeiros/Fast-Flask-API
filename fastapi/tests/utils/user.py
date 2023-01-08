@@ -4,8 +4,12 @@ class CaseInvalid:
     def invalid_user(self, field: str = 'email') -> dict:
         user = self.valid_user.copy()
         match field:
-            case 'name':
-                user['name'] = 'Fernando 22 Medeiros'
+            case 'first_name':
+                user['first_name'] = 'Fernando 22'
+            case 'last_name':
+                user['last_name'] = 'Medeiros 22'
+            case 'username':
+                user['username'] = '22-Medeiros 22'
             case 'email':
                 user['email'] = '@gmail.com'
             case 'password':
@@ -15,34 +19,27 @@ class CaseInvalid:
 
 class CaseCreate(CaseInvalid):
     valid_user = {
-        'name': 'user da silva',
-        'email': 'user1silva@gmail.com',
-        'password': 'test123'
+        'first_name': 'joao',
+        'last_name': 'silva',
+        'username': 'joaoSilva',
+        'email': 'joaosilva@gmail.com',
+        'password': 'joaoteste@/[]()X'
         }
 
 
 class CaseLogin(CaseInvalid):
     valid_user = {
-        'name': 'user de souza',
-        'email': 'usersouza@gmail.com',
-        'password': 'test123'
+        'first_name': 'marcia',
+        'last_name': 'souza',
+        'username': 'marciaSouza',
+        'email': 'marciasouza@gmail.com',
+        'password': 'test123@@@@'
         }
-    valid_login = {
-        'username': 'usersouza@gmail.com',
-        'password': 'test123'
-    }
-
-
-class CaseAuth:
-    valid_user = {
-        'name': 'user das neves',
-        'email': 'userneves@gmail.com',
-        'password': 'test123'
-    }
-    data = {
-        'username': 'userneves@gmail.com',
-        'password': 'test123'
-    }    
-    header = {
+    login = {
+        'username': 'marciasouza@gmail.com',
+        'password': 'test123@@@@'
+        }
+    content_type = {
         'Content-Type': 'application/x-www-form-urlencoded'
         }
+    headers = ['access_token', 'token_type']
