@@ -18,15 +18,19 @@
 ## User
 - [x] Routes 
   - [x] Create
-  - [x] Get-all
-  - [x] Get-by-username
+  - [x] Get all
+  - [x] Get by username
+  - [x] Get account data
   - [x] Delete
-  - [x] Update   
-- [ ] Models
+  - [x] Update
+  - [x] Update password
+- [x] Models
   - [x] UserModel
-  - [x] UserResponse
   - [x] UserRequest
-  - [ ] UserRequestPatch
+  - [x] UserRequestPatch
+  - [x] UserRequestUpdatePassword
+  - [x] UserResponse
+  - [x] UserResponseAccountData
   
 ---
 ## Post

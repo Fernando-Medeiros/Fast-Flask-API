@@ -32,20 +32,20 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas route
 
 ### Usuários
 
-- Registro de novos usuários
-- Autenticação de usuários
-- Atualizar dados
-- Deletar conta
+- [x] Registro de novos usuários
+- [x] Autenticação de usuários
+- [x] Atualizar dados
+- [x] Deletar conta
 
 ### Postagens
 
-- Criação de novo post
-- Edição de post
-- Remoção de post
-- Listagem de posts geral (home)
-- Listagem de posts seguidos (timeline)
-- Likes em postagens
-- Postagem pode ser resposta a outra postagem
+- [x] Criação de novo post
+- [x] Edição de post
+- [x] Remoção de post
+- [x] Listagem de posts geral (home)
+- [ ] Listagem de posts seguidos (timeline)
+- [ ] Likes em postagens
+- [ ] Postagem pode ser resposta a outra postagem
 
 
 ## Requisitos
@@ -58,11 +58,6 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas route
 
 ## Ambiente
 
-Acesse a pasta fastapi no terminal
-
-```console
-cd fastapi/
-```
 
 Crie o ambiente virtual desta aplicação
 
@@ -91,9 +86,6 @@ pip install -r requirements-test.txt
 
 Inicie o localhost
 
-```console
-cd fastapi/
-```
 
 ```console
 uvicorn app:app --reload --factory
@@ -107,7 +99,7 @@ http://127.0.0.1:8000/docs#/ ou http://127.0.0.1:8000/redoc/
 ## Testes
 
 ```console
-cd fastapi/tests
+cd tests
 pytest
 ```
 
@@ -120,21 +112,25 @@ pytest
 │   │   ├── auth.py
 │   │   ├── decorators
 │   │   │   ├── auth_controller.py
+│   │   │   ├── post_controller.py
 │   │   │   └── user_controller.py
 │   │   ├── post.py
 │   │   └── user.py
 │   ├── __init__.py
 │   ├── models
 │   │   ├── post
-│   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   ├── post.py
+│   │   │   ├── request.py
+│   │   │   └── response.py
 │   │   ├── token
 │   │   │   ├── __init__.py
 │   │   │   └── token_model.py
 │   │   └── user
 │   │       ├── __init__.py
-│   │       ├── user.py
-│   │       ├── user_request.py
-│   │       └── user_response.py
+│   │       ├── request.py
+│   │       ├── response.py
+│   │       └── user.py
 │   ├── routes.py
 │   └── utils
 │       ├── login_required.py
@@ -144,25 +140,32 @@ pytest
 │   ├── README.md
 │   ├── tasks.md
 │   └── tests.md
+├── LICENSE
+├── Procfile
+├── requirements-test.txt
 ├── requirements.txt
+├── runtime.txt
 ├── setup.py
 └── tests
     ├── conftest.py
     ├── __init__.py
     ├── models
     │   ├── __init__.py
+    │   ├── test_post.py
     │   └── test_user.py
     ├── pytest.ini
     ├── routes
     │   ├── __init__.py
     │   ├── test_auth.py
+    │   ├── test_post.py
     │   └── test_user.py
     ├── unity
     │   ├── __init__.py
     │   └── test_token_jwt.py
     └── utils
+        ├── post.py
         ├── token.py
         └── user.py
 
-14 directories, 34 files
+14 directories, 45 files
 ```
