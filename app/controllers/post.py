@@ -19,7 +19,7 @@ async def list_posts():
 
 @router.get('/id/{id}', response_model=PostResponse)
 @post_controller.get_by_id(PostModel)
-async def get_by_post_id(id: int):
+async def get_post_by_id(id: int):
     ...
 
 

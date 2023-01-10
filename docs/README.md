@@ -1,102 +1,171 @@
-<div align="center">
-    <img align="center" src="https://img.shields.io/badge/Python-white?style=for-the-badge&logo=python&logoColor=yellow">
-    <img align="center" src="https://img.shields.io/badge/Flask-white?style=for-the-badge&logo=flask&logoColor=black">    
-    <img align="center" src="https://img.shields.io/badge/FastAPI-white?style=for-the-badge&logo=fastapi&logoColor=blue">
-</div>
-
-<br>
-
-# Fast - Flask -> API
-
-Projeto pessoal - Duas aplicações API com FastAPI e Flask - (CRUD+AUTH)
-
-O objetivo deste projeto está em aplicar os meus conhecimentos atuais no embiente Web, desenvolvendo a criação de duas aplicações APIs.
+# FastAPI
 
 
-## Objetivo 
+![](endpoints.png)
 
-#### Principal
+Aplicação WEB - API usando FastAPI
 
-- Criar a documentação
-- Criar o diagrama de casos de uso (https://app.diagrams.net/)
-- Modelar o banco de dados (MySql workbench)
-- Desenvolver a mesma aplicação Web-API em ambos os Frameworks
+O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas routes e diferentes tipos de Relacionamentos do banco de dados.
 
-#### Secundario
+> - Para construir o projeto isolei cada aplicação em seu próprio ecosistema e embiente virtual. 
+> - Ambos possuem a mesma estrutura e finalidade, porém aplicadas em Frameworks diferentes.
 
-- Integrar com outros bancos de dados em nuvem
-- Criar uma pequena aplicação front-end
+> [Progresso das **Tarefas**](tasks.md)
 
+> [Progresso dos **Testes**](tests.md)
+
+---
+## Resumo 
+- [FastAPI](#fastapi)
+  - [Resumo](#resumo)
+  - [Funcionalidades](#funcionalidades)
+    - [Usuários](#usuários)
+    - [Postagens](#postagens)
+  - [Requisitos](#requisitos)
+  - [Ambiente](#ambiente)
+  - [Iniciar o servidor](#iniciar-o-servidor)
+  - [Testes](#testes)
+  - [Estrutura](#estrutura)
+---
+
+## Funcionalidades
+
+### Usuários
+
+- Registro de novos usuários
+- Autenticação de usuários
+- Atualizar dados
+- Deletar conta
+
+### Postagens
+
+- Criação de novo post
+- Edição de post
+- Remoção de post
+- Listagem de posts geral (home)
+- Listagem de posts seguidos (timeline)
+- Likes em postagens
+- Postagem pode ser resposta a outra postagem
+
+
+## Requisitos
+
+- Git
+- Python 3.10
+- virtualenv ou semelhante
+- Um editor de códigos como VSCode, Sublime, Vim, Pycharm ...
+
+
+## Ambiente
+
+
+Crie o ambiente virtual desta aplicação
+
+```console
+virtualenv .venv
+```
+
+Ative o ambiente 
+
+```console
+# Linux Bash
+source .venv/bin/activate
+# Windows Power Shell
+./.venv/bin/activate.ps1
+```
+
+Instale as dependências
+
+```console
+pip install -r requirements.txt
+# Teste
+pip install -r requirements-test.txt
+```
+
+## Iniciar o servidor
+
+Inicie o localhost
+
+
+```console
+uvicorn app:app --reload --factory
+```
+
+Acesse o docs de endpoints do Fastapi em:
+
+http://127.0.0.1:8000/docs#/ ou http://127.0.0.1:8000/redoc/
+
+
+## Testes
+
+```console
+cd tests
+pytest
+```
 
 ## Estrutura
 
 ```console
 .
-├── docs
-│   └── README.md
-├── fastapi
-│   ├── app
-│   │   ├── controllers
-│   │   │   ├── decorators
-│   │   │   │   └── post_user.py
+├── app
+│   ├── controllers
+│   │   ├── auth.py
+│   │   ├── decorators
+│   │   │   ├── auth_controller.py
+│   │   │   ├── post_controller.py
 │   │   │   └── user_controller.py
-│   │   ├── __init__.py
-│   │   ├── models
-│   │   │   ├── post
-│   │   │   │   └── __init__.py
-│   │   │   └── user
-│   │   │       ├── __init__.py
-│   │   │       ├── user.py
-│   │   │       ├── user_request.py
-│   │   │       └── user_response.py
-│   │   ├── routes.py
-│   │   └── utils
-│   │       ├── login_required.py
-│   │       └── token_jwt.py
-│   ├── docs
-│   │   ├── README.md
-│   │   └── tasks.md
-│   ├── requirements.txt
-│   ├── setup.py
-│   └── tests
-│       ├── conftest.py
-│       ├── __init__.py
-│       ├── models
-│       │   ├── __init__.py
-│       │   └── test_user.py
-│       ├── routes
-│       │   ├── __init__.py
-│       │   └── test_user.py
-│       ├── unity
-│       │   ├── __init__.py
-│       │   └── test_token_jwt.py
-│       └── utils
-│           ├── token.py
-│           └── user.py
-├── flask
-│   ├── app
-│   │   ├── controllers
-│   │   │   └── user_controller.py
-│   │   ├── __init__.py
-│   │   ├── models
+│   │   ├── post.py
+│   │   └── user.py
+│   ├── __init__.py
+│   ├── models
+│   │   ├── post
 │   │   │   ├── __init__.py
-│   │   │   ├── requests
-│   │   │   ├── responses
-│   │   │   └── user.py
-│   │   └── routes.py
-│   ├── docs
-│   │   └── README.md
-│   ├── requirements.txt
-│   └── tests
-│       ├── conftest.py
-│       ├── __init__.py
-│       ├── models
-│       │   └── __init__.py
-│       └── routes
-│           └── __init__.py
+│   │   │   ├── post.py
+│   │   │   ├── request.py
+│   │   │   └── response.py
+│   │   ├── token
+│   │   │   ├── __init__.py
+│   │   │   └── token_model.py
+│   │   └── user
+│   │       ├── __init__.py
+│   │       ├── request.py
+│   │       ├── response.py
+│   │       └── user.py
+│   ├── routes.py
+│   └── utils
+│       ├── login_required.py
+│       └── token_jwt.py
+├── docs
+│   ├── endpoints.png
+│   ├── README.md
+│   ├── tasks.md
+│   └── tests.md
 ├── LICENSE
+├── Procfile
 ├── requirements-test.txt
-└── runtime.txt
+├── requirements.txt
+├── runtime.txt
+├── setup.py
+└── tests
+    ├── conftest.py
+    ├── __init__.py
+    ├── models
+    │   ├── __init__.py
+    │   ├── test_post.py
+    │   └── test_user.py
+    ├── pytest.ini
+    ├── routes
+    │   ├── __init__.py
+    │   ├── test_auth.py
+    │   ├── test_post.py
+    │   └── test_user.py
+    ├── unity
+    │   ├── __init__.py
+    │   └── test_token_jwt.py
+    └── utils
+        ├── post.py
+        ├── token.py
+        └── user.py
 
-25 directories, 40 files
+14 directories, 45 files
 ```
