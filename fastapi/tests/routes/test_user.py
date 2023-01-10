@@ -1,5 +1,3 @@
-import asyncio
-
 import pytest
 
 from fastapi.testclient import TestClient
@@ -9,8 +7,8 @@ from ..utils.user import CaseCreate
 case = CaseCreate()
 
 
-# POST
-@pytest.mark.userDefault
+# POST VALID
+@pytest.mark.user
 def test_post_valid_user(client: TestClient):
     body = case.valid_user
     response = client.post('/user/', json=body)
@@ -20,7 +18,8 @@ def test_post_valid_user(client: TestClient):
     assert context['email'] == body['email']
 
 
-@pytest.mark.userDefault
+# POST INVALID FIRST_NAME
+@pytest.mark.user
 def test_post_invalid_name(client: TestClient):
     body = case.invalid_user('first_name')
     response = client.post('/user/', json=body)
@@ -28,7 +27,8 @@ def test_post_invalid_name(client: TestClient):
     assert response.status_code == 400
     
 
-@pytest.mark.userDefault
+# POST INVALID EMAIL
+@pytest.mark.user
 def test_post_invalid_email(client: TestClient):
     body = case.invalid_user('email')
     response = client.post('/user/', json=body)
@@ -36,7 +36,8 @@ def test_post_invalid_email(client: TestClient):
     assert response.status_code == 400
 
 
-@pytest.mark.userDefault
+# POST INVALID PASSWORD
+@pytest.mark.user
 def test_post_invalid_password(client: TestClient):
     body = case.invalid_user('password')
     response = client.post('/user/', json=body)
@@ -45,7 +46,7 @@ def test_post_invalid_password(client: TestClient):
 
 
 # GET ALL
-@pytest.mark.userDefault
+@pytest.mark.user
 def test_get_all_users(client_one: TestClient):
     response = client_one.get('/user')
     context = response.json()
@@ -56,7 +57,7 @@ def test_get_all_users(client_one: TestClient):
 
 
 # GET BY USERNAME
-@pytest.mark.userDefault
+@pytest.mark.user
 def test_get_by_username(client_one: TestClient):
     response = client_one.get(f'/user/{"marciaSouza"}')
     context = response.json()
@@ -68,7 +69,7 @@ def test_get_by_username(client_one: TestClient):
 # UPDATE (AUTH Required)
 @pytest.mark.userAuth
 def test_update_auth_user(client_two_header_auth: TestClient):
-    to_update = {'email': 'novoemail@hotmail.com'}
+    to_update = {'email': 'newemail@hotmail.com'}
     response = client_two_header_auth.patch(f'/user/', json=to_update)
 
     assert response.status_code == 200
