@@ -32,20 +32,20 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas route
 
 ### Usuários
 
-- Registro de novos usuários
-- Autenticação de usuários
-- Atualizar dados
-- Deletar conta
+- [x] Registro de novos usuários
+- [x] Autenticação de usuários
+- [x] Atualizar dados
+- [x] Deletar conta
 
 ### Postagens
 
-- Criação de novo post
-- Edição de post
-- Remoção de post
-- Listagem de posts geral (home)
-- Listagem de posts seguidos (timeline)
-- Likes em postagens
-- Postagem pode ser resposta a outra postagem
+- [x] Criação de novo post
+- [x] Edição de post
+- [x] Remoção de post
+- [x] Listagem de posts geral (home)
+- [ ] Listagem de posts seguidos (timeline)
+- [ ] Likes em postagens
+- [ ] Postagem pode ser resposta a outra postagem
 
 
 ## Requisitos
