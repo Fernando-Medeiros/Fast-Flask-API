@@ -22,19 +22,23 @@
   - [x] Get-by-username
   - [x] Delete
   - [x] Update   
-- [x] Models
+- [ ] Models
   - [x] UserModel
   - [x] UserResponse
-  - [x] UserRequest      
+  - [x] UserRequest
+  - [ ] UserRequestPatch
   
 ---
 ## Post
-- [ ] Routes
-  - [ ] Create
-  - [ ] Get-all
-  - [ ] Get-by-id
-  - [ ] Get-by-username
-  - [ ] Delete
+- [x] Routes
+  - [x] Create
+  - [x] Get-all
+  - [x] Get-by-id
+  - [x] Get-by-username
+  - [x] Delete
+  - [x] Update
 - [ ] Models
-  - [ ] PostModel
-  - [ ] PostResponse
+  - [x] PostModel
+  - [x] PostResponse
+  - [x] PostRequest
+  - [ ] PostRequestPatch
