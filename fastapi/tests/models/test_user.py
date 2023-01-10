@@ -1,11 +1,14 @@
 import asyncio
+from datetime import datetime
 
 import pytest
-from app.models.user import UserModel, UserRequest, UserResponse
-from tests.utils.user import CaseCreate
+from fastapi import HTTPException
 from werkzeug.security import check_password_hash
 
-from fastapi import HTTPException
+from app.models.user import (UserModel, UserRequest, UserRequestPatch,
+                             UserRequestUpdatePassword, UserResponse,
+                             UserResponseAccountData)
+from tests.utils.user import CaseCreate
 
 case = CaseCreate()
 
@@ -13,10 +16,10 @@ case = CaseCreate()
 # UserModel - Valid
 @pytest.mark.userModel
 def test_model_valid_usermodel():
-    attr: dict = case.valid_user
-    user = UserModel(**attr)
+    data: dict = case.valid_user
+    user = UserModel(**data)
     
-    assert [user.dict()[key] for key in attr]
+    assert [user.dict()[key] for key in data]
 
 
 # UserModel - Invalid
@@ -30,8 +33,8 @@ def test_model_invalid_user():
 # Save Account
 @pytest.mark.userModel
 def test_model_save_user():
-    attr: dict = case.valid_user
-    user = UserModel(**attr)
+    data: dict = case.valid_user
+    user = UserModel(**data)
     event = asyncio.new_event_loop()
     
     assert event.run_until_complete(user.save()) == user
@@ -53,21 +56,52 @@ def test_model_delete_user():
 @pytest.mark.userModel
 @pytest.mark.userModelRequest
 def test_model_user_request():
-    attr: dict = case.valid_user
-    user = UserRequest(**attr)
+    data: dict = case.valid_user
+    request = UserRequest(**data).dict()
 
-    assert [user.dict()[key] == value for key, value in attr.items()]
-    assert check_password_hash(user.password, attr['password'])
+    assert [request[key] for key in data]
+    assert check_password_hash(str(request.get('password')), data['password'])
+
+
+# UserRequestPatch
+@pytest.mark.userModel
+@pytest.mark.userModelRequest
+def test_model_user_request_patch():
+    data: dict = case.valid_user
+    request = UserRequestPatch(**data).dict()
+
+    assert [data[key] for key in request]
+
+
+# UserRequestUpdatePassword
+@pytest.mark.userModel
+@pytest.mark.userModelRequest
+def test_model_user_request_password():
+    data: dict = case.valid_user
+    request = UserRequestUpdatePassword(**data).dict()
+    
+    assert [data[key] for key in request]
 
 
 # UserResponse
 @pytest.mark.userModel
 @pytest.mark.userModelResponse
 def test_model_user_response():
-    attr: dict = case.valid_user
-    request = UserRequest(**attr)
-    model = UserModel(**request.dict())
-    model.id = 1
-    response = UserResponse(**model.dict())
+    data: dict = case.valid_user.copy()
+    data.update(id=1)
+    response = UserResponse(**data).dict()
+        
+    assert [data[key] for key in response]
     
-    assert [response.dict()[key] for key in model.dict() if key not in ['password', 'posts']]
+
+# UserResponseAccountData
+@pytest.mark.userModel
+@pytest.mark.userModelResponse
+def test_model_user_response_account():
+    data: dict = case.valid_user.copy()
+    data.pop('password')
+    data.update(id=1, created_at=datetime.today(), access=['user'])
+
+    response = UserResponseAccountData(**data).dict()
+        
+    assert [response[key] for key in data]

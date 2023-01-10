@@ -16,6 +16,9 @@ class CaseInvalid:
                 user['password'] = ''
         return user
 
+    def get_one_invalid_field(self, field: str) -> dict:
+        return {field: self.invalid_user(field)[field]}
+
 
 class CaseCreate(CaseInvalid):
     valid_user = {
@@ -25,6 +28,9 @@ class CaseCreate(CaseInvalid):
         'email': 'joaosilva@gmail.com',
         'password': 'joaoteste@/[]()X'
         }
+
+    def get_one_valid_field(self, field: str) -> dict:
+        return {field: 'new' + self.valid_user[field]}
 
 
 class CaseLogin(CaseInvalid):
