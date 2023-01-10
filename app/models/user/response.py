@@ -1,5 +1,6 @@
-from typing import List
+from typing import List, Optional
 
+import ormar
 from pydantic import BaseModel
 
 
@@ -9,4 +10,11 @@ class UserResponse(BaseModel):
     last_name: str
     username: str
     email: str
+
+
+class UserResponseAccountData(UserResponse):
+    byear: Optional[str]
+    bday: Optional[str]
+    bmonth: Optional[str]
+    created_at: ormar.DateTime
     access: List[str]

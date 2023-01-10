@@ -1,10 +1,11 @@
 import re
+from datetime import datetime
 
 import ormar
-from pydantic import validator
-from setup import database, metadata
-
 from fastapi import HTTPException
+from pydantic import validator
+
+from setup import database, metadata
 
 l_access = ['admin', 'user']
 
@@ -15,11 +16,16 @@ class UserModel(ormar.Model):
         tablename = 'users'
 
     id = ormar.Integer(primary_key=True, autoincrement=True)
-    first_name = ormar.String(max_length=15, null=False)
-    last_name = ormar.String(max_length=15, null=False)
-    username = ormar.String(max_length=30, unique=True, null=False)
-    email = ormar.String(max_length=100, unique=True, null=False)
-    password = ormar.String(max_length=255, null=False)
+    first_name = ormar.String(max_length=30, nullable=False)
+    last_name = ormar.String(max_length=30, nullable=False)
+    username = ormar.String(max_length=20, unique=True, nullable=False)
+    email = ormar.String(max_length=100, unique=True, nullable=False)
+    byear = ormar.String(max_length=4, nullable=True)
+    bday = ormar.String(max_length=2 ,nullable=True)
+    bmonth = ormar.String(max_length=2 ,nullable=True)
+    created_at = ormar.DateTime(default=datetime.today())
+    password = ormar.String(max_length=255, nullable=False)
+
     access = ormar.JSON(default=['user'])
 
 
