@@ -21,7 +21,7 @@ class UserRequest(BaseModel):
             return ' ' in [char for char in value if char == ' ']
 
         if not re.compile(r'^([A-Za-z0-9]).{7,}$').match(value) or check_space():
-            raise HTTPException(status_code=400, detail='The password format is invalid!' + value )
+            raise HTTPException(status_code=400, detail='The password format is invalid!')
         
         return generate_password_hash(value)
 

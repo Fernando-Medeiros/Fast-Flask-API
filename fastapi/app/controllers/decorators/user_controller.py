@@ -53,7 +53,7 @@ def patch(model: ormar.Model):
                 await entity.update(**updates)
                 return status.HTTP_200_OK, 'Updated data'
 
-            return HTTPException(
+            raise HTTPException(
                 status.HTTP_401_UNAUTHORIZED, detail='Unauthorized')
         
         return wrapper
@@ -65,11 +65,11 @@ def delete(model: ormar.Model):
 
         @wraps(func)
         async def wrapper(current_user, **kwargs):
-            if current_user.id:
-                await model.objects.delete(username=current_user.username)
+           
+            if await model.objects.delete(username=current_user.username):
                 return status.HTTP_200_OK, 'Account deleted'
 
-            return HTTPException(
+            raise HTTPException(
                 status.HTTP_401_UNAUTHORIZED, detail='Unauthorized')
 
         return wrapper
