@@ -1,29 +1,32 @@
 from functools import wraps
 
 import ormar
-from app.utils.token_jwt import CreateTokenJwt
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
 from werkzeug.security import check_password_hash
 
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
+from app.utils.token_jwt import CreateTokenJwt
 
 
 def post_token(model: ormar.Model):
-    def inner (func):
-
+    def inner(func):
         @wraps(func)
         async def wrapper(form_data: OAuth2PasswordRequestForm = Depends()):
-            
-            user = await model.objects.get_or_none(email=form_data.username)
-            
-            if not user or not check_password_hash(user.password, form_data.password):
+
+            entity = await model.objects.get_or_none(email=form_data.username)
+
+            if not entity or not check_password_hash(
+                entity.password, form_data.password
+            ):
                 raise HTTPException(
-                    status_code=403,
-                    detail='User not found'
+                    status.HTTP_403_FORBIDDEN,
+                    detail="User not found or invalid password",
                 )
             return {
-                'access_token': CreateTokenJwt().create_token(id=user.id),
-                'token_type': 'bearer'
+                "access_token": CreateTokenJwt().create_token(id=entity.id),
+                "token_type": "bearer",
             }
+
         return wrapper
+
     return inner

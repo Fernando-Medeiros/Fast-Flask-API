@@ -8,12 +8,12 @@ from .decorators import auth_controller
 router = APIRouter()
 
 
-@router.post('/token', response_model=Token)
+@router.post("/token", response_model=Token)
 @auth_controller.post_token(UserModel)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     ...
 
 
-@router.post('/refresh-token', response_model=RefreshToken)
+@router.post("/refresh_token")
 async def refresh_token():
-    ...
+    return "Route will be implemented after finalizing the posts route"
