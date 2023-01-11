@@ -64,8 +64,8 @@ def test_get_post_by_id_without_posts(client_one: TestClient):
     response = client_one.get(f'/post/id/{1}')
     context = response.json()
 
-    assert response.status_code == 404
-    assert context['detail'] == 'Not Found'
+    assert response.status_code == 200
+    assert context['detail'] == 'Id not found'
 
 
 # GET POST BY USERNAME
@@ -81,7 +81,7 @@ def test_get_post_by_username(client_three: TestClient):
 # UPDATE VALID CONTENT (AUTH Required)
 @pytest.mark.post
 def test_update_valid_post_content(client_three: TestClient):
-    response = client_three.patch(f'/post/{1}', json=case.update_valid_content)
+    response = client_three.patch(f'/post/id/{1}', json=case.update_valid_content)
     context = response.json()
 
     assert response.status_code == 200
@@ -91,7 +91,7 @@ def test_update_valid_post_content(client_three: TestClient):
 # UPDATE INVALID CONTENT (AUTH Required)
 @pytest.mark.post
 def test_update_invalid_post_content(client_three: TestClient):
-    response = client_three.patch(f'/post/{1}', json=case.update_invalid_content)
+    response = client_three.patch(f'/post/id/{1}', json=case.update_invalid_content)
     context = response.json()
 
     assert response.status_code == 400
@@ -100,7 +100,7 @@ def test_update_invalid_post_content(client_three: TestClient):
 # DELETE (AUTH Required)
 @pytest.mark.post
 def test_delete_post(client_three: TestClient):
-    response = client_three.delete(f'/post/{1}')
+    response = client_three.delete(f'/post/id/{1}')
     context = response.json()
 
     assert response.status_code == 200

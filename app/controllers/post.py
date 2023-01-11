@@ -37,7 +37,7 @@ async def create_post(
     ...
 
 
-@router.patch('/{id}', response_model=PostResponse)
+@router.patch('/id/{id}', response_model=PostResponse)
 @post_controller.patch(PostModel)
 async def edit_post(
     id: int,
@@ -46,7 +46,7 @@ async def edit_post(
     ...
 
 
-@router.delete('/{id}')
+@router.delete('/id/{id}')
 @post_controller.delete(PostModel)
 async def delete_post(
     id: int,

@@ -29,8 +29,8 @@ def get_by_id(model: ormar.Model):
                 return post
 
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail='Not Found')
+                status_code=status.HTTP_200_OK,
+                detail='Id not found')
 
         return wrapper
     return inner
@@ -49,8 +49,8 @@ def get_by_username(model: ormar.Model):
                 return posts
             
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail='Not Found')
+                status_code=status.HTTP_200_OK,
+                detail='Username not found')
 
         return wrapper
     return inner

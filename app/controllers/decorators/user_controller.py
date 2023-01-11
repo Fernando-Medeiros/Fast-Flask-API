@@ -11,9 +11,16 @@ def create_account(model: ormar.Model):
 
         @wraps(func)
         async def wrapper(request_model: ormar.Model):
-            attr = request_model.dict(exclude_unset=True)
-            entity = model(**attr)
-            return await entity.save()
+            data = request_model.dict(exclude_unset=True)
+            entity = model(**data)
+
+            if not await model.objects.get_or_none(username=data['username']):
+                return await entity.save()
+            
+            raise HTTPException(
+                status_code=status.HTTP_200_OK,
+                detail='Username is already in use!'
+            )
 
         return wrapper
     return inner
