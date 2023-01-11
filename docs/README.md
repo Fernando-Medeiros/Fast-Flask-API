@@ -14,7 +14,12 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas route
 
 > [Progresso dos **Testes**](tests.md)
 
----
+
+> [Testes no Postman](postman.png)
+
+> [Arquivo Json para importar os testes pro Postman](Fast-Flask-API%20-%20-%20Fast-Deploy.postman_collection.json)
+
+
 ## Resumo 
 - [FastAPI](#fastapi)
   - [Resumo](#resumo)

@@ -1,0 +1,468 @@
+{
+	"info": {
+		"_postman_id": "3c690f16-df8c-4382-8041-e19677483f2d",
+		"name": "Fast-Flask-API - > Fast-Deploy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22525025"
+	},
+	"item": [
+		{
+			"name": "User - Create New Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"postman\",\n    \"last_name\": \"tester\",\n    \"username\": \"postmanTester\",\n    \"email\": \"postman@gmail.com\",\n    \"password\": \"postman123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/user/",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token - Auth Account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{acess_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "postman@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "postman123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/auth/token/",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth",
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - Get List With All Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/user/",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - Get By Username",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/user/?username=postmanTester",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						""
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "postmanTester"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User (auth) - Get Account Data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{acess_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/user/account-data/",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"account-data",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User (auth) - Update User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{acess_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\": \"newPostmanFirstName\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/user/",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User (auth) - Update Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{acess_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"password\": \"postman123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/user/update-password/",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"update-password",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post (auth) - Create Post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{acess_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\": \"Python Fastapi Postman Flask Api Github\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/post/",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"post",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post - Get List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/post/",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"post",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post - Get Post By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/post/id/1",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"post",
+						"id",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post - Get Post By Username",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/post/?username=postmanTester",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"post",
+						""
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "postmanTester"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post (auth) - Update Post Content",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{acess_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\": \"PostEditado\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/post/id/1",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"post",
+						"id",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post (auth) - Delete Post By Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{acess_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/post/id/1",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"post",
+						"id",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User (auth) - Delete Account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{acess_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://fast-flask-api.herokuapp.com/user/",
+					"protocol": "https",
+					"host": [
+						"fast-flask-api",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "acess_token",
+			"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOiIyMDIzLTAxLTExIDA0OjE1OjMzLjA1MTcyMyIsInNjb3BlIjoiYWNjZXNzX3Rva2VuIiwiaWQiOjF9.stpsZVVG1EW9Kk7gzMvSsnDMYFPfX2Fo6KzqzxZjuHwz7z4vyO_KlXbzebdI3i8Gl91ytPO5jDKlY7CHgW887A"
+		}
+	]
+}
