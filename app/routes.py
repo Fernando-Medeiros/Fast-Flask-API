@@ -4,20 +4,8 @@ from .controllers import auth, post, user
 
 router = APIRouter()
 
-router.include_router(
-    auth.router,
-    prefix='/auth',
-    tags=['Auth']
-)
+router.include_router(auth.router, prefix="", tags=["auth"])
 
-router.include_router(
-    user.router,
-    prefix='/user',
-    tags=['User']
-)
+router.include_router(user.router, prefix="/users", tags=["users"])
 
-router.include_router(
-    post.router,
-    prefix='/post',
-    tags=['Post']
-)
+router.include_router(post.router, prefix="/posts", tags=["posts"])
