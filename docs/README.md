@@ -17,7 +17,9 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas route
 
 > [Testes no Postman](postman.png)
 
-> [Arquivo Json para importar os testes pro Postman](Fast-Flask-API%20-%20-%20Fast-Deploy.postman_collection.json)
+- Collections para importar os testes pro Postman (.json)
+  - > [deploy](Fast-Flask-API%20-%20-%20Fast-Deploy.postman_collection.json)
+  - > [localhost](Fast-Flask-API%20-%20-%20LocalHost.postman_collection.json)
 
 
 ## Resumo 
@@ -142,12 +144,15 @@ pytest
 │       └── token_jwt.py
 ├── docs
 │   ├── endpoints.png
+│   ├── Fast-Flask-API - - Fast-Deploy.postman_collection.json
+│   ├── Fast-Flask-API - - LocalHost.postman_collection.json
+│   ├── postman.png
 │   ├── README.md
 │   ├── tasks.md
 │   └── tests.md
 ├── LICENSE
 ├── Procfile
-├── requirements-test.txt
+├── requirements-dev.txt
 ├── requirements.txt
 ├── runtime.txt
 ├── setup.py
@@ -172,5 +177,5 @@ pytest
         ├── token.py
         └── user.py
 
-14 directories, 45 files
+14 directories, 48 files
 ```

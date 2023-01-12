@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "3c690f16-df8c-4382-8041-e19677483f2d",
-		"name": "Fast-Flask-API - > Fast-Deploy",
+		"_postman_id": "30679ae3-537a-4880-a810-3f47718b1933",
+		"name": "Fast-Flask-API - > LocalHost",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "22525025"
 	},
@@ -21,13 +21,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/users",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/users",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"users"
@@ -67,13 +69,15 @@
 					]
 				},
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/token",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/token",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"token"
@@ -88,13 +92,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/users",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/users",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"users"
@@ -109,24 +115,19 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/users/postmanTester",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/users/postmanTester",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"users",
 						"postmanTester"
-					],
-					"query": [
-						{
-							"key": "username",
-							"value": "postmanTester",
-							"disabled": true
-						}
 					]
 				}
 			},
@@ -148,13 +149,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/users/account_data/",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/users/account_data/",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"users",
@@ -190,13 +193,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/users",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/users",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"users"
@@ -230,13 +235,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/users/update_password",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/users/update_password",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"users",
@@ -271,13 +278,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/posts",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/posts",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"posts"
@@ -292,13 +301,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/posts",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/posts",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"posts"
@@ -313,13 +324,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/posts/1",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/posts/1",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"posts",
@@ -335,13 +348,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/posts/user/postmanTester",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/posts/user/postmanTester",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"posts",
@@ -377,13 +392,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/posts/1",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/posts/1",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"posts",
@@ -409,13 +426,15 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/posts/1",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/posts/1",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"posts",
@@ -441,13 +460,15 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://fast-flask-api.herokuapp.com/api/users",
-					"protocol": "https",
+					"raw": "http://127.0.0.1:8000/api/users",
+					"protocol": "http",
 					"host": [
-						"fast-flask-api",
-						"herokuapp",
-						"com"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "8000",
 					"path": [
 						"api",
 						"users"
@@ -457,10 +478,40 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{acess_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "acess_token",
-			"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOiIyMDIzLTAxLTExIDA0OjE1OjMzLjA1MTcyMyIsInNjb3BlIjoiYWNjZXNzX3Rva2VuIiwiaWQiOjF9.stpsZVVG1EW9Kk7gzMvSsnDMYFPfX2Fo6KzqzxZjuHwz7z4vyO_KlXbzebdI3i8Gl91ytPO5jDKlY7CHgW887A"
+			"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzM0OTgzMzQsInNjb3BlIjoiYWNjZXNzX3Rva2VuIiwiaWQiOjN9.keF2Xh0ucL8C5xaNc7SXAT7DXF2zUkosmFNiPtZdaDnb79hzDUbSUINFu1nto9kw5X7nNf7dyNra1o6YSn52oA"
 		}
 	]
 }
