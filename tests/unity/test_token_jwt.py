@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+
 from app.utils.token_jwt import CreateTokenJwt, DecodeTokenJwt
 
 from ..utils.token import TestToken
@@ -12,7 +13,7 @@ utils = TestToken()
 @pytest.mark.tokenJwt
 def test_token_expire():
     expire = token.expire()
-    
+
     assert type(expire) == datetime
     assert expire.hour != datetime.utcnow().hour
 
@@ -39,5 +40,5 @@ def test_token_decode():
     context = utils.create_context()
     create_token = token.create_token(**context)
     t_decode = DecodeTokenJwt().decode(create_token)
-    
+
     assert [t_decode[key] for key in context]
