@@ -24,7 +24,7 @@ async def get_post_by_id(id: int):
 
 @router.get("/user/{username}", response_model=List[PostResponse])
 @post_controller.get_by_username(UserModel)
-async def get_post_by_username(username: str):
+async def get_posts_by_username(username: str):
     ...
 
 
