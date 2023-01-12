@@ -1,9 +1,18 @@
 import re
 from typing import Optional
 
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from pydantic import BaseModel, validator
 from werkzeug.security import generate_password_hash
+
+
+def validate_password(cls, value):
+    if re.compile(r"^([A-Za-z0-9]).{7,}$").match(value) and " " not in value:
+        return generate_password_hash(value)
+
+    raise HTTPException(
+        status.HTTP_400_BAD_REQUEST, detail="Password format is invalid"
+    )
 
 
 class UserRequest(BaseModel):
@@ -11,18 +20,14 @@ class UserRequest(BaseModel):
     last_name: str
     username: str
     email: str
+    byear: str
+    bmonth: str
+    bday: str
     password: str
 
-    @validator('password', pre=True)
-    def validate_password(cls, value):
-        
-        def check_space() -> bool:
-            return ' ' in [char for char in value if char == ' ']
-
-        if not re.compile(r'^([A-Za-z0-9]).{7,}$').match(value) or check_space():
-            raise HTTPException(status_code=400, detail='The password format is invalid!')
-        
-        return generate_password_hash(value)
+    @validator("password", pre=True)
+    def _password(cls, value):
+        return validate_password(cls, value)
 
 
 class UserRequestPatch(BaseModel):
@@ -35,13 +40,6 @@ class UserRequestPatch(BaseModel):
 class UserRequestUpdatePassword(BaseModel):
     password: Optional[str]
 
-    @validator('password', pre=True)
-    def validate_password(cls, value):
-        
-        def check_space() -> bool:
-            return ' ' in [char for char in value if char == ' ']
-
-        if not re.compile(r'^([A-Za-z0-9]).{7,}$').match(value) or check_space():
-            raise HTTPException(status_code=400, detail='The password format is invalid!')
-        
-        return generate_password_hash(value)
+    @validator("password", pre=True)
+    def _password(cls, value):
+        return validate_password(cls, value)

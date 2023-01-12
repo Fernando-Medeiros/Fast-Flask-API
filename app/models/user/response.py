@@ -14,7 +14,7 @@ class UserResponse(BaseModel):
 
 class UserResponseAccountData(UserResponse):
     byear: Optional[str]
-    bday: Optional[str]
     bmonth: Optional[str]
+    bday: Optional[str]
     created_at: ormar.DateTime
     access: List[str]
