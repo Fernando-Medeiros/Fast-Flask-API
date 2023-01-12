@@ -1,8 +1,7 @@
 import ormar
-from jose import JWTError
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError
 
 from ..models.token import TokenData
 from ..models.user import UserModel
@@ -10,7 +9,7 @@ from .token_jwt import DecodeTokenJwt
 
 
 class AuthBearer:
-    url: str = '/auth/token'
+    url: str = "/api/token"
     auth_scheme = OAuth2PasswordBearer(tokenUrl=url)
 
 
@@ -22,7 +21,7 @@ class ValidateCredentials:
 
         except JWTError:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
+                status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials",
                 headers={"WWW-Authenticate": "Bearer"},
             )
@@ -30,20 +29,15 @@ class ValidateCredentials:
 
 class ValidateUser:
     model: ormar.Model = UserModel
-    
-    async def get_or_none(self, payload) -> UserModel:
-        user = await self.model.objects.get_or_none(id=payload.id)
-        
-        if user == None:
-            raise HTTPException(
-                status_code=404,
-                detail='User not found'
-            )
-        return user
+
+    async def get_or_none(self, payload) -> UserModel | None:
+        return await self.model.objects.get_or_none(id=payload.id)
 
 
-async def request_token(token: str = Depends(AuthBearer.auth_scheme)) -> UserModel:
-    payload = ValidateCredentials().validate(token) 
+async def request_token(
+    token: str = Depends(AuthBearer.auth_scheme),
+) -> UserModel | None:
+    payload = ValidateCredentials().validate(token)
     user = await ValidateUser().get_or_none(payload)
     return user
 
