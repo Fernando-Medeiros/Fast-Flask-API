@@ -3,23 +3,22 @@
 
 ![](endpoints.png)
 
-Aplicação WEB - API usando FastAPI
 
-O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas routes e diferentes tipos de Relacionamentos do banco de dados.
+O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas e diferentes tipos de relacionamentos do banco de dados.
 
 > - Para construir o projeto isolei cada aplicação em seu próprio ecosistema e embiente virtual. 
-> - Ambos possuem a mesma estrutura e finalidade, porém aplicadas em Frameworks diferentes.
-
-> [Progresso das **Tarefas**](tasks.md)
-
-> [Progresso dos **Testes**](tests.md)
 
 
-> [Testes no Postman](postman.png)
+- [**Tarefas**](tasks.md)
+
+- [**Testes**](tests.md)
+
+
+- [Testes no Postman](postman.png)
 
 - Collections para importar os testes pro Postman (.json)
-  - > [deploy](Fast-Flask-API%20-%20-%20Fast-Deploy.postman_collection.json)
-  - > [localhost](Fast-Flask-API%20-%20-%20LocalHost.postman_collection.json)
+  -  [deploy](Fast-Flask-API%20-%20-%20Fast-Deploy.postman_collection.json)
+  -  [localhost](Fast-Flask-API%20-%20-%20LocalHost.postman_collection.json)
 
 
 ## Resumo 
@@ -42,6 +41,11 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas route
 - [x] Registro de novos usuários
 - [x] Autenticação de usuários
 - [x] Atualizar dados
+- [x] Atualizar senha
+- [ ] Recuperar senha
+- [x] Pegar os dados da conta
+- [x] Listagem de usuários
+- [x] Listagem de usuário por username
 - [x] Deletar conta
 
 ### Postagens
@@ -49,7 +53,9 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas route
 - [x] Criação de novo post
 - [x] Edição de post
 - [x] Remoção de post
-- [x] Listagem de posts geral (home)
+- [x] Listagem de posts
+- [x] Listagem de post por id
+- [x] Listagem de posts por usuário
 - [ ] Listagem de posts seguidos (timeline)
 - [ ] Likes em postagens
 - [ ] Postagem pode ser resposta a outra postagem
@@ -81,12 +87,10 @@ source .venv/bin/activate
 ./.venv/bin/activate.ps1
 ```
 
-Instale as dependências
+Instale as dependências de desenvolvimento e teste
 
 ```console
-pip install -r requirements.txt
-# Teste
-pip install -r requirements-test.txt
+pip install -r requirements-dev.txt
 ```
 
 ## Iniciar o servidor

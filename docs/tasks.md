@@ -24,6 +24,7 @@
   - [x] Delete
   - [x] Update
   - [x] Update password
+  - [ ] Recover password
 - [x] Models
   - [x] UserModel
   - [x] UserRequest
