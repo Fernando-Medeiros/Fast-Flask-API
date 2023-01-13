@@ -14,50 +14,49 @@ from ..utils.login_required import login_required
 from .decorators import user_controller
 
 router = APIRouter()
+routerAuth = APIRouter()
 
 
 @router.get("", response_model=List[UserResponse])
-@user_controller.get_all(UserModel)
 async def get_list_with_all_users():
-    ...
+
+    return await user_controller.get_all()
 
 
 @router.get("/{username}", response_model=UserResponse)
-@user_controller.get_by_username(UserModel)
 async def get_user_by_username(username: str):
-    ...
+
+    return await user_controller.get_by_username(username)
 
 
 @router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-@user_controller.create_account(UserModel)
 async def create_new_account(request_model: UserRequest):
-    ...
+
+    return await user_controller.create_account(request_model)
 
 
-@router.patch("", response_model=UserResponse, status_code=status.HTTP_200_OK)
-@user_controller.update_user(UserModel)
+@routerAuth.patch("", response_model=UserResponse, status_code=status.HTTP_200_OK)
 async def update_user(
     request_model: UserRequestPatch, current_user: UserModel = Depends(login_required)
 ):
-    ...
+    return await user_controller.update_user(request_model, current_user)
 
 
-@router.patch("/update_password")
-@user_controller.update_password(UserModel)
+@routerAuth.patch("/update_password")
 async def update_password(
     request_model: UserRequestUpdatePassword,
     current_user: UserModel = Depends(login_required),
 ):
-    ...
+    return await user_controller.update_password(request_model, current_user)
 
 
-@router.delete("")
-@user_controller.delete(UserModel)
+@routerAuth.delete("")
 async def delete_account(current_user: UserModel = Depends(login_required)):
-    ...
+
+    return await user_controller.delete(current_user)
 
 
-@router.get("/account_data/", response_model=UserResponseAccountData)
-@user_controller.get_account_data(UserModel)
+@routerAuth.get("/account_data/", response_model=UserResponseAccountData)
 async def get_account_data(current_user: UserModel = Depends(login_required)):
-    ...
+
+    return await user_controller.get_account_data(current_user)
