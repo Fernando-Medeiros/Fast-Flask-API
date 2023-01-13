@@ -11,34 +11,28 @@ utils = TestToken()
 
 
 @pytest.mark.tokenJwt
-def test_token_expire():
-    expire = token.expire()
-
-    assert type(expire) == datetime
-    assert expire.hour != datetime.utcnow().hour
-
-
-@pytest.mark.tokenJwt
-def test_token_body():
+class TestTokenJwt:
     context = utils.create_context()
-    body = token.body(**context)
 
-    assert [body[key] for key in context]
+    def test_token_expire(self):
+        expire = token.expire()
 
+        assert type(expire) == datetime
+        assert expire.hour != datetime.utcnow().hour
 
-@pytest.mark.tokenJwt
-def test_token_create():
-    context = utils.create_context()
-    create_token = token.create_token(**context)
+    def test_token_body(self):
+        body = token.body(**self.context)
 
-    assert type(create_token) == str
-    assert len(create_token) > 200
+        assert [body[key] for key in self.context]
 
+    def test_token_create(self):
+        create_token = token.create_token(**self.context)
 
-@pytest.mark.tokenJwt
-def test_token_decode():
-    context = utils.create_context()
-    create_token = token.create_token(**context)
-    t_decode = DecodeTokenJwt().decode(create_token)
+        assert type(create_token) == str
+        assert len(create_token) > 200
 
-    assert [t_decode[key] for key in context]
+    def test_token_decode(self):
+        create_token = token.create_token(**self.context)
+        t_decode = DecodeTokenJwt().decode(create_token)
+
+        assert [t_decode[key] for key in self.context]

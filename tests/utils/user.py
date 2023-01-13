@@ -26,9 +26,9 @@ class CaseCreate(CaseInvalid):
         "last_name": "silva",
         "username": "joaoSilva",
         "email": "joaosilva@gmail.com",
-        "byear": "2000",
-        "bmonth": "01",
-        "bday": "12",
+        "bday": "22",
+        "bmonth": "8",
+        "byear": "94",
         "password": "joaoteste@/[]()X",
     }
 
@@ -42,9 +42,9 @@ class CaseLogin(CaseInvalid):
         "last_name": "souza",
         "username": "marciaSouza",
         "email": "marciasouza@gmail.com",
-        "byear": "2000",
-        "bmonth": "01",
-        "bday": "12",
+        "bday": "1",
+        "bmonth": "1",
+        "byear": "2001",
         "password": "test123@@@@",
     }
     login = {"username": "marciasouza@gmail.com", "password": "test123@@@@"}

@@ -39,7 +39,7 @@ def client_one():
 
 # Client with an authenticated user
 @pytest.fixture(scope="function")
-def client_two_header_auth():
+def client_two_auth():
     client = client_authenticated()
     return client
 
