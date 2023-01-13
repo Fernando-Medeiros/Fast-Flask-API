@@ -19,8 +19,8 @@ def test_login_valid_user(client_one: TestClient):
 
 
 # AUTHENTICATED CLIENT WITH BEARER
-@pytest.mark.userAuth
-def test_authenticated_client(client_two_header_auth: TestClient):
+@pytest.mark.token
+def test_authenticated_client(client_two_auth: TestClient):
     assert DecodeTokenJwt().decode(
-        client_two_header_auth.headers["Authorization"].replace("bearer ", "")
+        client_two_auth.headers["Authorization"].replace("bearer ", "")
     )
