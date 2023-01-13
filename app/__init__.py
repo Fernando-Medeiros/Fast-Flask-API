@@ -11,7 +11,7 @@ from .routes import routers
 def app() -> FastAPI:
     app = FastAPI(
         title="Fast-Flask-API",
-        version="0.6.5",
+        version="0.7.5",
         description="FFA is an api for a small social network",
     )
 

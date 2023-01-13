@@ -57,7 +57,7 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas
 - [x] Listagem de post por id
 - [x] Listagem de posts por usuário
 - [ ] Listagem de posts seguidos (timeline)
-- [ ] Likes em postagens
+- [x] Likes em postagens
 - [ ] Postagem pode ser resposta a outra postagem
 
 
