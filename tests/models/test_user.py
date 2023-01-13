@@ -16,97 +16,73 @@ from app.models.user import (
 from tests.utils.user import CaseCreate
 
 case = CaseCreate()
+event = asyncio.new_event_loop()
 
 
-# UserModel - Valid
 @pytest.mark.userModel
-def test_model_valid_usermodel():
-    data: dict = case.valid_user
-    user = UserModel(**data)
+class TestUserModel:
+    def test_valid_usermodel(self):
+        data: dict = case.valid_user
+        user = UserModel(created_at=datetime.today(), **data)
 
-    assert [user.dict()[key] for key in data]
+        assert [user.dict()[key] for key in data]
 
+    def test_invalid_usermodel(self):
+        with pytest.raises(HTTPException):
+            data: dict = case.invalid_user()
+            UserModel(**data)
 
-# UserModel - Invalid
-@pytest.mark.userModel
-def test_model_invalid_user():
-    with pytest.raises(HTTPException):
-        attr: dict = case.invalid_user()
-        user = UserModel(**attr)
+    def test_create_user(self):
+        data: dict = case.valid_user
+        user = UserModel(created_at=datetime.today(), **data)
 
+        assert event.run_until_complete(user.save()) == user
 
-# Save Account
-@pytest.mark.userModel
-def test_model_save_user():
-    data: dict = case.valid_user
-    user = UserModel(**data)
-    event = asyncio.new_event_loop()
+    def test_delete_user(self):
+        user = event.run_until_complete(UserModel.objects.first())
 
-    assert event.run_until_complete(user.save()) == user
+        id: int = event.run_until_complete(user.delete())
 
-
-# Delete Account
-@pytest.mark.userModel
-def test_model_delete_user():
-    event = asyncio.new_event_loop()
-    user = event.run_until_complete(UserModel.objects.first())
-
-    id: int = event.run_until_complete(user.delete())
-
-    with pytest.raises(Exception):
-        event.run_until_complete(UserModel.objects.get(id=id))
+        with pytest.raises(Exception):
+            event.run_until_complete(UserModel.objects.get(id=id))
 
 
-# UserRequest
-@pytest.mark.userModel
 @pytest.mark.userModelRequest
-def test_model_user_request():
-    data: dict = case.valid_user
-    request = UserRequest(**data).dict()
+class TestUserRequest:
+    def test_user_request(self):
+        data: dict = case.valid_user
+        request = UserRequest(**data).dict()
 
-    assert [request[key] for key in data]
-    assert check_password_hash(str(request.get("password")), data["password"])
+        assert [data[key] for key in request]
+        assert check_password_hash(str(request.get("password")), data["password"])
 
+    def test_user_request_patch(self):
+        data: dict = case.valid_user
+        request = UserRequestPatch(**data).dict()
 
-# UserRequestPatch
-@pytest.mark.userModel
-@pytest.mark.userModelRequest
-def test_model_user_request_patch():
-    data: dict = case.valid_user
-    request = UserRequestPatch(**data).dict()
+        assert [data[key] for key in request]
 
-    assert [data[key] for key in request]
+    def test_user_request_password(self):
+        data: dict = case.valid_user
+        request = UserRequestUpdatePassword(**data).dict()
 
-
-# UserRequestUpdatePassword
-@pytest.mark.userModel
-@pytest.mark.userModelRequest
-def test_model_user_request_password():
-    data: dict = case.valid_user
-    request = UserRequestUpdatePassword(**data).dict()
-
-    assert [data[key] for key in request]
+        assert [data[key] for key in request]
 
 
-# UserResponse
-@pytest.mark.userModel
 @pytest.mark.userModelResponse
-def test_model_user_response():
-    data: dict = case.valid_user.copy()
-    data.update(id=1)
-    response = UserResponse(**data).dict()
+class TestUserResponse:
+    def test_user_response(self):
+        data: dict = case.valid_user
+        response = UserResponse(id=1, **data).dict(exclude={"id"})
 
-    assert [data[key] for key in response]
+        assert [data[key] for key in response]
 
+    def test_user_response_account_data(self):
+        data: dict = case.valid_user.copy()
+        data.pop("password")
 
-# UserResponseAccountData
-@pytest.mark.userModel
-@pytest.mark.userModelResponse
-def test_model_user_response_account():
-    data: dict = case.valid_user.copy()
-    data.pop("password")
-    data.update(id=1, created_at=datetime.today(), access=["user"])
+        response = UserResponseAccountData(
+            id=1, created_at=datetime.today(), access=["user"], **data
+        ).dict()
 
-    response = UserResponseAccountData(**data).dict()
-
-    assert [response[key] for key in data]
+        assert [response[key] for key in data]
