@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 
 import ormar
 from fastapi import HTTPException, status
@@ -23,13 +22,17 @@ class PostModel(ormar.Model):
         onupdate=ormar.ReferentialAction("CASCADE"),
         ondelete=ormar.ReferentialAction("CASCADE"),
     )
-    date = ormar.Date(default=datetime.today().date())
-    time = ormar.Time(default=datetime.today().time())
+    like = ormar.Integer(default=0)
+    date = ormar.Date(nullable=True)
+    time = ormar.Time(nullable=True)
+    response = ormar.Boolean(default=False)
     content = ormar.Text(nullable=False)
 
     @validator("content")
     def _content(cls, value):
+        regex = r"^([A-Za-z0-9]).{3,}$"
 
-        if re.compile(r"^([A-Za-z0-9]).{3,}$").match(value):
+        if re.compile(regex).match(value):
             return value
+
         raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="Invalid content")

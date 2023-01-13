@@ -1,11 +1,21 @@
+import datetime
 from typing import Optional
 
-import ormar
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class PostResponse(BaseModel):
     id: Optional[int]
     content: Optional[str]
-    date: Optional[ormar.Date]
-    time: Optional[ormar.Time]
+    date: datetime.date
+    time: datetime.time
+    like: Optional[int]
+    response: Optional[bool]
+
+    @validator("date")
+    def _date(cls, value):
+        return value.strftime("%d/%m/%Y")
+
+    @validator("time")
+    def _time(cls, value):
+        return value.strftime("%H:%M:%S")
