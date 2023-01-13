@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 
 import ormar
 from fastapi import HTTPException, status
@@ -28,10 +27,10 @@ class UserModel(ormar.Model):
     last_name = ormar.String(max_length=30, nullable=False)
     username = ormar.String(max_length=20, unique=True, nullable=False)
     email = ormar.String(max_length=100, unique=True, nullable=False)
-    byear = ormar.String(min_length=4, max_length=4, nullable=False)
-    bmonth = ormar.String(min_length=2, max_length=2, nullable=False)
-    bday = ormar.String(min_length=2, max_length=2, nullable=False)
-    created_at = ormar.DateTime(default=datetime.today())
+    bday = ormar.String(max_length=2, nullable=False)
+    bmonth = ormar.String(max_length=2, nullable=False)
+    byear = ormar.String(min_length=2, max_length=4, nullable=False)
+    created_at = ormar.DateTime(nullable=False)
     password = ormar.String(max_length=255, nullable=False)
 
     access = ormar.JSON(default=["user"])

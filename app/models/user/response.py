@@ -1,7 +1,7 @@
-from typing import List, Optional
+import datetime
+from typing import List
 
-import ormar
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class UserResponse(BaseModel):
@@ -13,8 +13,12 @@ class UserResponse(BaseModel):
 
 
 class UserResponseAccountData(UserResponse):
-    byear: Optional[str]
-    bmonth: Optional[str]
-    bday: Optional[str]
-    created_at: ormar.DateTime
+    byear: str
+    bmonth: str
+    bday: str
+    created_at: datetime.datetime
     access: List[str]
+
+    @validator("created_at")
+    def _create_at(cls, value):
+        return value.strftime("%d/%m/%Y %H:%M:%S")

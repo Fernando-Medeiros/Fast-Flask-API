@@ -7,7 +7,8 @@ from werkzeug.security import generate_password_hash
 
 
 def validate_password(cls, value):
-    if re.compile(r"^([A-Za-z0-9]).{7,}$").match(value) and " " not in value:
+    regex = r"^([A-Za-z0-9]).{7,}$"
+    if re.compile(regex).match(value) and " " not in value:
         return generate_password_hash(value)
 
     raise HTTPException(
@@ -20,9 +21,9 @@ class UserRequest(BaseModel):
     last_name: str
     username: str
     email: str
-    byear: str
-    bmonth: str
     bday: str
+    bmonth: str
+    byear: str
     password: str
 
     @validator("password", pre=True)
