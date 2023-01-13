@@ -9,11 +9,12 @@ router = APIRouter()
 
 
 @router.post("/token", response_model=Token)
-@auth_controller.post_token(UserModel)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    ...
+
+    return await auth_controller.post_token(UserModel, form_data)
 
 
 @router.post("/refresh_token")
 async def refresh_token():
+
     return "Route will be implemented after finalizing the posts route"
