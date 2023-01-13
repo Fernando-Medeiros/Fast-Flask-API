@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, status
 from ..models.post import PostRequest, PostRequestPatch, PostResponse
 from ..models.user import UserModel
 from ..utils.login_required import login_required
-from .decorators import post_controller
+from .backend import post_controller
 
 router = APIRouter()
 routerAuth = APIRouter()

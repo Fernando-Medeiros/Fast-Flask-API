@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from ..models.token import RefreshToken, Token
 from ..models.user import UserModel
-from .decorators import auth_controller
+from .backend import auth_controller
 
 router = APIRouter()
 

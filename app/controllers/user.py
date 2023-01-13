@@ -11,7 +11,7 @@ from ..models.user import (
     UserResponseAccountData,
 )
 from ..utils.login_required import login_required
-from .decorators import user_controller
+from .backend import user_controller
 
 router = APIRouter()
 routerAuth = APIRouter()
