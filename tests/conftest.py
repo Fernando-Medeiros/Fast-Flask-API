@@ -11,13 +11,13 @@ from .utils.user import CaseLogin
 def client_authenticated():
     conf_database_test()
     client = TestClient(app())
-    client.post("api/users", json=CaseLogin().valid_user)
+    client.post("api/users", json=CaseLogin.valid_user)
 
     response = client.post(
-        "/api/token", data=CaseLogin().login, headers=CaseLogin().content_type
+        "/api/token", data=CaseLogin.login, headers=CaseLogin.content_type
     )
     token = response.json()["access_token"]
-    client.headers["Authorization"] = f"bearer {token}"
+    client.headers["authorization"] = f"bearer {token}"
     return client
 
 
@@ -33,7 +33,7 @@ def client():
 def client_one():
     conf_database_test()
     client = TestClient(app())
-    client.post("api/users", json=CaseLogin().valid_user)
+    client.post("api/users", json=CaseLogin.valid_user)
     return client
 
 
@@ -48,5 +48,5 @@ def client_two_auth():
 @pytest.fixture(scope="function")
 def client_three():
     client = client_authenticated()
-    client.post("/api/posts", json=CaseCreate().valid_content)
+    client.post("/api/posts", json=CaseCreate.valid_content)
     return client

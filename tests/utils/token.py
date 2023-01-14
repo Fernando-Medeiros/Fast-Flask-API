@@ -1,3 +1,3 @@
-class TestToken:
+class CaseToken:
     def create_context(self) -> dict:
-        return {"id": "1", "name": "Silvia", "created_at": "02/12/2022"}
+        return {"id": "1", "username": "Tester"}

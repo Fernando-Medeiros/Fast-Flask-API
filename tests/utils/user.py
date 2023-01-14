@@ -49,4 +49,4 @@ class CaseLogin(CaseInvalid):
     }
     login = {"username": "marciasouza@gmail.com", "password": "test123@@@@"}
     content_type = {"Content-Type": "application/x-www-form-urlencoded"}
-    headers = ["access_token", "token_type"]
+    headers = ["access_token", "refresh_token", "token_type"]
