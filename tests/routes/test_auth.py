@@ -1,26 +1,44 @@
 import pytest
 from fastapi.testclient import TestClient
 
+from app.models.token import Token
 from app.utils.token_jwt import DecodeTokenJwt
 
 from ..utils.user import CaseLogin
 
-case = CaseLogin()
 
-
-# LOGIN - TOKEN
 @pytest.mark.token
-def test_login_valid_user(client_one: TestClient):
-    response = client_one.post("/api/token", data=case.login, headers=case.content_type)
-    context = response.json()
+class TestToken:
+    def test_auth_access_token(self, client_one: TestClient):
+        response = client_one.post(
+            "/api/token", data=CaseLogin.login, headers=CaseLogin.content_type
+        )
+        tokens = Token(**response.json())
 
-    assert response.status_code == 200
-    assert [context[key] for key in case.headers]
+        assert tokens.access_token
+        assert tokens.refresh_token
+        assert tokens.token_type
+        assert response.status_code == 200
+
+    def test_auth_refresh_token(self, client_one: TestClient):
+        access_response = client_one.post(
+            "/api/token", data=CaseLogin.login, headers=CaseLogin.content_type
+        )
+        refresh_response = client_one.post(
+            "/api/refresh_token", json=access_response.json()
+        )
+        tokens = Token(**refresh_response.json())
+
+        assert tokens.access_token
+        assert tokens.refresh_token
+        assert tokens.token_type
+        assert access_response.status_code == 200
+        assert refresh_response.status_code == 200
 
 
-# AUTHENTICATED CLIENT WITH BEARER
 @pytest.mark.token
-def test_authenticated_client(client_two_auth: TestClient):
-    assert DecodeTokenJwt().decode(
-        client_two_auth.headers["Authorization"].replace("bearer ", "")
-    )
+class TestHeaders:
+    def test_header_authorization(self, client_two_auth: TestClient):
+        assert DecodeTokenJwt().decode(
+            client_two_auth.headers.get("authorization").split(" ")[-1]
+        )
