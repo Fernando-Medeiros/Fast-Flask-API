@@ -2,19 +2,18 @@ from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
 from ..models.token import RefreshToken, Token
-from ..models.user import UserModel
 from .backend import auth_controller
 
 router = APIRouter()
 
 
 @router.post("/token", response_model=Token)
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_with_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
 
-    return await auth_controller.post_token(UserModel, form_data)
+    return await auth_controller.token(form_data)
 
 
-@router.post("/refresh_token")
-async def refresh_token():
+@router.post("/refresh_token", response_model=Token)
+async def refresh_token(form_data: RefreshToken):
 
-    return "Route will be implemented after finalizing the posts route"
+    return await auth_controller.refresh_token(form_data)
