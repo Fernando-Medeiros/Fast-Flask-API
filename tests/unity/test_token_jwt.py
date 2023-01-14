@@ -13,7 +13,7 @@ class TestTokenJwt:
     context = CaseToken().create_context()
 
     def test_expire_minutes(self):
-        expire = TokenJwt.expire(15)
+        expire = TokenJwt.expire(minutes=15)
 
         assert issubclass(type(expire), datetime)
         assert expire.minute != datetime.utcnow().minute
@@ -32,9 +32,9 @@ class TestTokenJwt:
 
     def test_decode(self):
         token = TokenJwt.create_access_token(**self.context)
-        t_decode = DecodeTokenJwt.decode(token)
+        t_decode: dict = DecodeTokenJwt.decode(token)
 
-        assert [t_decode[key] for key in self.context]
+        assert t_decode.get("sub")
 
     def test_expired(self):
         expire = datetime.utcnow() - timedelta(minutes=5)

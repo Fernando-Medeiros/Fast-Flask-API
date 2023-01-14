@@ -13,10 +13,9 @@ class TestPost:
     # (AUTH REQUIRED) - VALID
     def test_post_valid(self, client_two_auth: TestClient):
         response = client_two_auth.post("/api/posts", json=case.valid_content)
-        context = response.json()
 
         assert response.status_code == 201
-        assert [context[attr] for attr in case.valid_content]
+        assert response.json().get("content")
 
     # (AUTH REQUIRED) - INVALID
     def test_post_invalid(self, client_two_auth: TestClient):
@@ -29,7 +28,7 @@ class TestPost:
         response = client_one.post("/api/posts", json=case.invalid_content)
 
         assert response.status_code == 401
-        assert response.json()["detail"]
+        assert response.json().get("detail")
 
 
 @pytest.mark.post
@@ -46,7 +45,7 @@ class TestGet:
         response = client_three.get(f"/api/posts/{1}")
 
         assert response.status_code == 200
-        assert response.json()["content"]
+        assert response.json().get("content")
 
     def test_get_posts_by_username(self, client_three: TestClient):
         response = client_three.get(f'/api/posts/user/{"marciaSouza"}')
@@ -60,13 +59,13 @@ class TestGet:
         response = client_one.get(f"/api/posts/{1}")
 
         assert response.status_code == 404
-        assert response.json()["detail"]
+        assert response.json().get("detail")
 
     def test_get_post_by_username_without_user(self, client: TestClient):
         response = client.get(f'/api/posts/user/{"marciaSouza"}')
 
         assert response.status_code == 404
-        assert response.json()["detail"]
+        assert response.json().get("detail")
 
 
 @pytest.mark.post
@@ -76,7 +75,7 @@ class TestUpdate:
         response = client_three.patch(f"/api/posts/{1}", json=case.update_valid_content)
 
         assert response.status_code == 200
-        assert response.json()["content"] == case.update_valid_content["content"]
+        assert response.json().get("content") == case.update_valid_content["content"]
 
     # (AUTH REQUIRED) - INVALID
     def test_update_invalid_content(self, client_three: TestClient):

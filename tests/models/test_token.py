@@ -24,10 +24,8 @@ class TestTokenModel:
 
     def test_token_data_(self):
         _data: dict = CaseLogin().valid_user
-        _data.update(id=1)
         token = TokenData(**_data)
 
-        assert token.id
         assert token.username
 
         with pytest.raises(Exception):

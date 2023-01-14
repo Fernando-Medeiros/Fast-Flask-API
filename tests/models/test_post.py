@@ -4,29 +4,28 @@ from datetime import datetime
 import pytest
 from fastapi import HTTPException
 
-from app.models.post import PostModel, PostRequest, PostRequestPatch, PostResponse
+from app.models.post import PostModel, PostRequest, PostResponse
 from tests.utils.post import CaseCreate
 
-case = CaseCreate()
 event = asyncio.new_event_loop()
 
 
 @pytest.mark.postModel
 class TestPostModel:
-    def test_valid_postmodel(self):
-        data: dict = case.valid_content
-        post = PostModel(**data).dict()
+    v_data = CaseCreate.valid_content
+    i_data = CaseCreate.invalid_content
 
-        assert [post[key] for key in data]
+    def test_valid_postmodel(self):
+        post = PostModel(**self.v_data)
+
+        assert post.dict(include={*self.v_data.keys()})
 
     def test_invalid_postmodel(self):
         with pytest.raises(HTTPException):
-            data: dict = case.invalid_content
-            PostModel(**data)
+            PostModel(**self.i_data)
 
     def test_create_post(self):
-        data: dict = case.valid_content
-        post = PostModel(**data)
+        post = PostModel(**self.v_data)
 
         assert event.run_until_complete(post.save()) == post
 
@@ -41,23 +40,27 @@ class TestPostModel:
 
 @pytest.mark.postModelRequest
 class TestPostRequest:
-    def test_post_request(self):
-        data: dict = case.valid_content
-        post = PostRequest(**data)
+    v_data = CaseCreate.valid_content
 
-        assert post.content == data["content"]
+    def test_post_request(self):
+        post = PostRequest(**self.v_data)
+
+        assert post.content == self.v_data["content"]
 
 
 @pytest.mark.postModelResponse
 class TestPostResponse:
+    v_data = CaseCreate.valid_content
+
     def test_post_response(self):
-        data: dict = case.valid_content
-        request = PostRequest(**data).dict()
+        request = PostRequest(**self.v_data)
         model = PostModel(
-            id=1, date=datetime.today().date(), time=datetime.today().time(), **request
-        ).dict()
-        response = PostResponse(**model).dict()
+            id=1,
+            date=datetime.today().date(),
+            time=datetime.today().time(),
+            **request.dict()
+        )
+        response = PostResponse(**model.dict())
 
-        assert [model[key] for key in response]
-
-    # PostRequestPatch
+        assert request.dict(include={*model.dict().keys()})
+        assert model.dict(include={*response.dict().keys()})

@@ -25,12 +25,11 @@ class TestUserModel:
         data: dict = case.valid_user
         user = UserModel(created_at=datetime.today(), **data)
 
-        assert [user.dict()[key] for key in data]
+        assert user.dict(include={*data.keys()})
 
     def test_invalid_usermodel(self):
         with pytest.raises(HTTPException):
-            data: dict = case.invalid_user()
-            UserModel(**data)
+            UserModel(**case.invalid_user())
 
     def test_create_user(self):
         data: dict = case.valid_user
@@ -51,38 +50,37 @@ class TestUserModel:
 class TestUserRequest:
     def test_user_request(self):
         data: dict = case.valid_user
-        request = UserRequest(**data).dict()
+        request = UserRequest(**data)
 
-        assert [data[key] for key in request]
-        assert check_password_hash(str(request.get("password")), data["password"])
+        assert request.dict(include={*data.keys()})
+        assert check_password_hash(str(request.password), data["password"])
 
     def test_user_request_patch(self):
         data: dict = case.valid_user
-        request = UserRequestPatch(**data).dict()
+        request = UserRequestPatch(**data)
 
-        assert [data[key] for key in request]
+        assert request.dict(include={*data.keys()})
 
     def test_user_request_password(self):
         data: dict = case.valid_user
-        request = UserRequestUpdatePassword(**data).dict()
+        request = UserRequestUpdatePassword(**data)
 
-        assert [data[key] for key in request]
+        assert request.dict(include={*data.keys()})
 
 
 @pytest.mark.userModelResponse
 class TestUserResponse:
     def test_user_response(self):
         data: dict = case.valid_user
-        response = UserResponse(id=1, **data).dict(exclude={"id"})
+        response = UserResponse(**data)
 
-        assert [data[key] for key in response]
+        assert response.dict(include={*data.keys()})
 
     def test_user_response_account_data(self):
         data: dict = case.valid_user.copy()
-        data.pop("password")
 
         response = UserResponseAccountData(
             id=1, created_at=datetime.today(), access=["user"], **data
-        ).dict()
+        )
 
-        assert [response[key] for key in data]
+        assert response.dict(include={*data.keys()})

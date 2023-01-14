@@ -1,8 +1,9 @@
 class CaseInvalid:
     valid_user: dict
 
-    def invalid_user(self, field: str = "email") -> dict:
-        user = self.valid_user.copy()
+    @classmethod
+    def invalid_user(cls, field: str = "email") -> dict:
+        user = cls.valid_user.copy()
         match field:
             case "first_name":
                 user["first_name"] = "Fernando 22"
@@ -16,8 +17,9 @@ class CaseInvalid:
                 user["password"] = ""
         return user
 
-    def get_one_invalid_field(self, field: str) -> dict:
-        return {field: self.invalid_user(field)[field]}
+    @classmethod
+    def get_one_invalid_field(cls, field: str) -> dict:
+        return {field: cls.invalid_user(field)[field]}
 
 
 class CaseCreate(CaseInvalid):
@@ -32,8 +34,9 @@ class CaseCreate(CaseInvalid):
         "password": "joaoteste@/[]()X",
     }
 
-    def get_one_valid_field(self, field: str) -> dict:
-        return {field: "new" + self.valid_user[field]}
+    @classmethod
+    def get_one_valid_field(cls, field: str) -> dict:
+        return {field: "new" + cls.valid_user[field]}
 
 
 class CaseLogin(CaseInvalid):
@@ -42,8 +45,8 @@ class CaseLogin(CaseInvalid):
         "last_name": "souza",
         "username": "marciaSouza",
         "email": "marciasouza@gmail.com",
-        "bday": "1",
-        "bmonth": "1",
+        "bday": "01",
+        "bmonth": "01",
         "byear": "2001",
         "password": "test123@@@@",
     }
