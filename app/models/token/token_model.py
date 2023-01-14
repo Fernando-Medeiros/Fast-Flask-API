@@ -14,5 +14,4 @@ class RefreshToken(BaseModel):
 
 
 class TokenData(BaseModel):
-    id: Optional[int] = None
     username: Optional[str] = None

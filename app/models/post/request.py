@@ -15,7 +15,3 @@ class PostRequest(BaseModel):
             return value
 
         raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="Invalid content")
-
-
-class PostRequestPatch(PostRequest):
-    ...

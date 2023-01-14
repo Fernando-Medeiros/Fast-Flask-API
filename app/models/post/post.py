@@ -1,5 +1,3 @@
-import re
-
 import ormar
 from fastapi import HTTPException, status
 from pydantic import validator
@@ -16,6 +14,7 @@ class PostModel(ormar.Model):
         tablename = "posts"
 
     id = ormar.Integer(primary_key=True, autoincrement=True)
+
     author = ormar.ForeignKey(
         UserModel,
         related_name="posts",
@@ -30,9 +29,9 @@ class PostModel(ormar.Model):
 
     @validator("content")
     def _content(cls, value):
-        regex = r"^([A-Za-z0-9]).{3,}$"
+        min_length, max_length = 2, 1000
 
-        if re.compile(regex).match(value):
-            return value
+        if len(value) < min_length or len(value) > max_length:
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="Invalid content")
 
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="Invalid content")
+        return value

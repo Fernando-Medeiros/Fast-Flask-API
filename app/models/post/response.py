@@ -10,7 +10,7 @@ class PostResponse(BaseModel):
     date: datetime.date
     time: datetime.time
     like: Optional[int]
-    response: Optional[bool]
+    response: Optional[bool] = None
 
     @validator("date")
     def _date(cls, value):

@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends, status
 
-from ..models.post import PostRequest, PostRequestPatch, PostResponse
+from ..models.post import PostRequest, PostResponse
 from ..models.user import UserModel
 from ..utils.login_required import login_required
 from .backend import post_controller
@@ -39,7 +39,7 @@ async def create_post(
 @routerAuth.patch("/{id}", response_model=PostResponse)
 async def edit_post(
     id: int,
-    request_model: PostRequestPatch,
+    request_model: PostRequest,
     current_user: UserModel = Depends(login_required),
 ):
     return await post_controller.update(id, request_model, current_user)

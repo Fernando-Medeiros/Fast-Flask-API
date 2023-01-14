@@ -2,7 +2,8 @@ from datetime import datetime
 
 from fastapi import status
 from fastapi.exceptions import HTTPException
-from pydantic import BaseModel
+
+from app.utils.login_required import verify_unique_constraint
 
 from ...models.user import UserModel
 
@@ -11,20 +12,14 @@ model = UserModel
 
 async def create_account(request_model):
     data = request_model.dict(exclude_unset=True)
-    entity = model(created_at=datetime.today(), **data)
+    user = model(created_at=datetime.today(), **data)
 
-    unique_username = await model.objects.get_or_none(username=data["username"])
-    unique_email = await model.objects.get_or_none(email=data["email"])
+    await verify_unique_constraint(
+        model, "Username is already in use", username=user.username
+    )
+    await verify_unique_constraint(model, "Email is already in use", email=user.email)
 
-    if unique_username:
-        raise HTTPException(
-            status_code=status.HTTP_200_OK, detail="Username is already in use"
-        )
-    elif unique_email:
-        raise HTTPException(
-            status_code=status.HTTP_200_OK, detail="Email is already in use"
-        )
-    return await entity.save()
+    return await user.save()
 
 
 async def get_all():
@@ -36,7 +31,7 @@ async def get_by_username(username):
     if entity:
         return entity
 
-    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User Not Found")
+    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
 
 
 async def get_account_data(current_user):
@@ -54,12 +49,12 @@ async def update_password(request_model, current_user):
     updates = request_model.dict(exclude_unset=True)
     await entity.update(**updates)
 
-    return {
-        "status_code": status.HTTP_200_OK,
-        "detail": "Successfully updated password",
-    }
+    return {"detail": "Successfully updated password"}
 
 
 async def delete(current_user):
+
     if await model.objects.delete(username=current_user.username):
-        return {"status_code": status.HTTP_200_OK, "detail": "Account deleted"}
+        return {"detail": "Account deleted"}
+
+    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User is not registered")

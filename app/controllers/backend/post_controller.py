@@ -30,6 +30,7 @@ async def get_by_username(model, username):
 
 async def update(id, request_model, current_user):
     post = await current_user.posts.get_or_none(id=id)
+
     if post:
         updates = request_model.dict(exclude_unset=True)
         return await post.update(**updates)
@@ -49,4 +50,6 @@ async def create(request_model, current_user):
 
 async def delete(id, current_user):
     if await model.objects.delete(id=id, author=current_user.id):
-        return status.HTTP_200_OK, "Post deleted"
+        return {"detail": "Post deleted"}
+
+    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Post cannot be found")

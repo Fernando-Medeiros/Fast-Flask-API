@@ -5,14 +5,14 @@ from pydantic import BaseModel, validator
 
 
 class UserResponse(BaseModel):
-    id: int
-    first_name: str
-    last_name: str
     username: str
-    email: str
 
 
 class UserResponseAccountData(UserResponse):
+    id: int
+    first_name: str
+    last_name: str
+    email: str
     byear: str
     bmonth: str
     bday: str

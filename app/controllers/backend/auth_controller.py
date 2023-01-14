@@ -17,13 +17,11 @@ async def token(form_data):
     user: UserModel = await authenticate_user(form_data)
     return Token(
         access_token=TokenJwt.create_access_token(
-            id=user.id,
-            username=user.username,
+            sub=user.username,
             fresh=True,
         ),
         refresh_token=TokenJwt.create_refresh_token(
-            id=user.id,
-            username=user.username,
+            sub=user.username,
         ),
         token_type="bearer",
     )
@@ -36,19 +34,17 @@ async def refresh_token(form_data):
     except:
         raise HTTPException(
             status.HTTP_401_UNAUTHORIZED,
-            detail="token cannot be validated",
+            detail="Token cannot be validated",
             headers={"WWW-Authenticate": "Bearer"},
         )
     else:
         return Token(
             access_token=TokenJwt.create_access_token(
-                id=user.id,
-                username=user.username,
+                sub=user.username,
                 fresh=False,
             ),
             refresh_token=TokenJwt.create_refresh_token(
-                id=user.id,
-                username=user.username,
+                sub=user.username,
             ),
             token_type="bearer",
         )
