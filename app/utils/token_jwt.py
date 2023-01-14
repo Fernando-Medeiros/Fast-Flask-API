@@ -5,24 +5,31 @@ from jose import jwt
 
 SECRET_KEY: str = os.getenv("SECRET_KEY", "159753852456")
 ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS512")
-EXPIRE_HOURS: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_HOURS", "1"))
+ACCESS_MINUTES: float = float(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+REFRESH_MINUTES: float = float(os.getenv("REFRESH_TOKEN_EXPIRE_MINUTES", "15"))
 
 
-class CreateTokenJwt:
-    def expire(self, hours: int = EXPIRE_HOURS):
-        return datetime.utcnow() + timedelta(hours=hours)
+class TokenJwt:
+    @staticmethod
+    def expire(minutes: float):
+        return datetime.utcnow() + timedelta(minutes=minutes)
 
-    def body(self, **kwargs) -> dict:
-        content = {"exp": self.expire(), "scope": "access_token"}
-        content.update(**kwargs)
-        return content.copy()
+    @classmethod
+    def create_access_token(cls, **kwargs) -> str:
+        data = {"exp": cls.expire(ACCESS_MINUTES), "scope": "access_token"}
+        data.update(**kwargs)
+        token = jwt.encode(data, SECRET_KEY, ALGORITHM)
+        return token
 
-    def create_token(self, **kwargs) -> str:
-        to_encode: dict = self.body(**kwargs)
-        encode_jwt = jwt.encode(to_encode, SECRET_KEY, ALGORITHM)
-        return encode_jwt
+    @classmethod
+    def create_refresh_token(cls, **kwargs) -> str:
+        data = {"exp": cls.expire(REFRESH_MINUTES), "scope": "refresh_token"}
+        data.update(**kwargs)
+        token = jwt.encode(data, SECRET_KEY, ALGORITHM)
+        return token
 
 
 class DecodeTokenJwt:
-    def decode(self, token) -> dict:
+    @staticmethod
+    def decode(token) -> dict:
         return jwt.decode(token, SECRET_KEY, ALGORITHM)
