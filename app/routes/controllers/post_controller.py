@@ -2,7 +2,7 @@ from datetime import datetime
 
 from fastapi import HTTPException, status
 
-from ...models.post import PostModel
+from app.models.post import PostModel
 
 model = PostModel
 

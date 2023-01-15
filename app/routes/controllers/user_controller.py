@@ -3,9 +3,9 @@ from datetime import datetime
 from fastapi import status
 from fastapi.exceptions import HTTPException
 
-from app.utils.login_required import verify_unique_constraint
+from app.models.user import UserModel
 
-from ...models.user import UserModel
+from ..security.login_required import verify_unique_constraint
 
 model = UserModel
 

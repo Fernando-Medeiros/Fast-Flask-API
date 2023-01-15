@@ -3,7 +3,7 @@ from typing import List
 import pytest
 from fastapi.testclient import TestClient
 
-from ..utils.post import CaseCreate
+from tests.utils.post import CaseCreate
 
 case = CaseCreate()
 

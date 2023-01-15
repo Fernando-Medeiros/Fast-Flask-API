@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from ..utils.user import CaseCreate, CaseLogin
+from tests.utils.user import CaseCreate, CaseLogin
 
 case = CaseCreate()
 

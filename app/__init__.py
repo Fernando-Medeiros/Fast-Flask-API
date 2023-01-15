@@ -3,9 +3,8 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.routers import routers
 from setup import conf_database
-
-from .routes import routers
 
 
 def app() -> FastAPI:

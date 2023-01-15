@@ -1,9 +1,8 @@
 import pytest
 
 from app.models.token import RefreshToken, Token, TokenData
-from app.utils.token_jwt import TokenJwt
-
-from ..utils.user import CaseLogin
+from app.routes.security.token_jwt import TokenJwt
+from tests.utils.user import CaseLogin
 
 
 @pytest.mark.tokenModel

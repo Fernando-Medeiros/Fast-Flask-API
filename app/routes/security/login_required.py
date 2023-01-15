@@ -4,8 +4,9 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError
 from werkzeug.security import check_password_hash
 
-from ..models.token import TokenData
-from ..models.user import UserModel
+from app.models.token import TokenData
+from app.models.user import UserModel
+
 from .token_jwt import DecodeTokenJwt
 
 model: ormar.Model = UserModel

@@ -3,12 +3,13 @@ from fastapi import HTTPException, status
 
 from app.models.token import Token, TokenData
 from app.models.user import UserModel
-from app.utils.login_required import (
+
+from ..security.login_required import (
     authenticate_user,
     validate_credentials,
     validate_user,
 )
-from app.utils.token_jwt import TokenJwt
+from ..security.token_jwt import TokenJwt
 
 model: ormar.Model = UserModel
 

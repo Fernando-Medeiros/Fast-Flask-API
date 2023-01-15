@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends, status
 
-from ..models.user import (
+from app.models.user import (
     UserModel,
     UserRequest,
     UserRequestPatch,
@@ -10,8 +10,9 @@ from ..models.user import (
     UserResponse,
     UserResponseAccountData,
 )
-from ..utils.login_required import login_required
-from .backend import user_controller
+
+from .controllers import user_controller
+from .security.login_required import login_required
 
 router = APIRouter()
 routerAuth = APIRouter()

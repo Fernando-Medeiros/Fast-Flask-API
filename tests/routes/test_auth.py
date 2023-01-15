@@ -2,9 +2,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.models.token import Token
-from app.utils.token_jwt import DecodeTokenJwt
-
-from ..utils.user import CaseLogin
+from app.routes.security.token_jwt import DecodeTokenJwt
+from tests.utils.user import CaseLogin
 
 
 @pytest.mark.token

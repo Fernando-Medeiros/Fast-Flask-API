@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
-from ..models.token import RefreshToken, Token
-from .backend import auth_controller
+from app.models.token import RefreshToken, Token
+
+from .controllers import auth_controller
 
 router = APIRouter()
 

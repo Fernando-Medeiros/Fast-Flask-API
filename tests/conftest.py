@@ -3,9 +3,8 @@ from fastapi.testclient import TestClient
 
 from app import app
 from setup import conf_database_test
-
-from .utils.post import CaseCreate
-from .utils.user import CaseLogin
+from tests.utils.post import CaseCreate
+from tests.utils.user import CaseLogin
 
 
 def client_authenticated():
