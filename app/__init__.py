@@ -10,7 +10,7 @@ from setup import conf_database, shutdown, startup
 def app() -> FastAPI:
     app = FastAPI(
         title="Fast-Flask-API",
-        version="0.9.1",
+        version="0.9.4",
         description="FFA is an api for a small social network",
         on_startup=[startup],
         on_shutdown=[shutdown],

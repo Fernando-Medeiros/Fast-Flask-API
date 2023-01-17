@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.routes import auth, post, user
+from app.routes import auth, password, post, user
 
 routers = APIRouter()
 
@@ -10,6 +10,9 @@ def register(router, prefix, tags) -> None:
 
 
 register(auth.router, "", ["auth"])
-register(user.users, "/users", ["users"])
-register(user.password, "/users", ["password"])
+
+register(user.router, "/users", ["users"])
+
+register(password.router, "/password", ["password"])
+
 register(post.router, "/posts", ["posts"])
