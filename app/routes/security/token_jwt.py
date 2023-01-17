@@ -27,6 +27,13 @@ class TokenJwt:
         data.update(**kwargs)
         token = jwt.encode(data, SECRET_KEY, ALGORITHM)
         return token
+    
+    @classmethod
+    def create_recover_token(cls, **kwargs) -> str:
+        data = {"exp": cls.expire(15), "scope": "recover_pwd_token"}
+        data.update(**kwargs)
+        token = jwt.encode(data, SECRET_KEY, ALGORITHM)
+        return token
 
 
 class DecodeTokenJwt:

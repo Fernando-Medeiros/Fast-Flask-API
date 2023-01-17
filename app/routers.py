@@ -10,7 +10,6 @@ def register(router, prefix, tags) -> None:
 
 
 register(auth.router, "", ["auth"])
-register(user.router, "/users", ["users"])
-register(user.routerAuth, "/users", ["users-auth"])
+register(user.users, "/users", ["users"])
+register(user.password, "/users", ["password"])
 register(post.router, "/posts", ["posts"])
-register(post.routerAuth, "/posts", ["posts-auth"])

@@ -13,8 +13,21 @@ model: ormar.Model = UserModel
 
 
 class AuthBearer:
-    url: str = "/api/token"
-    auth_scheme = OAuth2PasswordBearer(tokenUrl=url)
+    url: str = "/token"
+    name: str = "JWT"
+    auth_scheme = OAuth2PasswordBearer(tokenUrl=url, scheme_name=name)
+
+
+async def verify_unique_constraint(model, detail: str = "", **kwargs) -> None:
+    if await model.objects.get_or_none(**kwargs):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
+
+
+async def get_user_or_404(**kwargs) -> UserModel:
+    user = await model.objects.get_or_none(**kwargs)
+    if user is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
+    return user
 
 
 def validate_credentials(token: str) -> TokenData:
@@ -30,22 +43,10 @@ def validate_credentials(token: str) -> TokenData:
         )
 
 
-async def verify_unique_constraint(model, detail: str = "", **kwargs) -> None:
-    if await model.objects.get_or_none(**kwargs):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
-
-
-async def validate_user(payload: TokenData) -> UserModel:
-    user = await model.objects.get_or_none(username=payload.username)
-    if user:
-        return user
-    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
-
-
-async def authenticate_user(form_data) -> UserModel:
+async def authenticate_user(username, password) -> UserModel:
     try:
-        user = await model.objects.get(email=form_data.username)
-        if not check_password_hash(user.password, form_data.password):
+        user = await model.objects.get(email=username)
+        if not check_password_hash(user.password, password):
             raise
         return user
     except:
@@ -58,7 +59,7 @@ async def authenticate_user(form_data) -> UserModel:
 
 async def request_token(token: str = Depends(AuthBearer.auth_scheme)) -> UserModel:
     payload: TokenData = validate_credentials(token)
-    user: UserModel = await validate_user(payload)
+    user: UserModel = await get_user_or_404(username=payload.username)
     return user
 
 
