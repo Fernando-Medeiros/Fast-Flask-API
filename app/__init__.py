@@ -4,14 +4,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import routers
-from setup import conf_database
+from setup import conf_database, shutdown, startup
 
 
 def app() -> FastAPI:
     app = FastAPI(
         title="Fast-Flask-API",
-        version="0.8.6",
+        version="0.9.1",
         description="FFA is an api for a small social network",
+        on_startup=[startup],
+        on_shutdown=[shutdown],
     )
 
     app.add_middleware(
@@ -22,6 +24,6 @@ def app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    app.include_router(routers, prefix="/api")
+    app.include_router(routers)
     conf_database()
     return app
