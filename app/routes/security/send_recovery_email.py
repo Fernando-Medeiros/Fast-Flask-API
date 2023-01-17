@@ -11,6 +11,7 @@ def send_mail(_email, TOKEN):
         URL: str = os.environ["URL_RESET_PWD"]
         EMAIL: str = os.environ["MAIL_USERNAME"]
         PASSWORD: str = os.environ["MAIL_PASSWORD"]
+        EXPIRE: str = os.environ["PWD_RECOVER_TOKEN_EXPIRE_MINUTES"]
     except:
         raise HTTPException(
             status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -21,6 +22,7 @@ def send_mail(_email, TOKEN):
             body_html = f""" 
             <h2>Reset Password</h2>
             <p>Follow this link to reset the password for your user:</p>
+            <p>This token expires in {EXPIRE} minutes</p>
             <p><a href="{URL}{TOKEN}">Reset Password</a></p>
             """
 

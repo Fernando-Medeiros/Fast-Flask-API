@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from fastapi import HTTPException
+
 from app.models.user import (
     RequestRecoverPassword,
     RequestUpdate,
@@ -93,8 +95,12 @@ async def reset_password(token: str, password: str, confirm: str):
 
         payload = validate_credentials(token)
 
-        user: UserModel = get_user_or_404(username=payload.username)
+        user = await get_user_or_404(username=payload.username)
 
-        await user.update(password=hash_pwd)
+        await user.update(**hash_pwd.dict())
 
         return {"detail": "Successfully updated password"}
+
+    raise HTTPException(
+        status_code=404, detail="Password and confirmation are different"
+    )
