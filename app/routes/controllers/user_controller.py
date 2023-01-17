@@ -1,60 +1,100 @@
 from datetime import datetime
 
-from fastapi import status
-from fastapi.exceptions import HTTPException
+from app.models.user import (
+    RequestRecoverPassword,
+    RequestUpdate,
+    RequestUpdatePassword,
+    UserModel,
+    UserRequest,
+)
 
-from app.models.user import UserModel
-
-from ..security.login_required import verify_unique_constraint
+from ..security.login_required import (
+    get_user_or_404,
+    validate_credentials,
+    verify_unique_constraint,
+)
+from ..security.send_recovery_email import send_mail
+from ..security.token_jwt import TokenJwt
 
 model = UserModel
 
 
-async def create_account(request_model):
+async def create_account(request_model: UserRequest):
     data = request_model.dict(exclude_unset=True)
-    user = model(created_at=datetime.today(), **data)
+    user = UserModel(created_at=datetime.today(), **data)
 
     await verify_unique_constraint(
-        model, "Username is already in use", username=user.username
+        model,
+        "Username is already in use",
+        username=user.username,
     )
-    await verify_unique_constraint(model, "Email is already in use", email=user.email)
-
+    await verify_unique_constraint(
+        model,
+        "Email is already in use",
+        email=user.email,
+    )
     return await user.save()
 
 
-async def get_all():
+async def get_all_users():
     return await model.objects.all()
 
 
-async def get_by_username(username):
-    entity = await model.objects.get_or_none(username=username)
-    if entity:
-        return entity
-
-    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
+async def get_by_username(username: str):
+    return await get_user_or_404(username=username)
 
 
-async def get_account_data(current_user):
+async def get_account_data(current_user: UserModel):
     return await model.objects.get(id=current_user.id)
 
 
-async def update_user(request_model, current_user):
-    entity = await model.objects.get(username=current_user.username)
+async def update_account(request_model: RequestUpdate, current_user: UserModel):
+    user = await get_user_or_404(username=current_user.username)
     updates = request_model.dict(exclude_unset=True)
-    return await entity.update(**updates)
+
+    await user.update(**updates)
+
+    return {"detail": "The data has been updated"}
 
 
-async def update_password(request_model, current_user):
-    entity = await model.objects.get(username=current_user.username)
+async def delete_account(current_user: UserModel):
+    result: int = await model.objects.delete(username=current_user.username)
+    if result or result is None:
+        return {"detail": "Account deleted"}
+
+
+# PASSWORD
+async def update_password(
+    request_model: RequestUpdatePassword, current_user: UserModel
+):
+    user = await get_user_or_404(username=current_user.username)
     updates = request_model.dict(exclude_unset=True)
-    await entity.update(**updates)
+
+    await user.update(**updates)
 
     return {"detail": "Successfully updated password"}
 
 
-async def delete(current_user):
+async def recover_password(request_model: RequestRecoverPassword):
+    user = await get_user_or_404(
+        email=request_model.email,
+        bday=request_model.bday,
+    )
+    send_mail(
+        _email=user.email,
+        TOKEN=TokenJwt.create_recover_token(sub=user.username),
+    )
+    return {"detail": "Email sent, check your inbox"}
 
-    if await model.objects.delete(username=current_user.username):
-        return {"detail": "Account deleted"}
 
-    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User is not registered")
+async def reset_password(token: str, password: str, confirm: str):
+    if password == confirm:
+        hash_pwd = RequestUpdatePassword(password=password)
+
+        payload = validate_credentials(token)
+
+        user: UserModel = get_user_or_404(username=payload.username)
+
+        await user.update(password=hash_pwd)
+
+        return {"detail": "Successfully updated password"}

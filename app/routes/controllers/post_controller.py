@@ -49,7 +49,9 @@ async def create(request_model, current_user):
 
 
 async def delete(id, current_user):
-    if await model.objects.delete(id=id, author=current_user.id):
+    await model.objects.delete(id=id, author=current_user.id)
+
+    if await model.objects.get_or_none(id=id, author=current_user.id) is None:
         return {"detail": "Post deleted"}
 
     raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Post cannot be found")
