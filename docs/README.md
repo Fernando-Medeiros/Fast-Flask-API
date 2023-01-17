@@ -42,7 +42,7 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas
 - [x] Autenticação de usuários
 - [x] Atualizar dados
 - [x] Atualizar senha
-- [ ] Recuperar senha
+- [x] Recuperar senha
 - [x] Pegar os dados da conta
 - [x] Listagem de usuários
 - [x] Listagem de usuário por username
@@ -119,14 +119,6 @@ pytest
 ```console
 .
 ├── app
-│   ├── controllers
-│   │   ├── auth.py
-│   │   ├── decorators
-│   │   │   ├── auth_controller.py
-│   │   │   ├── post_controller.py
-│   │   │   └── user_controller.py
-│   │   ├── post.py
-│   │   └── user.py
 │   ├── __init__.py
 │   ├── models
 │   │   ├── post
@@ -142,10 +134,19 @@ pytest
 │   │       ├── request.py
 │   │       ├── response.py
 │   │       └── user.py
-│   ├── routes.py
-│   └── utils
-│       ├── login_required.py
-│       └── token_jwt.py
+│   ├── routers.py
+│   └── routes
+│       ├── auth.py
+│       ├── controllers
+│       │   ├── auth_controller.py
+│       │   ├── post_controller.py
+│       │   └── user_controller.py
+│       ├── post.py
+│       ├── security
+│       │   ├── login_required.py
+│       │   ├── send_recovery_email.py
+│       │   └── token_jwt.py
+│       └── user.py
 ├── docs
 │   ├── endpoints.png
 │   ├── Fast-Flask-API - - Fast-Deploy.postman_collection.json
@@ -166,6 +167,7 @@ pytest
     ├── models
     │   ├── __init__.py
     │   ├── test_post.py
+    │   ├── test_token.py
     │   └── test_user.py
     ├── pytest.ini
     ├── routes
@@ -181,5 +183,5 @@ pytest
         ├── token.py
         └── user.py
 
-14 directories, 48 files
+14 directories, 50 files
 ```

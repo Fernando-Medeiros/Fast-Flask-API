@@ -1,20 +1,21 @@
 ## Auth
-- [ ] Routes
+- [x] Routes
   - [x] Token (login)
-  - [ ] Refresh
+  - [x] Refresh
 - [x] Login Required
   - [x] Access_token
+  - [x] Refresh_token
 - [x] Token JWT
   - [x] Expire
   - [x] Body
   - [x] Encode
   - [x] Decode
-- [ ] Models
-  - [ ] Token
-  - [ ] TokenData
-  - [ ] TokenRefresh
+- [x] Models
+  - [x] Token
+  - [x] TokenData
+  - [x] TokenRefresh
 
----
+
 ## User
 - [x] Routes 
   - [x] Create
@@ -24,7 +25,7 @@
   - [x] Delete
   - [x] Update
   - [x] Update password
-  - [ ] Recover password
+  - [x] Recover password
 - [x] Models
   - [x] UserModel
   - [x] UserRequest
@@ -33,7 +34,7 @@
   - [x] UserResponse
   - [x] UserResponseAccountData
   
----
+
 ## Post
 - [x] Routes
   - [x] Create
@@ -42,8 +43,7 @@
   - [x] Get-by-username
   - [x] Delete
   - [x] Update
-- [ ] Models
+- [x] Models
   - [x] PostModel
   - [x] PostResponse
   - [x] PostRequest
-  - [ ] PostRequestPatch
