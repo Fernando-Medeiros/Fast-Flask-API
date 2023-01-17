@@ -1,4 +1,4 @@
-class CaseInvalid:
+class Base:
     valid_user: dict
 
     @classmethod
@@ -19,10 +19,14 @@ class CaseInvalid:
 
     @classmethod
     def get_one_invalid_field(cls, field: str) -> dict:
-        return {field: cls.invalid_user(field)[field]}
+        return {field: cls.invalid_user(field).get(field)}
+
+    @classmethod
+    def get_one_valid_field(cls, field: str) -> dict:
+        return {field: "new" + cls.valid_user[field]}
 
 
-class CaseCreate(CaseInvalid):
+class CaseCreate(Base):
     valid_user = {
         "first_name": "joao",
         "last_name": "silva",
@@ -34,12 +38,8 @@ class CaseCreate(CaseInvalid):
         "password": "joaoteste@/[]()X",
     }
 
-    @classmethod
-    def get_one_valid_field(cls, field: str) -> dict:
-        return {field: "new" + cls.valid_user[field]}
 
-
-class CaseLogin(CaseInvalid):
+class CaseLogin(Base):
     valid_user = {
         "first_name": "marcia",
         "last_name": "souza",

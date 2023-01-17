@@ -19,18 +19,21 @@ class UrlUsers:
     account_data = "/users/account/"
     get_all = "/users"
     get_user = "/users/"
-    pwd_update = "/users/password/update"
-    pwd_recover = "/users/password/recover"
-    pwd_reset = "/users/password/reset/"
+
+
+class UrlPassword:
+    update = "/password/update"
+    recover = "/password/recover"
+    reset = "/password/reset/"
 
 
 class UrlPosts:
     create = "/posts"
+    update = "/posts/"
+    delete = "/posts/"
     get_all = "/posts"
     get_post_id = "/posts/"
     get_posts_user = "/posts/user/"
-    update = "/posts/"
-    delete = "/posts/"
 
 
 def client_authenticated(client):

@@ -6,8 +6,6 @@ from ..security.login_required import get_user_or_404, validate_credentials
 from ..security.send_recovery_email import send_mail
 from ..security.token_jwt import TokenJwt
 
-model = UserModel
-
 
 # PASSWORD
 async def update_password(
@@ -39,12 +37,12 @@ async def reset_password(token: str, password: str, confirm: str):
 
         payload = validate_credentials(token)
 
-        user = await get_user_or_404(username=payload.username)
+        user: UserModel = await get_user_or_404(username=payload.username)
 
         await user.update(**hash_pwd.dict())
 
         return {"detail": "Successfully updated password"}
 
     raise HTTPException(
-        status_code=404, detail="Password and confirmation are different"
+        status_code=400, detail="Password and confirmation are different"
     )
