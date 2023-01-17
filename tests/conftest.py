@@ -7,17 +7,48 @@ from tests.utils.post import CaseCreate
 from tests.utils.user import CaseLogin
 
 
-def client_authenticated():
-    conf_database_test()
-    client = TestClient(app())
-    client.post("api/users", json=CaseLogin.valid_user)
+class UrlToken:
+    token = "/token"
+    refresh = "/refresh"
 
-    response = client.post(
-        "/api/token", data=CaseLogin.login, headers=CaseLogin.content_type
-    )
-    token = response.json()["access_token"]
+
+class UrlUsers:
+    account_create = "/users"
+    account_update = "/users/update"
+    account_delete = "/users/delete"
+    account_data = "/users/account/"
+    get_all = "/users"
+    get_user = "/users/"
+    pwd_update = "/users/password/update"
+    pwd_recover = "/users/password/recover"
+    pwd_reset = "/users/password/reset/"
+
+
+class UrlPosts:
+    create = "/posts"
+    get_all = "/posts"
+    get_post_id = "/posts/"
+    get_posts_user = "/posts/user/"
+    update = "/posts/"
+    delete = "/posts/"
+
+
+def client_authenticated(client):
+    conf_database_test()
+    case, post = CaseLogin(), CaseCreate()
+
+    # Register new user
+    client.post(UrlUsers.account_create, json=case.valid_user)
+
+    # Get access token
+    response = client.post(UrlToken.token, data=case.login, headers=case.content_type)
+
+    # Set authorization in header
+    token = response.json().get("access_token")
     client.headers["authorization"] = f"bearer {token}"
-    return client
+
+    # Create a new post
+    client.post(UrlPosts.create, json=post.valid_content)
 
 
 @pytest.fixture(scope="function")
@@ -31,21 +62,22 @@ def client():
 @pytest.fixture(scope="function")
 def client_one():
     conf_database_test()
-    client = TestClient(app())
-    client.post("api/users", json=CaseLogin.valid_user)
-    return client
+    with TestClient(app()) as client:
+        client.post(UrlUsers.account_create, json=CaseLogin.valid_user)
+        yield client
 
 
 # Client with an authenticated user
 @pytest.fixture(scope="function")
 def client_two_auth():
-    client = client_authenticated()
-    return client
+    with TestClient(app()) as client:
+        client_authenticated(client)
+        yield client
 
 
 # Client with an authenticated user and a post to the database
 @pytest.fixture(scope="function")
 def client_three():
-    client = client_authenticated()
-    client.post("/api/posts", json=CaseCreate.valid_content)
-    return client
+    with TestClient(app()) as client:
+        client_authenticated(client)
+        yield client

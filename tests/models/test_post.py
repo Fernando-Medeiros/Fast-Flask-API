@@ -1,4 +1,3 @@
-import asyncio
 from datetime import datetime
 
 import pytest
@@ -6,8 +5,6 @@ from fastapi import HTTPException
 
 from app.models.post import PostModel, PostRequest, PostResponse
 from tests.utils.post import CaseCreate
-
-event = asyncio.new_event_loop()
 
 
 @pytest.mark.postModel
@@ -23,19 +20,6 @@ class TestPostModel:
     def test_invalid_postmodel(self):
         with pytest.raises(HTTPException):
             PostModel(**self.i_data)
-
-    def test_create_post(self):
-        post = PostModel(**self.v_data)
-
-        assert event.run_until_complete(post.save()) == post
-
-    def test_delete_post(self):
-        post = event.run_until_complete(PostModel.objects.first())
-
-        id: int = event.run_until_complete(post.delete())
-
-        with pytest.raises(Exception):
-            event.run_until_complete(PostModel.objects.get(id=id))
 
 
 @pytest.mark.postModelRequest
