@@ -14,7 +14,7 @@ async def login_with_access_token(form_data: OAuth2PasswordRequestForm = Depends
     return await auth_controller.token(form_data)
 
 
-@router.post("/refresh_token", response_model=Token)
+@router.post("/refresh", response_model=Token)
 async def refresh_token(form_data: RefreshToken):
 
     return await auth_controller.refresh_token(form_data)
