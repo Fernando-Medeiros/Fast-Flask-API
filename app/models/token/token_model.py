@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class Token(BaseModel):
     access_token: str
     refresh_token: str
-    token_type: str
+    token_type: Optional[str] = "bearer"
 
 
 class RefreshToken(BaseModel):
@@ -14,4 +14,4 @@ class RefreshToken(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: Optional[str] = None
+    sub: str

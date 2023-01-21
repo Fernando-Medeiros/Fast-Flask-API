@@ -3,6 +3,7 @@ import os
 import databases
 import sqlalchemy
 from dotenv import find_dotenv, load_dotenv
+from ormar import ModelMeta
 
 load_dotenv(find_dotenv())
 
@@ -31,6 +32,11 @@ def get_database_uri() -> str:
 DB_URI = get_database_uri()
 database = databases.Database(DB_URI)
 metadata = sqlalchemy.MetaData()
+
+
+class BaseMeta(ModelMeta):
+    metadata = metadata
+    database = database
 
 
 def conf_database():
