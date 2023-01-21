@@ -1,51 +1,111 @@
-from datetime import datetime
+from fastapi import HTTPException
 
-from app.models.user import RequestUpdate, UserModel, UserRequest
-
-from ..security.login_required import get_user_or_404, verify_unique_constraint
-
-model = UserModel
-
-
-async def create_account(request_model: UserRequest):
-    data = request_model.dict(exclude_unset=True)
-    user = UserModel(created_at=datetime.today(), **data)
-
-    await verify_unique_constraint(
-        model,
-        "Username is already in use",
-        username=user.username,
-    )
-    await verify_unique_constraint(
-        model,
-        "Email is already in use",
-        email=user.email,
-    )
-    return await user.save()
+from app.models.user import (
+    AccessModel,
+    BirthdayModel,
+    ProfileModel,
+    RequestBirthday,
+    RequestCreateAccount,
+    UpdateAccount,
+    UpdateAvatar,
+    UpdateBirthday,
+    UpdateProfile,
+    UserModel,
+)
+from app.security.backend import BackendDatabase
 
 
-async def get_all_users():
-    return await model.objects.all()
+class UserController:
+    backend = BackendDatabase
 
+    @classmethod
+    async def get_all(cls):
+        return await cls.backend.get_all_order_by(ProfileModel, "-id")
 
-async def get_by_username(username: str):
-    return await get_user_or_404(username=username)
+    @classmethod
+    async def get_by_username(cls, username):
+        return await cls.backend.get_or_404(ProfileModel, username=username)
 
+    @classmethod
+    async def create_account(cls, request: RequestCreateAccount):
+        data = request.dict(exclude={"username"}, exclude_none=True)
 
-async def get_account_data(current_user: UserModel):
-    return await model.objects.get(id=current_user.id)
+        if await cls.backend.get_or_none(UserModel, email=request.email):
+            raise HTTPException(400, "Email is already in use")
 
+        if await cls.backend.get_or_none(ProfileModel, username=request.username):
+            raise HTTPException(400, "Username is already in use")
 
-async def update_account(request_model: RequestUpdate, current_user: UserModel):
-    user = await get_user_or_404(username=current_user.username)
-    updates = request_model.dict(exclude_unset=True)
+        account = await cls.backend.create_or_400(UserModel, **data)
 
-    await user.update(**updates)
+        profile = await cls.backend.create_or_400(
+            ProfileModel, account=account.pk, username=request.username
+        )
+        await cls.backend.create_or_400(AccessModel, user=profile.pk)
+        return profile
 
-    return {"detail": "The data has been updated"}
+    @classmethod
+    async def get_account_data(cls, current_user):
+        return await current_user.load_all(True)
 
+    @classmethod
+    async def update_account(cls, request: UpdateAccount, current_user):
+        data = request.dict(exclude_none=True)
 
-async def delete_account(current_user: UserModel):
-    result: int = await model.objects.delete(username=current_user.username)
-    if result or result is None:
+        if await cls.backend.get_or_none(UserModel, email=request.email):
+            raise HTTPException(404, "Email is already in use")
+
+        await current_user.account.update(**data)
+
+        return {"detail": "The data has been updated"}
+
+    @classmethod
+    async def update_avatar(cls, request: UpdateAvatar, current_user):
+        data = request.dict(exclude_none=True)
+
+        if not data:
+            raise HTTPException(400, "No content")
+
+        await current_user.update(**data)
+
+        return {"detail": "The data has been updated"}
+
+    @classmethod
+    async def update_profile(cls, request: UpdateProfile, current_user):
+        data = request.dict(exclude_none=True)
+
+        if not data:
+            raise HTTPException(400, "No content")
+
+        if await cls.backend.get_or_none(ProfileModel, username=request.username):
+            raise HTTPException(404, "Username is already in use")
+
+        await current_user.update(**data)
+
+        return {"detail": "The data has been updated"}
+
+    @classmethod
+    async def insert_birthday(cls, request: RequestBirthday, current_user):
+        data = request.dict(exclude_none=True)
+        await cls.backend.create_or_400(BirthdayModel, user=current_user.pk, **data)
+
+        return {"detail": "The data has been updated"}
+
+    @classmethod
+    async def update_birthday(cls, request: UpdateBirthday, current_user):
+        data = request.dict(exclude_none=True)
+
+        if not data:
+            raise HTTPException(400, "No content")
+
+        model = await cls.backend.get_or_404(BirthdayModel, id=current_user.id)
+
+        await model.update(**data)
+
+        return {"detail": "The data has been updated"}
+
+    @classmethod
+    async def delete_account(cls, current_user):
+        await cls.backend.delete_or_404(UserModel, id=current_user.id)
+
         return {"detail": "Account deleted"}

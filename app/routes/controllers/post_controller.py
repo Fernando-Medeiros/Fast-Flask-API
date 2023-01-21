@@ -1,57 +1,59 @@
-from datetime import datetime
-
-from fastapi import HTTPException, status
-
-from app.models.post import PostModel
-
-model = PostModel
+from app.models.post import LikeModel, PostModel, PostRequest
+from app.models.user import ProfileModel
+from app.security.backend import BackendDatabase
 
 
-async def get_all():
-    return await model.objects.all()
+class PostController:
+    backend = BackendDatabase
 
+    @classmethod
+    async def get_all(cls):
+        return await cls.backend.get_all_order_by(PostModel, "id")
 
-async def get_by_id(id):
-    post = await model.objects.get_or_none(id=id)
-    if post:
-        return post
+    @classmethod
+    async def get_timeline(cls):
+        return await cls.backend.get_all_order_by(PostModel, "-id")
 
-    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Id not found")
+    @classmethod
+    async def get_post_by_id(cls, postId):
+        return await cls.backend.get_or_404(PostModel, id=postId)
 
+    @classmethod
+    async def get_post_by_username(cls, username):
+        user = await cls.backend.get_or_404(ProfileModel, username=username)
+        return await cls.backend.get_all_filter_by(PostModel, author=user.id)
 
-async def get_by_username(model, username):
-    entity = await model.objects.get_or_none(username=username)
-    if entity:
-        posts = await entity.posts.all()
-        return posts
+    @classmethod
+    async def create_post(cls, request: PostRequest, current_user):
+        data = request.dict()
 
-    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Username not found")
-
-
-async def update(id, request_model, current_user):
-    post = await current_user.posts.get_or_none(id=id)
-
-    if post:
-        updates = request_model.dict(exclude_unset=True)
-        return await post.update(**updates)
-
-
-async def create(request_model, current_user):
-    if current_user.id:
-        data = request_model.dict(exclude_unset=True)
-        post = model(
-            author=current_user,
-            date=datetime.today().date(),
-            time=datetime.today().time(),
-            **data
+        return await cls.backend.create_or_400(
+            PostModel, author=current_user.pk, **data
         )
-        return await post.save()
 
+    @classmethod
+    async def edit_post(cls, postId, request: PostRequest, current_user):
+        data = request.dict()
+        post = await cls.backend.get_or_404(
+            PostModel, id=postId, author=current_user.id
+        )
+        await post.update(edit=True, **data)
 
-async def delete(id, current_user):
-    await model.objects.delete(id=id, author=current_user.id)
+        return {"detail": "Updated"}
 
-    if await model.objects.get_or_none(id=id, author=current_user.id) is None:
-        return {"detail": "Post deleted"}
+    @classmethod
+    async def delete_post(cls, postId, current_user):
+        await cls.backend.delete_or_404(PostModel, id=postId, author=current_user.id)
+        
+        return {"detail": "Deleted"}
 
-    raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Post cannot be found")
+    @classmethod
+    async def add_like(cls, postId, current_user):
+        post = await cls.backend.get_or_404(PostModel, id=postId)
+        
+        await cls.backend.create_or_400(
+            LikeModel,
+            user=current_user.pk,
+            post=post.pk,
+        )
+        return {"detail": "Like added"}

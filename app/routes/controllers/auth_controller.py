@@ -1,41 +1,41 @@
-from app.models.token import Token, TokenData
+from app.models.token import Token
 from app.models.user import UserModel
-
-from ..security.login_required import (
-    authenticate_user,
-    get_user_or_404,
-    validate_credentials,
-)
-from ..security.token_jwt import TokenJwt
+from app.security.backend import BackendDatabase
+from app.security.session import authenticate_user, validate_credentials
+from app.security.token import TokenJwt
 
 
-async def token(form_data):
-    user: UserModel = await authenticate_user(
-        form_data.username,
-        form_data.password,
-    )
-    return Token(
-        access_token=TokenJwt.create_access_token(
-            sub=user.username,
-            fresh=True,
-        ),
-        refresh_token=TokenJwt.create_refresh_token(
-            sub=user.username,
-        ),
-        token_type="bearer",
-    )
+class AuthController:
+    backend = BackendDatabase
 
+    @staticmethod
+    async def token(form_data):
+        user = await authenticate_user(
+            form_data.username,
+            form_data.password,
+        )
+        return Token(
+            access_token=TokenJwt.create_access_token(
+                sub=str(user.id),
+                fresh=True,
+            ),
+            refresh_token=TokenJwt.create_refresh_token(
+                sub=str(user.id),
+            ),
+        )
 
-async def refresh_token(form_data):
-    data: TokenData = validate_credentials(form_data.refresh_token)
-    user: UserModel = await get_user_or_404(username=data.username)
-    return Token(
-        access_token=TokenJwt.create_access_token(
-            sub=user.username,
-            fresh=False,
-        ),
-        refresh_token=TokenJwt.create_refresh_token(
-            sub=user.username,
-        ),
-        token_type="bearer",
-    )
+    @classmethod
+    async def refresh_token(cls, form_data):
+        data = validate_credentials(form_data.refresh_token)
+
+        user = await cls.backend.get_or_404(UserModel, id=int(data.sub))
+
+        return Token(
+            access_token=TokenJwt.create_access_token(
+                sub=str(user.id),
+                fresh=False,
+            ),
+            refresh_token=TokenJwt.create_refresh_token(
+                sub=str(user.id),
+            ),
+        )

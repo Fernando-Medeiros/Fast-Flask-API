@@ -1,48 +1,45 @@
 from fastapi import HTTPException
 
-from app.models.user import RequestRecoverPassword, RequestUpdatePassword, UserModel
-
-from ..security.login_required import get_user_or_404, validate_credentials
-from ..security.send_recovery_email import send_mail
-from ..security.token_jwt import TokenJwt
-
-
-# PASSWORD
-async def update_password(
-    request_model: RequestUpdatePassword, current_user: UserModel
-):
-    user = await get_user_or_404(username=current_user.username)
-    updates = request_model.dict(exclude_unset=True)
-
-    await user.update(**updates)
-
-    return {"detail": "Successfully updated password"}
+from app.models.user import RecoverPassword, UpdatePassword, UserModel
+from app.security.backend import BackendDatabase
+from app.security.recovery_pwd import send_mail
+from app.security.session import validate_credentials
+from app.security.token import TokenJwt
 
 
-async def recover_password(request_model: RequestRecoverPassword):
-    user = await get_user_or_404(
-        email=request_model.email,
-        bday=request_model.bday,
-    )
-    send_mail(
-        _email=user.email,
-        TOKEN=TokenJwt.create_recover_token(sub=user.username),
-    )
-    return {"detail": "Email sent, check your inbox"}
+class PwdController:
+    backend = BackendDatabase
 
-
-async def reset_password(token: str, password: str, confirm: str):
-    if password == confirm:
-        hash_pwd = RequestUpdatePassword(password=password)
-
-        payload = validate_credentials(token)
-
-        user: UserModel = await get_user_or_404(username=payload.username)
-
-        await user.update(**hash_pwd.dict())
+    @classmethod
+    async def update_password(cls, password: str, current_user):
+        data = UpdatePassword(password=password).dict()
+        await current_user.account.update(**data)
 
         return {"detail": "Successfully updated password"}
 
-    raise HTTPException(
-        status_code=400, detail="Password and confirmation are different"
-    )
+    @classmethod
+    async def recover_password(cls, email: str):
+        data = RecoverPassword(email=email)
+
+        user = await cls.backend.get_or_404(UserModel, email=data.email)
+
+        send_mail(
+            _email=user.email,
+            TOKEN=TokenJwt.create_recover_token(sub=str(user.id)),
+        )
+        return {"detail": "Email sent, check your inbox"}
+
+    @classmethod
+    async def reset_password(cls, token: str, password: str, confirm: str):
+        if password == confirm:
+            hash_pwd = UpdatePassword(password=password).dict()
+
+            payload = validate_credentials(token)
+
+            user = await cls.backend.get_or_404(UserModel, id=int(payload.sub))
+
+            await user.update(**hash_pwd)
+
+            return {"detail": "Successfully updated password"}
+
+        raise HTTPException(400, "Password and confirmation are different")
