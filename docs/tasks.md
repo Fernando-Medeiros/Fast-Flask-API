@@ -1,8 +1,8 @@
 ## Auth
 - [x] Routes
-  - [x] Token (login)
+  - [x] Token
   - [x] Refresh
-- [x] Login Required
+- [x] Session
   - [x] Access_token
   - [x] Refresh_token
 - [x] Token JWT
@@ -16,34 +16,63 @@
   - [x] TokenRefresh
 
 
-## User
+## Users
 - [x] Routes 
   - [x] Create
-  - [x] Get all
-  - [x] Get by username
+  - [x] Get all profiles
+  - [x] Get profile by username
   - [x] Get account data
+  - [x] Get Profile
   - [x] Delete
-  - [x] Update
-  - [x] Update password
-  - [x] Recover password
+  - [x] Update account
+  - [x] Update profile
+  - [x] Update birthday
 - [x] Models
   - [x] UserModel
-  - [x] UserRequest
-  - [x] UserRequestPatch
-  - [x] UserRequestUpdatePassword
-  - [x] UserResponse
-  - [x] UserResponseAccountData
-      
+  - [x] ProfileModel
+  - [x] BirthdayModel
+  - [x] AccessModel
+  - [x] Request
+    - [x] RequestCreateAccount
+    - [x] RequestProfile
+    - [x] RequestBirthday
+    - [x] RequestAccess
+    - [x] Update Account
+    - [x] UpdateAvatar
+    - [x] UpdateAccess
+  - [x] Response
+    - [x] ProfileResponse
+    - [x] AccountDataResponse
 
-## Post
+## Password
+- [x] Routes
+  - [x] Update
+  - [x] Recover
+  - [x] Reset
+- [x] Models
+  - [x] RecoverPassword
+  - [x] UpdatePassword
+
+## Posts
 - [x] Routes
   - [x] Create
-  - [x] Get-all
-  - [x] Get-by-id
-  - [x] Get-by-username
+  - [x] Get all
+  - [x] Get by id
+  - [x] Get by username
   - [x] Delete
   - [x] Update
+  - [x] Add like
 - [x] Models
   - [x] PostModel
   - [x] PostResponse
   - [x] PostRequest
+
+
+## Replies
+- [x] Routes
+  - [x] Create
+  - [x] Update
+  - [x] Delete
+  - [x] Add like
+- [x] Models
+  - [x] ReplyModel

@@ -26,6 +26,7 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas
   - [Resumo](#resumo)
   - [Funcionalidades](#funcionalidades)
     - [Usuários](#usuários)
+    - [Segurança](#segurança)
     - [Postagens](#postagens)
   - [Requisitos](#requisitos)
   - [Ambiente](#ambiente)
@@ -38,15 +39,21 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas
 
 ### Usuários
 
-- [x] Registro de novos usuários
-- [x] Autenticação de usuários
-- [x] Atualizar dados
-- [x] Atualizar senha
-- [x] Recuperar senha
-- [x] Pegar os dados da conta
+- [x] Registro
 - [x] Listagem de usuários
-- [x] Listagem de usuário por username
+  - [x] Todos
+  - [x] Por @username
+- [x] Atualizar dados 
+- [x] Acessar os dados da conta
 - [x] Deletar conta
+
+### Segurança
+- [x] Autenticação
+  - [x] Access token
+  - [x] Refresh Token
+- [x] Recuperar senha
+  - [x] Email com link e tokenJwt
+- [x] Atualizar senha
 
 ### Postagens
 
@@ -56,9 +63,9 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas
 - [x] Listagem de posts
 - [x] Listagem de post por id
 - [x] Listagem de posts por usuário
-- [ ] Listagem de posts seguidos (timeline)
-- [x] Likes em postagens
-- [ ] Postagem pode ser resposta a outra postagem
+- [x] Listagem de posts seguidos (timeline)
+- [x] Likes em postagens e respostas
+- [x] Postagem pode ser resposta a outra postagem
 
 
 ## Requisitos
@@ -123,30 +130,40 @@ pytest
 │   ├── models
 │   │   ├── post
 │   │   │   ├── __init__.py
+│   │   │   ├── like.py
 │   │   │   ├── post.py
+│   │   │   ├── reply.py
 │   │   │   ├── request.py
 │   │   │   └── response.py
 │   │   ├── token
 │   │   │   ├── __init__.py
 │   │   │   └── token_model.py
 │   │   └── user
+│   │       ├── access.py
+│   │       ├── birthday.py
 │   │       ├── __init__.py
+│   │       ├── profile.py
 │   │       ├── request.py
 │   │       ├── response.py
 │   │       └── user.py
 │   ├── routers.py
-│   └── routes
-│       ├── auth.py
-│       ├── controllers
-│       │   ├── auth_controller.py
-│       │   ├── post_controller.py
-│       │   └── user_controller.py
-│       ├── post.py
-│       ├── security
-│       │   ├── login_required.py
-│       │   ├── send_recovery_email.py
-│       │   └── token_jwt.py
-│       └── user.py
+│   ├── routes
+│   │   ├── auth.py
+│   │   ├── controllers
+│   │   │   ├── auth_controller.py
+│   │   │   ├── password_controller.py
+│   │   │   ├── post_controller.py
+│   │   │   ├── reply_controller.py
+│   │   │   └── user_controller.py
+│   │   ├── password.py
+│   │   ├── post.py
+│   │   ├── reply.py
+│   │   └── user.py
+│   └── security
+│       ├── backend.py
+│       ├── recovery_pwd.py
+│       ├── session.py
+│       └── token.py
 ├── docs
 │   ├── endpoints.png
 │   ├── Fast-Flask-API - - Fast-Deploy.postman_collection.json
@@ -167,21 +184,23 @@ pytest
     ├── models
     │   ├── __init__.py
     │   ├── test_post.py
+    │   ├── test_reply.py
     │   ├── test_token.py
     │   └── test_user.py
     ├── pytest.ini
     ├── routes
     │   ├── __init__.py
     │   ├── test_auth.py
+    │   ├── test_password.py
     │   ├── test_post.py
+    │   ├── test_reply.py
     │   └── test_user.py
     ├── unity
     │   ├── __init__.py
     │   └── test_token_jwt.py
     └── utils
-        ├── post.py
-        ├── token.py
-        └── user.py
+        ├── client.py
+        └── post.py
 
-14 directories, 50 files
+14 directories, 62 files
 ```
