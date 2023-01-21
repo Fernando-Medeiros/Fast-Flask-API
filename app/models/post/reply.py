@@ -6,16 +6,23 @@ import ormar
 from setup import BaseMeta
 
 from ..user import ProfileModel
+from .post import PostModel
 
 
-class PostModel(ormar.Model):
+class ReplyModel(ormar.Model):
     class Meta(BaseMeta):
-        tablename = "posts"
+        tablename = "replies"
 
     id = ormar.Integer(primary_key=True, autoincrement=True)
     author: Optional[Union[ProfileModel, Dict]] = ormar.ForeignKey(
         ProfileModel,
-        related_name="posts",
+        related_name="replies",
+        onupdate=ormar.ReferentialAction("CASCADE"),
+        ondelete=ormar.ReferentialAction("CASCADE"),
+    )
+    post: Optional[Union[PostModel, Dict]] = ormar.ForeignKey(
+        PostModel,
+        related_name="replies",
         onupdate=ormar.ReferentialAction("CASCADE"),
         ondelete=ormar.ReferentialAction("CASCADE"),
     )

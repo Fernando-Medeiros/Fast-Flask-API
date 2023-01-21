@@ -1,21 +1,52 @@
 import datetime
-from typing import Optional
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, validator
 
 
+class ResponseLike(BaseModel):
+    user: Optional[Dict | List | str]
+
+    @validator("user")
+    def _author(cls, value):
+        return {"username": value.get("username"), "avatar": value.get("avatar")}
+
+
 class PostResponse(BaseModel):
     id: Optional[int]
+    author: Optional[Dict | str]
     content: Optional[str]
-    date: datetime.date
-    time: datetime.time
-    like: Optional[int]
-    response: Optional[bool] = None
+    likes: Optional[List | int]
+    replies: Optional[List | int]
+    edit: Optional[bool]
+    created_at: Optional[datetime.datetime | str]
 
-    @validator("date")
-    def _date(cls, value):
-        return value.strftime("%d/%m/%Y")
+    @validator("author")
+    def _author(cls, value):
+        return value.get("username")
 
-    @validator("time")
-    def _time(cls, value):
-        return value.strftime("%H:%M:%S")
+    @validator("replies")
+    def _replies(cls, value):
+        return len(value)
+
+    @validator("likes")
+    def _likes(cls, value):
+        return len(value)
+
+    @validator("created_at")
+    def _user(cls, value):
+        return value.strftime("%d/%m/%Y %H:%M:%S")
+
+
+class ResponseTimeline(PostResponse):
+    @validator("replies")
+    def _replies(cls, value):
+        if not value:
+            return len(value)
+        return [PostResponse(**reply) for reply in value]
+
+    @validator("likes")
+    def _likes(cls, value):
+        if not value:
+            return len(value)
+        return [ResponseLike(**likes) for likes in value]

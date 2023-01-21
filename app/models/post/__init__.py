@@ -1,5 +1,5 @@
-# import the models for this init
-
-from .post import PostModel
-from .request import PostRequest
-from .response import PostResponse
+from .like import *
+from .post import *
+from .reply import *
+from .request import *
+from .response import *
