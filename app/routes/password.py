@@ -1,31 +1,30 @@
 from fastapi import APIRouter, Depends, Form
 
-from app.models.user import RequestRecoverPassword, RequestUpdatePassword, UserModel
+from app.models.user import UserModel
+from app.security.session import session
 
-from .controllers import password_controller
-from .security.login_required import login_required
+from .controllers.password_controller import PwdController
 
 router = APIRouter()
 
 # PUBLIC ROUTES
-@router.post("/recover")
-async def recover_password(request_model: RequestRecoverPassword):
+@router.post("")
+async def send_recovery_email(email: str = Form(...)):
 
-    return await password_controller.recover_password(request_model)
+    return await PwdController.recover_password(email)
 
 
-@router.patch("/reset/{token}")
+@router.patch("/{token}")
 async def reset_password(
     token: str, password: str = Form(...), confirm: str = Form(...)
 ):
-
-    return await password_controller.reset_password(token, password, confirm)
+    return await PwdController.reset_password(token, password, confirm)
 
 
 # PRIVATE ROUTES
-@router.patch("/update")
+@router.patch("")
 async def update_password(
-    request_model: RequestUpdatePassword,
-    current_user: UserModel = Depends(login_required),
+    password: str = Form(...),
+    current_user: UserModel = Depends(session),
 ):
-    return await password_controller.update_password(request_model, current_user)
+    return await PwdController.update_password(password, current_user)

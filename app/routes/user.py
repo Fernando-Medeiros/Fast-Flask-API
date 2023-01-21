@@ -3,53 +3,90 @@ from typing import List
 from fastapi import APIRouter, Depends
 
 from app.models.user import (
-    RequestUpdate,
-    UserModel,
-    UserRequest,
-    UserResponse,
-    UserResponseAccountData,
+    AccountDataResponse,
+    ProfileModel,
+    ProfileResponse,
+    RequestBirthday,
+    RequestCreateAccount,
+    UpdateAccount,
+    UpdateAvatar,
+    UpdateBirthday,
+    UpdateProfile,
 )
+from app.security.session import session
 
-from .controllers import user_controller
-from .security.login_required import login_required
+from .controllers.user_controller import UserController
 
 router = APIRouter()
 
 
 # PULIC ROUTES
-@router.get("", response_model=List[UserResponse])
-async def get_list_with_all_users():
+@router.get("", response_model=List[ProfileResponse])
+async def get_list_with_all_profiles():
 
-    return await user_controller.get_all_users()
-
-
-@router.get("/{username}", response_model=UserResponse)
-async def get_by_username(username: str):
-
-    return await user_controller.get_by_username(username)
+    return await UserController.get_all()
 
 
-@router.post("", response_model=UserResponse, status_code=201)
-async def new_account(request_model: UserRequest):
+@router.get("/{username}", response_model=ProfileResponse)
+async def get_profile_by_username(username: str):
 
-    return await user_controller.create_account(request_model)
+    return await UserController.get_by_username(username)
+
+
+@router.post("", response_model=ProfileResponse, status_code=201)
+async def create_new_account(request: RequestCreateAccount):
+
+    return await UserController.create_account(request)
 
 
 # PRIVATE ROUTES
-@router.patch("/update")
+@router.get("/account/", response_model=AccountDataResponse)
+async def get_account_data(current_user: ProfileModel = Depends(session)):
+
+    return await UserController.get_account_data(current_user)
+
+
+@router.patch("/account")
 async def update_account(
-    request_model: RequestUpdate, current_user: UserModel = Depends(login_required)
+    request: UpdateAccount,
+    current_user: ProfileModel = Depends(session),
 ):
-    return await user_controller.update_account(request_model, current_user)
+    return await UserController.update_account(request, current_user)
 
 
-@router.delete("/delete")
-async def delete_account(current_user: UserModel = Depends(login_required)):
+@router.patch("/profile")
+async def update_profile(
+    request: UpdateProfile,
+    current_user: ProfileModel = Depends(session),
+):
+    return await UserController.update_profile(request, current_user)
 
-    return await user_controller.delete_account(current_user)
+
+@router.patch("/avatar")
+async def update_avatar(
+    request: UpdateAvatar,
+    current_user: ProfileModel = Depends(session),
+):
+    return await UserController.update_avatar(request, current_user)
 
 
-@router.get("/account/", response_model=UserResponseAccountData)
-async def get_account_data(current_user: UserModel = Depends(login_required)):
+@router.post("/birthday")
+async def post_birthday(
+    request: RequestBirthday,
+    current_user: ProfileModel = Depends(session),
+):
+    return await UserController.insert_birthday(request, current_user)
 
-    return await user_controller.get_account_data(current_user)
+
+@router.patch("/birthday")
+async def update_birthday(
+    request: UpdateBirthday,
+    current_user: ProfileModel = Depends(session),
+):
+    return await UserController.update_birthday(request, current_user)
+
+
+@router.delete("")
+async def delete_account(current_user: ProfileModel = Depends(session)):
+
+    return await UserController.delete_account(current_user)

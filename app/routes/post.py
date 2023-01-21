@@ -1,53 +1,79 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends
 
-from app.models.post import PostRequest, PostResponse
-from app.models.user import UserModel
+from app.models.post import PostRequest, PostResponse, ResponseTimeline
+from app.models.user import ProfileModel
+from app.security.session import session
 
-from .controllers import post_controller
-from .security.login_required import login_required
+from .controllers.post_controller import PostController
 
 router = APIRouter()
 
 
 # PUBLIC ROUTES
-@router.get("", response_model=List[PostResponse])
-async def list_posts():
-
-    return await post_controller.get_all()
-
-
-@router.get("/{id}", response_model=PostResponse)
-async def get_post_by_id(id: int):
-
-    return await post_controller.get_by_id(id)
+@router.get(
+    "",
+    response_model=List[PostResponse],
+    response_model_exclude_unset=True,
+)
+async def list_all_posts():
+    return await PostController.get_all()
 
 
-@router.get("/user/{username}", response_model=List[PostResponse])
+@router.get(
+    "/timeline",
+    response_model=List[ResponseTimeline],
+    response_model_exclude_unset=True,
+)
+async def list_most_recent_posts():
+    return await PostController.get_timeline()
+
+
+@router.get(
+    "/{postId}",
+    response_model=PostResponse,
+    response_model_exclude_unset=True,
+)
+async def get_post_by_id(postId: int):
+    return await PostController.get_post_by_id(postId)
+
+
+@router.get(
+    "/{username}/posts",
+    response_model=List[PostResponse],
+    response_model_exclude_unset=True,
+)
 async def get_posts_by_username(username: str):
-
-    return await post_controller.get_by_username(UserModel, username)
+    return await PostController.get_post_by_username(username)
 
 
 # PRIVATE ROUTES
-@router.post("", response_model=PostResponse, status_code=status.HTTP_201_CREATED)
-async def create_post(
-    request_model: PostRequest, current_user: UserModel = Depends(login_required)
+@router.post("", response_model=PostResponse, status_code=201)
+async def create_new_post(
+    request: PostRequest, current_user: ProfileModel = Depends(session)
 ):
-    return await post_controller.create(request_model, current_user)
+    return await PostController.create_post(request, current_user)
 
 
-@router.patch("/{id}", response_model=PostResponse)
+@router.post("/{postId}/like", status_code=201)
+async def add_like_on_post(
+    postId: int,
+    current_user: ProfileModel = Depends(session),
+):
+    return await PostController.add_like(postId, current_user)
+
+
+@router.patch("/{postId}")
 async def edit_post(
-    id: int,
-    request_model: PostRequest,
-    current_user: UserModel = Depends(login_required),
+    postId: int,
+    request: PostRequest,
+    current_user: ProfileModel = Depends(session),
 ):
-    return await post_controller.update(id, request_model, current_user)
+    return await PostController.edit_post(postId, request, current_user)
 
 
-@router.delete("/{id}")
-async def delete_post(id: int, current_user: UserModel = Depends(login_required)):
+@router.delete("/{postId}")
+async def delete_post(postId: int, current_user: ProfileModel = Depends(session)):
 
-    return await post_controller.delete(id, current_user)
+    return await PostController.delete_post(postId, current_user)
