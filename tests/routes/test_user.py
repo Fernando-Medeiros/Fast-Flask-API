@@ -1,7 +1,7 @@
 import pytest
 
 from tests.conftest import UrlUsers
-from tests.utils.user import CaseCreate, CaseLogin
+from tests.utils.client import CaseCreate, CaseLogin
 
 
 @pytest.mark.user
@@ -14,10 +14,10 @@ class TestPost:
         "password": CaseCreate.invalid_user("password"),
     }
 
-    path = UrlUsers.account_create
+    path = UrlUsers.create
 
     def test_create_account(self, client):
-        data = CaseCreate.valid_user
+        data = CaseCreate.data
         response = client.post(self.path, json=data)
         context = response.json()
 
@@ -26,15 +26,16 @@ class TestPost:
 
     # UNIQUE CONSTRAINTS
     def test_unique_username(self, client_one):
-        data = CaseLogin.valid_user
+        data = CaseLogin.data
         response = client_one.post(self.path, json=data)
 
         assert response.status_code == 400
         assert response.json().get("detail")
 
     def test_unique_email(self, client_one):
-        data = CaseLogin.valid_user.copy()
+        data = CaseLogin.data.copy()
         data.update(username="otherUsername")
+
         response = client_one.post(self.path, json=data)
 
         assert response.status_code == 400
@@ -68,11 +69,11 @@ class TestPost:
 
 @pytest.mark.user
 class TestGet:
-    username: str = CaseLogin.valid_user["username"]
+    username: str = CaseLogin.data["username"]
 
-    path_all = UrlUsers.get_all
-    path_user = UrlUsers.get_user
-    path_data = UrlUsers.account_data
+    path_all = UrlUsers.get_profiles
+    path_user = UrlUsers.get_profile
+    path_data = UrlUsers.get_account
 
     def test_get_all_users(self, client_one):
         response = client_one.get(self.path_all)
@@ -96,7 +97,7 @@ class TestGet:
 
         assert response.status_code == 200
         assert issubclass(type(context["id"]), int)
-        assert issubclass(type(context["created_at"]), str)
+        assert issubclass(type(context["username"]), str)
 
     # (WITHOUT AUTH or USERS)
     def test_get_by_username_without_users(self, client):
@@ -114,16 +115,17 @@ class TestGet:
 
 @pytest.mark.user
 class TestUpdate:
-    v_email = CaseCreate.get_one_valid_field("email")
-    i_email = CaseCreate.get_one_invalid_field("email")
+    v_email: dict = CaseCreate.get_one_valid_field("email")
+    i_email: dict = CaseCreate.get_one_invalid_field("email")
 
-    path = UrlUsers.account_update
+    path = UrlUsers.update_account
 
     # (AUTH REQUIRED) - VALID
     def test_valid_email(self, client_two_auth):
         response = client_two_auth.patch(self.path, json=self.v_email)
 
         assert response.status_code == 200
+        assert response.json().get("detail")
 
     def test_invalid_email(self, client_two_auth):
         response = client_two_auth.patch(self.path, json=self.i_email)
@@ -140,7 +142,7 @@ class TestUpdate:
 
 @pytest.mark.user
 class TestDelete:
-    path = UrlUsers.account_delete
+    path = UrlUsers.delete
 
     # (AUTH REQUIRED)
     def test_delete_auth_user(self, client_two_auth):

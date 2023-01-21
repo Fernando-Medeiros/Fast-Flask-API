@@ -1,11 +1,8 @@
-class CaseInvalid:
+class CasePostUpdate:
     invalid_content = {"content": ""}
+    valid_content = {"content": "Hello World"}
 
 
-class CaseUpdate:
-    update_invalid_content = {"content": ""}
-    update_valid_content = {"content": "Hello Tech Recruiters!"}
-
-
-class CaseCreate(CaseInvalid, CaseUpdate):
+class CasePostCreate:
+    invalid_content = {"content": ""}
     valid_content = {"content": "Hello World"}

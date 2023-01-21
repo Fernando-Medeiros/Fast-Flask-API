@@ -1,8 +1,7 @@
 import pytest
 
 from app.models.token import RefreshToken, Token, TokenData
-from app.routes.security.token_jwt import TokenJwt
-from tests.utils.user import CaseLogin
+from app.security.token import TokenJwt
 
 
 @pytest.mark.tokenModel
@@ -22,13 +21,9 @@ class TestTokenModel:
         assert len(token.access_token) > 150
 
     def test_token_data_(self):
-        _data: dict = CaseLogin().valid_user
-        token = TokenData(**_data)
+        token = TokenData(sub="1")
 
-        assert token.username
-
-        with pytest.raises(Exception):
-            [token.dict()[key] for key in _data]
+        assert token.sub
 
     def test_refresh_token(self):
         token = RefreshToken(**self.data)

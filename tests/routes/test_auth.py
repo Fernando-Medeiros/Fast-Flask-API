@@ -1,9 +1,9 @@
 import pytest
 
 from app.models.token import Token
-from app.routes.security.token_jwt import DecodeTokenJwt
+from app.security.token import DecodeTokenJwt
 from tests.conftest import UrlToken
-from tests.utils.user import CaseLogin
+from tests.utils.client import CaseLogin
 
 
 @pytest.mark.token
@@ -36,10 +36,10 @@ class TestRefeshToken:
         refresh_response = client_one.post(
             self.path_refresh, json=access_response.json()
         )
+        assert refresh_response.status_code == 200
         tokens = Token(**refresh_response.json())
 
         assert access_response.status_code == 200
-        assert refresh_response.status_code == 200
         assert tokens.access_token
         assert tokens.refresh_token
         assert tokens.token_type

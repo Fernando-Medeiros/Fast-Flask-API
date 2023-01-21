@@ -3,8 +3,8 @@ from fastapi.testclient import TestClient
 
 from app import app
 from setup import conf_database_test
-from tests.utils.post import CaseCreate
-from tests.utils.user import CaseLogin
+from tests.utils.client import CaseLogin
+from tests.utils.post import CasePostCreate
 
 
 class UrlToken:
@@ -13,35 +13,47 @@ class UrlToken:
 
 
 class UrlUsers:
-    account_create = "/users"
-    account_update = "/users/update"
-    account_delete = "/users/delete"
-    account_data = "/users/account/"
-    get_all = "/users"
-    get_user = "/users/"
+    create = "/users"
+    delete = "/users"
+    get_profiles = "/users"
+    get_profile = "/users/"
+    get_account = "/users/account/"
+    update_profile = "/users/profile"
+    update_avatar = "/users/avatar"
+    update_birthday = "/users/birthday"
+    update_account = "/users/account"
 
 
 class UrlPassword:
-    update = "/password/update"
-    recover = "/password/recover"
-    reset = "/password/reset/"
+    update = "/password"
+    recover = "/password"
+    reset = "/password/"
 
 
 class UrlPosts:
     create = "/posts"
     update = "/posts/"
     delete = "/posts/"
-    get_all = "/posts"
+    get_posts = "/posts"
     get_post_id = "/posts/"
-    get_posts_user = "/posts/user/"
+    get_timeline = "/posts/timeline"
+    get_posts_by_user = lambda username: f"/posts/{username}/posts"
+    add_like = lambda postId: f"/posts/{postId}/like"
+
+
+class UrlReply:
+    create = "/replies/"
+    update = "/replies/"
+    delete = "/replies/"
+    add_like = lambda replyId: f"/replies/{replyId}/like"
 
 
 def client_authenticated(client):
     conf_database_test()
-    case, post = CaseLogin(), CaseCreate()
+    case, post = CaseLogin(), CasePostCreate()
 
     # Register new user
-    client.post(UrlUsers.account_create, json=case.valid_user)
+    client.post(UrlUsers.create, json=case.data)
 
     # Get access token
     response = client.post(UrlToken.token, data=case.login, headers=case.content_type)
@@ -66,7 +78,7 @@ def client():
 def client_one():
     conf_database_test()
     with TestClient(app()) as client:
-        client.post(UrlUsers.account_create, json=CaseLogin.valid_user)
+        client.post(UrlUsers.create, json=CaseLogin.data)
         yield client
 
 

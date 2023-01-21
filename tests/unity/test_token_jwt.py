@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import pytest
 from jose.exceptions import ExpiredSignatureError
 
-from app.routes.security.token_jwt import DecodeTokenJwt, TokenJwt
+from app.security.token import DecodeTokenJwt, TokenJwt
 
 
 @pytest.mark.tokenJwt

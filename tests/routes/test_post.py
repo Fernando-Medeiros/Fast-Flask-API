@@ -3,10 +3,11 @@ from typing import List
 import pytest
 
 from tests.conftest import UrlPosts
-from tests.utils.post import CaseCreate
-from tests.utils.user import CaseLogin
+from tests.utils.post import CasePostCreate, CasePostUpdate
+from tests.utils.client import CaseLogin
 
-post = CaseCreate()
+post = CasePostCreate
+post_update = CasePostUpdate
 
 
 @pytest.mark.post
@@ -37,11 +38,12 @@ class TestPost:
 
 @pytest.mark.post
 class TestGet:
-    username: str = CaseLogin.valid_user["username"]
+    username: str = CaseLogin.data["username"]
 
-    path_all = UrlPosts.get_all
+    path_all = UrlPosts.get_posts
     path_id = UrlPosts.get_post_id
-    path_user = UrlPosts.get_posts_user
+    path_user = UrlPosts.get_posts_by_user(username)
+    id = 1
 
     def test_get_all_posts(self, client_three):
         response = client_three.get(self.path_all)
@@ -52,13 +54,13 @@ class TestGet:
         assert len(context) > 0
 
     def test_get_post_by_id(self, client_three):
-        response = client_three.get(self.path_id + "1")
+        response = client_three.get("{}{}".format(self.path_id, self.id))
 
         assert response.status_code == 200
-        assert response.json().get("content")
+        assert response.json().get("author") == self.username
 
     def test_get_posts_by_username(self, client_three):
-        response = client_three.get(self.path_user + self.username)
+        response = client_three.get(self.path_user)
 
         assert response.status_code == 200
         assert issubclass(type(response.json()), list)
@@ -66,13 +68,13 @@ class TestGet:
 
     # (WITHOUT POSTS or USERS)
     def test_get_post_by_id_without_posts(self, client_one):
-        response = client_one.get(self.path_id + "1")
+        response = client_one.get("{}{}".format(self.path_id, self.id))
 
         assert response.status_code == 404
         assert response.json().get("detail")
 
     def test_get_post_by_username_without_user(self, client):
-        response = client.get(self.path_user + self.username)
+        response = client.get(self.path_user)
 
         assert response.status_code == 404
         assert response.json().get("detail")
@@ -81,17 +83,22 @@ class TestGet:
 @pytest.mark.post
 class TestUpdate:
     path = UrlPosts.update
+    id = 1
 
     # (AUTH REQUIRED) - VALID
     def test_update_valid_content(self, client_three):
-        response = client_three.patch(self.path + "1", json=post.update_valid_content)
+        response = client_three.patch(
+            "{}{}".format(self.path, self.id), json=post_update.valid_content
+        )
 
         assert response.status_code == 200
-        assert response.json().get("content") == post.update_valid_content["content"]
+        assert response.json().get("detail")
 
     # (AUTH REQUIRED) - INVALID
     def test_update_invalid_content(self, client_three):
-        response = client_three.patch(self.path + "1", json=post.update_invalid_content)
+        response = client_three.patch(
+            "{}{}".format(self.path, self.id), json=post_update.invalid_content
+        )
 
         assert response.status_code == 400
         assert response.json().get("detail")
@@ -100,10 +107,14 @@ class TestUpdate:
 @pytest.mark.post
 class TestDelete:
     path = UrlPosts.delete
+    id = 1
 
     # (AUTH REQUIRED)
     def test_delete_post(self, client_three):
-        response = client_three.delete(self.path + "1")
+        f_response = client_three.delete("{}{}".format(self.path, self.id))
+        s_response = client_three.delete("{}{}".format(self.path, self.id))
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert f_response.status_code == 200
+        assert f_response.json().get("detail")
+        assert s_response.status_code == 404
+        assert s_response.json().get("detail")
