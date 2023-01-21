@@ -1,24 +1,44 @@
-import datetime
-from typing import List
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, validator
 
 
-class UserResponse(BaseModel):
+class ProfileResponse(BaseModel):
     username: str
+    avatar: str
+    bio: str
 
 
-class UserResponseAccountData(UserResponse):
+class AccountDataResponse(BaseModel):
     id: int
-    first_name: str
-    last_name: str
-    email: str
-    byear: str
-    bmonth: str
-    bday: str
-    created_at: datetime.datetime
-    access: List[str]
+    username: Optional[str]
+    avatar: Optional[str]
+    bio: Optional[str]
+    account: Optional[List | Dict]
+    birthday: Optional[List | Dict]
+    likes: Optional[List | Dict]
+    posts: Optional[List | int]
+    replies: Optional[List | int]
+    access: Optional[List | str]
 
-    @validator("created_at")
-    def _create_at(cls, value):
-        return value.strftime("%d/%m/%Y %H:%M:%S")
+    @validator("account")
+    def _user(cls, value):
+        if value:
+            exclude = ["password", "id"]
+            [value.pop(item) for item in exclude]
+            value["created_at"] = value.get("created_at").strftime("%d/%m/%Y %H:%M:%S")
+        return value
+
+    @validator("birthday")
+    def _birthday(cls, value):
+        if value:
+            value[0].pop("id")
+        return value
+
+    @validator("posts", "likes", "replies")
+    def _posts_replies_likes(cls, value):
+        return len(value)
+
+    @validator("access")
+    def _access(cls, value):
+        return value[0].get("access")

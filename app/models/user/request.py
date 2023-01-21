@@ -1,49 +1,92 @@
 import re
 from typing import Optional
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 from pydantic import BaseModel, validator
 from werkzeug.security import generate_password_hash
 
 
-def validate_password(cls, value):
-    regex = r"^([A-Za-z0-9]).{7,}$"
-    if re.compile(regex).match(value) and " " not in value:
-        return generate_password_hash(value)
-
-    raise HTTPException(
-        status.HTTP_400_BAD_REQUEST, detail="Password format is invalid"
-    )
-
-
-class RequestUpdatePassword(BaseModel):
-    password: Optional[str] = None
+class Pwd(BaseModel):
+    password: str
 
     @validator("password", pre=True)
     def _password(cls, value):
-        return validate_password(cls, value)
+        regex = r"^([A-Za-z0-9]).{7,}$"
+
+        if re.compile(regex).match(value) and " " not in value:
+            return generate_password_hash(value)
+
+        raise HTTPException(400, "Password format is invalid")
 
 
-class UserRequest(RequestUpdatePassword):
+# CREATE
+class RequestCreateAccount(Pwd):
     first_name: str
     last_name: str
     username: str
     email: str
-    bday: str
-    bmonth: str
-    byear: str
 
 
-class RequestUpdate(BaseModel):
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    username: Optional[str] = None
-    email: Optional[str] = None
-    bday: Optional[str] = None
-    bmonth: Optional[str] = None
-    byear: Optional[str] = None
+class RequestProfile(BaseModel):
+    username: Optional[str]
+    bio: str
 
 
-class RequestRecoverPassword(BaseModel):
-    bday: str
+class RequestBirthday(BaseModel):
+    day: str
+    month: str
+    year: str
+
+
+class RequestAccess(BaseModel):
+    access: str
+
+
+# UPDATE
+class UpdateAccount(BaseModel):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    email: Optional[str]
+
+    @validator("first_name", "last_name", "email")
+    def exclude_unset(cls, value):
+        return None if value == "string" else value
+
+
+class UpdateProfile(BaseModel):
+    username: Optional[str]
+    bio: Optional[str]
+
+    @validator("username", "bio")
+    def exclude_unset(cls, value):
+        return None if value == "string" else value
+
+
+class UpdateBirthday(BaseModel):
+    day: Optional[str]
+    month: Optional[str]
+    year: Optional[str]
+
+    @validator("day", "month", "year")
+    def exclude_unset(cls, value):
+        return None if value == "string" else value
+
+
+class UpdateAvatar(BaseModel):
+    avatar: str
+
+    @validator("avatar")
+    def exclude_unset(cls, value):
+        return None if value == "string" else value
+
+
+class UpdateAccess(BaseModel):
+    access: str
+
+
+class UpdatePassword(Pwd):
+    ...
+
+
+class RecoverPassword(BaseModel):
     email: str
