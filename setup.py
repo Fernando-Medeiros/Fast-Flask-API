@@ -9,24 +9,27 @@ load_dotenv(find_dotenv())
 
 
 def get_database_uri() -> str:
+    ENV = os.getenv("ENV", None)
 
-    ENVIRONMENT = os.getenv("ENVIRONMENT", None)
+    match ENV:
+        case "DEV":
+            return os.getenv("DATABASE_DEV_URL", "sqlite:///dbDev.sqlite")
+        case "TEST":
+            return os.getenv("DATABASE_TEST_URL", "sqlite:///dbTest.sqlite")
+        case "PRO":
+            try:
+                user = os.environ["DATABASE_USERNAME"]
+                password = os.environ["DATABASE_PASSWORD"]
+                host = os.environ["DATABASE_HOST"]
+                port: int = int(os.environ["DATABASE_PORT"])
+                db_name = os.environ["DATABASE_NAME"]
 
-    if ENVIRONMENT == "DEVELOPMENT":
-        return os.getenv("DATABASE_TEST_URL", "sqlite:///db.sqlite")
-
-    try:
-        user = os.environ["DATABASE_USERNAME"]
-        password = os.environ["DATABASE_PASSWORD"]
-        host = os.environ["DATABASE_HOST"]
-        port = int(os.environ["DATABASE_PORT"])
-        db_name = os.environ["DATABASE_NAME"]
-
-    except (ValueError, IndexError, IndexError) as args:
-        raise ValueError(args)
-    else:
-        uri = "postgresql://{}:{}@{}:{}/{}".format(user, password, host, port, db_name)
-        return uri
+            except (ValueError, IndexError) as args:
+                raise ValueError(args)
+            else:
+                return "postgresql://{}:{}@{}:{}/{}".format(
+                    user, password, host, port, db_name
+                )
 
 
 DB_URI = get_database_uri()
