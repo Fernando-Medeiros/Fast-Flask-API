@@ -33,7 +33,7 @@ async def get_profile_by_username(username: str):
     return await UserController.get_by_username(username)
 
 
-@router.post("", response_model=ProfileResponse, status_code=201)
+@router.post("", status_code=201)
 async def create_new_account(request: RequestCreateAccount):
 
     return await UserController.create_account(request)

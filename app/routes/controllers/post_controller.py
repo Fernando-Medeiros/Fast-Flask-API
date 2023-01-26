@@ -8,10 +8,6 @@ class PostController:
 
     @classmethod
     async def get_all(cls):
-        return await cls.backend.get_all_order_by(PostModel, "id")
-
-    @classmethod
-    async def get_timeline(cls):
         return await cls.backend.get_all_order_by(PostModel, "-id")
 
     @classmethod
@@ -27,15 +23,14 @@ class PostController:
     async def create_post(cls, request: PostRequest, current_user):
         data = request.dict()
 
-        return await cls.backend.create_or_400(
-            PostModel, author=current_user.pk, **data
-        )
+        await cls.backend.create_or_400(PostModel, author=current_user.pk, **data)
+        return {"detail": "Post created successfully"}
 
     @classmethod
     async def edit_post(cls, postId, request: PostRequest, current_user):
         data = request.dict()
         post = await cls.backend.get_or_404(
-            PostModel, id=postId, author=current_user.id
+            PostModel, "Unauthorized", id=postId, author=current_user.id
         )
         await post.update(edit=True, **data)
 
@@ -43,14 +38,23 @@ class PostController:
 
     @classmethod
     async def delete_post(cls, postId, current_user):
-        await cls.backend.delete_or_404(PostModel, id=postId, author=current_user.id)
-        
+        await cls.backend.delete_or_404(
+            PostModel, "Unauthorized", id=postId, author=current_user.id
+        )
+
         return {"detail": "Deleted"}
 
     @classmethod
-    async def add_like(cls, postId, current_user):
+    async def add_or_remove_like(cls, postId, current_user):
         post = await cls.backend.get_or_404(PostModel, id=postId)
-        
+
+        like = await cls.backend.get_or_none(
+            LikeModel, post=postId, user=current_user.id
+        )
+        if like:
+            await cls.backend.delete_or_404(LikeModel, id=like.id)
+            return {"detail": "Like removed"}
+
         await cls.backend.create_or_400(
             LikeModel,
             user=current_user.pk,

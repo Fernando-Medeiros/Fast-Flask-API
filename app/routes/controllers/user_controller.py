@@ -42,7 +42,8 @@ class UserController:
             ProfileModel, account=account.pk, username=request.username
         )
         await cls.backend.create_or_400(AccessModel, user=profile.pk)
-        return profile
+
+        return {"detail": "Account created successfully"}
 
     @classmethod
     async def get_account_data(cls, current_user):

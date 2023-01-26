@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends
 
 from app.models.post import PostRequest, PostResponse
@@ -8,10 +10,29 @@ from .controllers.reply_controller import ReplyController
 
 router = APIRouter()
 
+
+# PUBLIC ROUTES
+@router.get(
+    "/{replyId}",
+    response_model=PostResponse,
+    response_model_exclude_unset=True,
+)
+async def get_reply_by_id(replyId: int):
+    return await ReplyController.get_reply_by_id(replyId)
+
+
+@router.get(
+    "/{postId}/replies",
+    response_model=List[PostResponse],
+    response_model_exclude_unset=True,
+)
+async def get_replies_by_post_id(postId: int):
+    return await ReplyController.get_replies_by_post_id(postId)
+
+
 # PRIVATE ROUTES
 @router.post(
     "/{postId}",
-    response_model=PostResponse,
     response_model_exclude_none=True,
     status_code=201,
 )
@@ -24,11 +45,11 @@ async def create_new_reply(
 
 
 @router.post("/{replyId}/like", response_model_exclude_none=True, status_code=201)
-async def add_like_on_reply(
+async def add_or_remove_like(
     replyId: int,
     current_user: ProfileModel = Depends(session),
 ):
-    return await ReplyController.add_like(replyId, current_user)
+    return await ReplyController.add_or_remove_like(replyId, current_user)
 
 
 @router.patch("/{replyId}")

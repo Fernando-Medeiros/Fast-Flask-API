@@ -1,4 +1,4 @@
-from app.models.token import Token
+from app.models.token import RefreshToken, Token
 from app.models.user import UserModel
 from app.security.backend import BackendDatabase
 from app.security.session import authenticate_user, validate_credentials
@@ -25,8 +25,10 @@ class AuthController:
         )
 
     @classmethod
-    async def refresh_token(cls, form_data):
-        data = validate_credentials(form_data.refresh_token)
+    async def refresh_token(cls, token: str):
+        _token = RefreshToken(refresh_token=token)
+
+        data = validate_credentials(_token.refresh_token)
 
         user = await cls.backend.get_or_404(UserModel, id=int(data.sub))
 

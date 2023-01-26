@@ -10,7 +10,7 @@ from setup import conf_database, shutdown, startup
 def app() -> FastAPI:
     app = FastAPI(
         title="Fast-Flask-API",
-        version="0.9.4",
+        version="1.1.2",
         description="FFA is an api for a small social network",
         on_startup=[startup],
         on_shutdown=[shutdown],
@@ -24,6 +24,6 @@ def app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    app.include_router(routers)
+    app.include_router(routers, prefix="/api/v1")
     conf_database()
     return app

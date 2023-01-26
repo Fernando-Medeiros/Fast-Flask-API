@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Form
 from fastapi.security import OAuth2PasswordRequestForm
 
-from app.models.token import RefreshToken, Token
+from app.models.token import Token
 
 from .controllers.auth_controller import AuthController
 
@@ -15,6 +15,6 @@ async def login_with_access_token(form_data: OAuth2PasswordRequestForm = Depends
 
 
 @router.post("/refresh", response_model=Token)
-async def refresh_token(form_data: RefreshToken):
+async def refresh_token(refresh_token: str = Form(...)):
 
-    return await AuthController.refresh_token(form_data)
+    return await AuthController.refresh_token(refresh_token)

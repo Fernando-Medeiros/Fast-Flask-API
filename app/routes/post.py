@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
-from app.models.post import PostRequest, PostResponse, ResponseTimeline
+from app.models.post import PostRequest, PostResponse
 from app.models.user import ProfileModel
 from app.security.session import session
 
@@ -19,15 +19,6 @@ router = APIRouter()
 )
 async def list_all_posts():
     return await PostController.get_all()
-
-
-@router.get(
-    "/timeline",
-    response_model=List[ResponseTimeline],
-    response_model_exclude_unset=True,
-)
-async def list_most_recent_posts():
-    return await PostController.get_timeline()
 
 
 @router.get(
@@ -49,7 +40,7 @@ async def get_posts_by_username(username: str):
 
 
 # PRIVATE ROUTES
-@router.post("", response_model=PostResponse, status_code=201)
+@router.post("", status_code=201)
 async def create_new_post(
     request: PostRequest, current_user: ProfileModel = Depends(session)
 ):
@@ -61,7 +52,7 @@ async def add_like_on_post(
     postId: int,
     current_user: ProfileModel = Depends(session),
 ):
-    return await PostController.add_like(postId, current_user)
+    return await PostController.add_or_remove_like(postId, current_user)
 
 
 @router.patch("/{postId}")
