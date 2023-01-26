@@ -34,7 +34,7 @@ class TestRefeshToken:
             self.path_access, data=self.data, headers=self.content
         )
         refresh_response = client_one.post(
-            self.path_refresh, json=access_response.json()
+            self.path_refresh, data=access_response.json(), headers=self.content
         )
         assert refresh_response.status_code == 200
         tokens = Token(**refresh_response.json())

@@ -3,8 +3,8 @@ from typing import List
 import pytest
 
 from tests.conftest import UrlPosts
-from tests.utils.post import CasePostCreate, CasePostUpdate
 from tests.utils.client import CaseLogin
+from tests.utils.post import CasePostCreate, CasePostUpdate
 
 post = CasePostCreate
 post_update = CasePostUpdate
@@ -19,7 +19,7 @@ class TestPost:
         response = client_two_auth.post(self.path, json=post.valid_content)
 
         assert response.status_code == 201
-        assert response.json().get("content")
+        assert response.json().get("detail")
 
     # (AUTH REQUIRED) - INVALID
     def test_post_invalid(self, client_two_auth):
@@ -40,9 +40,9 @@ class TestPost:
 class TestGet:
     username: str = CaseLogin.data["username"]
 
-    path_all = UrlPosts.get_posts
-    path_id = UrlPosts.get_post_id
-    path_user = UrlPosts.get_posts_by_user(username)
+    path_all = UrlPosts.get_all
+    path_id = UrlPosts.get_by_id
+    path_user = UrlPosts.get_all_by_username(username)
     id = 1
 
     def test_get_all_posts(self, client_three):

@@ -19,10 +19,9 @@ class TestPost:
     def test_create_account(self, client):
         data = CaseCreate.data
         response = client.post(self.path, json=data)
-        context = response.json()
 
         assert response.status_code == 201
-        assert context.get("username") == data.get("username")
+        assert response.json().get("detail")
 
     # UNIQUE CONSTRAINTS
     def test_unique_username(self, client_one):

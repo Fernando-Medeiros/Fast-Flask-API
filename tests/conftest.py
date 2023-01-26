@@ -1,51 +1,58 @@
+import os
+
 import pytest
 from fastapi.testclient import TestClient
+
+os.environ["ENV"] = "TEST"
 
 from app import app
 from setup import conf_database_test
 from tests.utils.client import CaseLogin
 from tests.utils.post import CasePostCreate
 
+_v_ = "api/v1/"
+
 
 class UrlToken:
-    token = "/token"
-    refresh = "/refresh"
+    token = _v_ + "token"
+    refresh = _v_ + "refresh"
 
 
 class UrlUsers:
-    create = "/users"
-    delete = "/users"
-    get_profiles = "/users"
-    get_profile = "/users/"
-    get_account = "/users/account/"
-    update_profile = "/users/profile"
-    update_avatar = "/users/avatar"
-    update_birthday = "/users/birthday"
-    update_account = "/users/account"
+    create = _v_ + "users"
+    delete = _v_ + "users"
+    get_profiles = _v_ + "users"
+    get_profile = _v_ + "users/"
+    get_account = _v_ + "users/account/"
+    update_profile = _v_ + "users/profile"
+    update_avatar = _v_ + "users/avatar"
+    update_birthday = _v_ + "users/birthday"
+    update_account = _v_ + "users/account"
 
 
 class UrlPassword:
-    update = "/password"
-    recover = "/password"
-    reset = "/password/"
+    update = _v_ + "password"
+    recover = _v_ + "password"
+    reset = _v_ + "password/"
 
 
 class UrlPosts:
-    create = "/posts"
-    update = "/posts/"
-    delete = "/posts/"
-    get_posts = "/posts"
-    get_post_id = "/posts/"
-    get_timeline = "/posts/timeline"
-    get_posts_by_user = lambda username: f"/posts/{username}/posts"
-    add_like = lambda postId: f"/posts/{postId}/like"
+    create = _v_ + "posts"
+    update = _v_ + "posts/"
+    delete = _v_ + "posts/"
+    get_all = _v_ + "posts"
+    get_by_id = _v_ + "posts/"
+    get_all_by_username = lambda username: f"{_v_}posts/{username}/posts"
+    add_like = lambda postId: f"{_v_}posts/{postId}/like"
 
 
 class UrlReply:
-    create = "/replies/"
-    update = "/replies/"
-    delete = "/replies/"
-    add_like = lambda replyId: f"/replies/{replyId}/like"
+    create = _v_ + "replies/"
+    update = _v_ + "replies/"
+    delete = _v_ + "replies/"
+    get_by_id = _v_ + "replies/"
+    get_all_by_post_id = lambda postId: f"{_v_}replies/{postId}/replies"
+    add_like = lambda replyId: f"{_v_}replies/{replyId}/like"
 
 
 def client_authenticated(client):
