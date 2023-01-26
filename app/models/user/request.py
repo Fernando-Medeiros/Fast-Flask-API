@@ -26,6 +26,10 @@ class RequestCreateAccount(Pwd):
     username: str
     email: str
 
+    @validator("first_name", "last_name", pre=True)
+    def _(cls, value: str):
+        return value.casefold()
+
 
 class RequestProfile(BaseModel):
     username: Optional[str]
