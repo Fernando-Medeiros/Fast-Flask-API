@@ -22,10 +22,10 @@ def validate_credentials(token: str) -> TokenData:
 
         return TokenData(**payload)
 
-    except JWTError as e:
+    except JWTError:
         raise HTTPException(
             401,
-            detail=f"Could not validate credentials {e}",
+            detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
 

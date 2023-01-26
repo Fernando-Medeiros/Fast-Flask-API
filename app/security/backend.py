@@ -11,7 +11,7 @@ class BackendDatabase:
     @staticmethod
     async def get_all_order_by(model, column: str) -> List:
         result = await model.objects.order_by(column).all()
-        return [await object.load_all(True) for object in result]
+        return [await object.load_all() for object in result]
 
     @staticmethod
     async def get_all_filter_by(model, **kwargs) -> List:
@@ -29,8 +29,7 @@ class BackendDatabase:
     @staticmethod
     async def create_or_400(model, detail: str = "Invalid data", **kwargs):
         try:
-            result = await model.objects.create(**kwargs)
-            return await result.load_all()
+            return await model.objects.create(**kwargs)
         except:
             raise HTTPException(400, detail)
 
