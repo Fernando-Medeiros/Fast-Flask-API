@@ -4,7 +4,7 @@
 ![](endpoints.png)
 
 
-O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas e diferentes tipos de relacionamentos do banco de dados.
+O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas rotas e diferentes tipos de relacionamentos do banco de dados.
 
 > - Para construir o projeto isolei cada aplicação em seu próprio ecosistema e embiente virtual. 
 
@@ -14,11 +14,11 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas
 - [**Testes**](tests.md)
 
 
-- [Testes no Postman](postman.png)
+- [Testes no Postman](postman.png) 
 
 - Collections para importar os testes pro Postman (.json)
-  -  [deploy](Fast-Flask-API%20-%20-%20Fast-Deploy.postman_collection.json)
-  -  [localhost](Fast-Flask-API%20-%20-%20LocalHost.postman_collection.json)
+  - [deploy](Fast-Flask-API%20-%20-%20Fast-Deploy.postman_collection.json)
+  - [localhost](Fast-Flask-API%20-%20-%20LocalHost.postman_collection.json)
 
 
 ## Resumo 
@@ -28,6 +28,7 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas
     - [Usuários](#usuários)
     - [Segurança](#segurança)
     - [Postagens](#postagens)
+    - [Comentários](#comentários)
   - [Requisitos](#requisitos)
   - [Ambiente](#ambiente)
   - [Iniciar o servidor](#iniciar-o-servidor)
@@ -40,10 +41,10 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas
 ### Usuários
 
 - [x] Registro
-- [x] Listagem de usuários
+- [x] Listagem de perfil
   - [x] Todos
   - [x] Por @username
-- [x] Atualizar dados 
+- [x] Atualizar dados
 - [x] Acessar os dados da conta
 - [x] Deletar conta
 
@@ -57,15 +58,23 @@ O projeto será modelado no contexto de um Blog, afim de utilizar CRUD nas rotas
 
 ### Postagens
 
-- [x] Criação de novo post
-- [x] Edição de post
-- [x] Remoção de post
+- [x] Criação
+- [x] Edição
+- [x] Remoção
+- [x] Listar por id
 - [x] Listagem de posts
-- [x] Listagem de post por id
-- [x] Listagem de posts por usuário
-- [x] Listagem de posts seguidos (timeline)
-- [x] Likes em postagens e respostas
-- [x] Postagem pode ser resposta a outra postagem
+- [x] Listagem por usuário
+- [ ] Listagem de posts seguidos (timeline)
+- [x] Curtidas em posts
+
+### Comentários
+
+- [x] Criação
+- [x] Edição
+- [x] Remoção
+- [x] Listar por id
+- [x] Listagem por post
+- [x] Curtidas em comentários
 
 
 ## Requisitos

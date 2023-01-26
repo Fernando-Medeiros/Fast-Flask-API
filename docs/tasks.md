@@ -15,15 +15,13 @@
   - [x] TokenData
   - [x] TokenRefresh
 
-
 ## Users
 - [x] Routes 
   - [x] Create
+  - [x] Delete
   - [x] Get all profiles
   - [x] Get profile by username
   - [x] Get account data
-  - [x] Get Profile
-  - [x] Delete
   - [x] Update account
   - [x] Update profile
   - [x] Update birthday
@@ -56,23 +54,25 @@
 ## Posts
 - [x] Routes
   - [x] Create
-  - [x] Get all
-  - [x] Get by id
-  - [x] Get by username
   - [x] Delete
   - [x] Update
+  - [x] Get all
+  - [x] Get by id
+  - [x] Get all by username
   - [x] Add like
 - [x] Models
   - [x] PostModel
   - [x] PostResponse
   - [x] PostRequest
-
+  - [x] LikeModel
 
 ## Replies
 - [x] Routes
   - [x] Create
-  - [x] Update
   - [x] Delete
+  - [x] Update
+  - [x] Get by id
+  - [x] Get all by post_id
   - [x] Add like
 - [x] Models
   - [x] ReplyModel
