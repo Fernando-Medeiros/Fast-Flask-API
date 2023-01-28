@@ -1,10 +1,11 @@
 import os
 
+import cloudinary
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import routers
-from setup import conf_database, shutdown, startup
+from setup import build_database, get_cloudinary_uri, shutdown, startup
 
 
 def app() -> FastAPI:
@@ -24,6 +25,10 @@ def app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # STORAGE -> https://cloudinary.com/
+    cloudinary.config(**get_cloudinary_uri())
+
     app.include_router(routers, prefix="/api/v1")
-    conf_database()
+
+    build_database()
     return app

@@ -11,7 +11,7 @@ from .token import DecodeTokenJwt
 
 
 class AuthBearer:
-    url: str = "/token"
+    url: str = "/api/v1/token"
     name: str = "JWT"
     auth_scheme = OAuth2PasswordBearer(tokenUrl=url, scheme_name=name)
 

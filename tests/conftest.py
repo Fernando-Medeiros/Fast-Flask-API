@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 os.environ["ENV"] = "TEST"
 
 from app import app
-from setup import conf_database_test
+from setup import build_database_test
 from tests.utils.client import CaseLogin
 from tests.utils.post import CasePostCreate
 
@@ -56,7 +56,7 @@ class UrlReply:
 
 
 def client_authenticated(client):
-    conf_database_test()
+    build_database_test()
     case, post = CaseLogin(), CasePostCreate()
 
     # Register new user
@@ -75,7 +75,7 @@ def client_authenticated(client):
 
 @pytest.fixture(scope="function")
 def client():
-    conf_database_test()
+    build_database_test()
     with TestClient(app()) as client:
         yield client
 
@@ -83,7 +83,7 @@ def client():
 # Client with a user in the database
 @pytest.fixture(scope="function")
 def client_one():
-    conf_database_test()
+    build_database_test()
     with TestClient(app()) as client:
         client.post(UrlUsers.create, json=CaseLogin.data)
         yield client

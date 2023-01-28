@@ -1,3 +1,7 @@
+import base64
+import os
+
+import cloudinary.uploader
 from fastapi import HTTPException
 
 from app.models.user import (
@@ -61,15 +65,29 @@ class UserController:
         return {"detail": "The data has been updated"}
 
     @classmethod
-    async def update_avatar(cls, request: UpdateAvatar, current_user):
-        data = request.dict(exclude_none=True)
+    async def upload_avatar(cls, avatar: str, current_user):
 
-        if not data:
+        data = UpdateAvatar(avatar=avatar).avatar
+
+        if data is None:
             raise HTTPException(400, "No content")
 
-        await current_user.update(**data)
+        try:
+            bytes = base64.b64decode(data, validate=True)
 
-        return {"detail": "The data has been updated"}
+            resp: dict = cloudinary.uploader.upload(
+                bytes,
+                width=500,
+                height=500,
+                crop="fill",
+                folder=os.getenv("FOLDER_AVATAR"),
+            )
+        except:
+            raise HTTPException(400, "Non-base64 digit found")
+        else:
+            await current_user.update(avatar=resp["url"])
+
+            return {"detail": "The avatar has been updated"}
 
     @classmethod
     async def update_profile(cls, request: UpdateProfile, current_user):

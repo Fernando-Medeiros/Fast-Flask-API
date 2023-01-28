@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Form
 
 from app.models.user import (
     AccountDataResponse,
@@ -63,11 +63,11 @@ async def update_profile(
 
 
 @router.patch("/avatar")
-async def update_avatar(
-    request: UpdateAvatar,
+async def upload_avatar(
+    avatar: str = Form(...),
     current_user: ProfileModel = Depends(session),
 ):
-    return await UserController.update_avatar(request, current_user)
+    return await UserController.upload_avatar(avatar, current_user)
 
 
 @router.post("/birthday")

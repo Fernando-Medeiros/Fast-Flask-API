@@ -32,6 +32,22 @@ def get_database_uri() -> str:
                 )
 
 
+def get_cloudinary_uri() -> dict:
+    try:
+        api_key = os.environ["API_KEY"]
+        api_secret = os.environ["API_SECRET"]
+        name = os.environ["CLOUD_NAME"]
+    except (ValueError, IndexError) as args:
+        raise ValueError(args)
+    else:
+        return {
+            "cloud_name": name,
+            "api_key": api_key,
+            "api_secret": api_secret,
+            "secure": True,
+        }
+
+
 DB_URI = get_database_uri()
 database = databases.Database(DB_URI)
 metadata = sqlalchemy.MetaData()
@@ -42,12 +58,12 @@ class BaseMeta(ModelMeta):
     database = database
 
 
-def conf_database():
+def build_database():
     engine = sqlalchemy.create_engine(DB_URI)
     metadata.create_all(engine)
 
 
-def conf_database_test():
+def build_database_test():
     engine = sqlalchemy.create_engine(DB_URI)
     metadata.drop_all(engine)
     metadata.create_all(engine)
