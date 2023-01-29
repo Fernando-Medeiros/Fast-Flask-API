@@ -6,7 +6,7 @@ from pydantic import BaseModel, validator
 
 class PostResponse(BaseModel):
     id: Optional[int]
-    author: Optional[Dict | str]
+    author: Optional[Dict]
     content: Optional[str]
     likes: Optional[List | int]
     replies: Optional[List | int]
@@ -15,7 +15,10 @@ class PostResponse(BaseModel):
 
     @validator("author")
     def _author(cls, value):
-        return value.get("username")
+        return {
+            "username": value.get("username"),
+            "avatar": value.get("avatar"),
+        }
 
     @validator("replies")
     def _replies(cls, value):

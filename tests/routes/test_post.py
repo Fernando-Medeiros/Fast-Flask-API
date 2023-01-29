@@ -57,7 +57,7 @@ class TestGet:
         response = client_three.get("{}{}".format(self.path_id, self.id))
 
         assert response.status_code == 200
-        assert response.json().get("author") == self.username
+        assert response.json()["author"]["username"] == self.username
 
     def test_get_posts_by_username(self, client_three):
         response = client_three.get(self.path_user)
