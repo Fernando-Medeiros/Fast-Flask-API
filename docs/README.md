@@ -14,13 +14,6 @@ O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas r
 - [**Testes**](tests.md)
 
 
-- [Testes no Postman](postman.png) 
-
-- Collections para importar os testes pro Postman (.json)
-  - [deploy](Fast-Flask-API%20-%20-%20Fast-Deploy.postman_collection.json)
-  - [localhost](Fast-Flask-API%20-%20-%20LocalHost.postman_collection.json)
-
-
 ## Resumo 
 - [FastAPI](#fastapi)
   - [Resumo](#resumo)
@@ -34,6 +27,7 @@ O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas r
   - [Iniciar o servidor](#iniciar-o-servidor)
   - [Testes](#testes)
   - [Estrutura](#estrutura)
+  - [Modelagem do banco de dados](#modelagem-do-banco-de-dados)
 ---
 
 ## Funcionalidades
@@ -177,6 +171,7 @@ pytest
 │   ├── endpoints.png
 │   ├── Fast-Flask-API - - Fast-Deploy.postman_collection.json
 │   ├── Fast-Flask-API - - LocalHost.postman_collection.json
+│   ├── MBD.png
 │   ├── postman.png
 │   ├── README.md
 │   ├── tasks.md
@@ -211,5 +206,9 @@ pytest
         ├── client.py
         └── post.py
 
-14 directories, 62 files
+14 directories, 63 files
 ```
+
+## Modelagem do banco de dados
+
+![](MBD.png)
