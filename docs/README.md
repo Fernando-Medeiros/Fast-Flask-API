@@ -8,6 +8,7 @@ O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas r
 
 > - Para construir o projeto isolei cada aplicação em seu próprio ecosistema e embiente virtual. 
 
+> - [**Link do Deploy do projeto Coffee-Break** -> "Rede social minimalista" que consome essa api! \o/](https://coffee-break-network.herokuapp.com/)
 
 - [**Tarefas**](tasks.md)
 
