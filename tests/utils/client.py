@@ -49,4 +49,9 @@ class CaseUserModel(Base):
 
 
 class CaseProfileModel(Base):
-    data = {"username": "marcia", "avatar": "...", "bio": "..."}
+    data = {
+        "username": "marcia",
+        "avatar": "t.png",
+        "background": "t.png",
+        "bio": "...",
+    }

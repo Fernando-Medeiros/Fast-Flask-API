@@ -60,8 +60,9 @@ class TestUserResponse:
         assert response.dict(include={*data.keys()})
 
     def test_user_response_account_data(self):
-        data: dict = CaseUserModel.data
-        data.update(id=1)
+        data: dict = {"id": 1}
+        data.update(CaseUserModel.data)
+        data.update(CaseProfileModel.data)
         response = AccountDataResponse(**data)
 
         assert response.dict(include={*data.keys()})

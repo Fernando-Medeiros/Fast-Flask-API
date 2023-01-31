@@ -25,7 +25,16 @@ class ProfileModel(ormar.Model):
         ondelete=ormar.ReferentialAction("CASCADE"),
     )
     username = ormar.String(max_length=20, unique=True, nullable=False)
-    avatar = ormar.String(max_length=255, nullable=False, default="default.png")
+    avatar = ormar.String(
+        max_length=255,
+        nullable=False,
+        default="https://res.cloudinary.com/himpyqocw/image/upload/v1675086934/CoffeeBreak-media/default_u6mnex.png",
+    )
+    background = ormar.String(
+        max_length=255,
+        nullable=False,
+        default="https://res.cloudinary.com/himpyqocw/image/upload/v1675086964/CoffeeBreak-media/background_xbkb9e.jpg",
+    )
     bio = ormar.String(max_length=255, nullable=False, default="...")
 
     @validator("username")

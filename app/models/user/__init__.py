@@ -10,7 +10,7 @@ from .request import (
     UpdateAccess,
     UpdateAccount,
     UpdateAvatar,
-    UpdateBirthday,
+    UpdateBackground,
     UpdatePassword,
     UpdateProfile,
 )

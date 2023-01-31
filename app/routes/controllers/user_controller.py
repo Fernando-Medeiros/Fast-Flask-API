@@ -12,7 +12,7 @@ from app.models.user import (
     RequestCreateAccount,
     UpdateAccount,
     UpdateAvatar,
-    UpdateBirthday,
+    UpdateBackground,
     UpdateProfile,
     UserModel,
 )
@@ -57,17 +57,19 @@ class UserController:
     async def update_account(cls, request: UpdateAccount, current_user):
         data = request.dict(exclude_none=True)
 
-        if await cls.backend.get_or_none(UserModel, email=request.email):
-            raise HTTPException(404, "Email is already in use")
+        if request.email and await cls.backend.get_or_none(
+            UserModel, email=request.email
+        ):
+            raise HTTPException(400, "Email is already in use")
 
         await current_user.account.update(**data)
 
         return {"detail": "The data has been updated"}
 
     @classmethod
-    async def upload_avatar(cls, avatar: str, current_user):
+    async def upload_avatar(cls, image: str, current_user):
 
-        data = UpdateAvatar(avatar=avatar).avatar
+        data = UpdateAvatar(avatar=image).avatar
 
         if data is None:
             raise HTTPException(400, "No content")
@@ -90,6 +92,31 @@ class UserController:
             return {"detail": "The avatar has been updated"}
 
     @classmethod
+    async def upload_background(cls, image: str, current_user):
+
+        data = UpdateBackground(background=image).background
+
+        if data is None:
+            raise HTTPException(400, "No content")
+
+        try:
+            bytes = base64.b64decode(data, validate=True)
+
+            resp: dict = cloudinary.uploader.upload(
+                bytes,
+                width=800,
+                height=195,
+                crop="fill",
+                folder=os.getenv("FOLDER_BACKGROUND"),
+            )
+        except:
+            raise HTTPException(400, "Non-base64 digit found")
+        else:
+            await current_user.update(background=resp["url"])
+
+            return {"detail": "The background has been updated"}
+
+    @classmethod
     async def update_profile(cls, request: UpdateProfile, current_user):
         data = request.dict(exclude_none=True)
 
@@ -104,22 +131,16 @@ class UserController:
         return {"detail": "The data has been updated"}
 
     @classmethod
-    async def insert_birthday(cls, request: RequestBirthday, current_user):
-        data = request.dict(exclude_none=True)
-        await cls.backend.create_or_400(BirthdayModel, user=current_user.pk, **data)
+    async def update_birthday(cls, request: RequestBirthday, current_user):
+        data = request.dict()
 
-        return {"detail": "The data has been updated"}
+        result = await cls.backend.get_or_none(BirthdayModel, user=current_user.pk)
 
-    @classmethod
-    async def update_birthday(cls, request: UpdateBirthday, current_user):
-        data = request.dict(exclude_none=True)
+        if result:
+            await result.update(**data)
 
-        if not data:
-            raise HTTPException(400, "No content")
-
-        model = await cls.backend.get_or_404(BirthdayModel, id=current_user.id)
-
-        await model.update(**data)
+        else:
+            await cls.backend.create_or_400(BirthdayModel, user=current_user.pk, **data)
 
         return {"detail": "The data has been updated"}
 

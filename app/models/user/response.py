@@ -6,6 +6,7 @@ from pydantic import BaseModel, validator
 class ProfileResponse(BaseModel):
     username: str
     avatar: str
+    background: str
     bio: str
 
 
@@ -13,6 +14,7 @@ class AccountDataResponse(BaseModel):
     id: int
     username: Optional[str]
     avatar: Optional[str]
+    background: Optional[str]
     bio: Optional[str]
     account: Optional[List | Dict]
     birthday: Optional[List | Dict]

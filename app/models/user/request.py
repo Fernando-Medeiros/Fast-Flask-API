@@ -41,6 +41,14 @@ class RequestBirthday(BaseModel):
     month: str
     year: str
 
+    @validator("day", "month", "year")
+    def exclude_unset(cls, value):
+        try:
+            int(value)
+        except:
+            raise HTTPException(400, "Invalid data format")
+        return value
+
 
 class RequestAccess(BaseModel):
     access: str
@@ -54,7 +62,7 @@ class UpdateAccount(BaseModel):
 
     @validator("first_name", "last_name", "email")
     def exclude_unset(cls, value):
-        return None if value == "string" else value
+        return None if value in ["string", " ", ""] else value
 
 
 class UpdateProfile(BaseModel):
@@ -66,20 +74,18 @@ class UpdateProfile(BaseModel):
         return None if value == "string" else value
 
 
-class UpdateBirthday(BaseModel):
-    day: Optional[str]
-    month: Optional[str]
-    year: Optional[str]
-
-    @validator("day", "month", "year")
-    def exclude_unset(cls, value):
-        return None if value == "string" else value
-
-
 class UpdateAvatar(BaseModel):
     avatar: str
 
     @validator("avatar")
+    def exclude_unset(cls, value):
+        return None if value == "string" else value
+
+
+class UpdateBackground(BaseModel):
+    background: str
+
+    @validator("background")
     def exclude_unset(cls, value):
         return None if value == "string" else value
 

@@ -9,8 +9,6 @@ from app.models.user import (
     RequestBirthday,
     RequestCreateAccount,
     UpdateAccount,
-    UpdateAvatar,
-    UpdateBirthday,
     UpdateProfile,
 )
 from app.security.session import session
@@ -64,23 +62,23 @@ async def update_profile(
 
 @router.patch("/avatar")
 async def upload_avatar(
-    avatar: str = Form(...),
+    image: str = Form(...),
     current_user: ProfileModel = Depends(session),
 ):
-    return await UserController.upload_avatar(avatar, current_user)
+    return await UserController.upload_avatar(image, current_user)
 
 
-@router.post("/birthday")
-async def post_birthday(
-    request: RequestBirthday,
+@router.patch("/background")
+async def upload_background(
+    image: str = Form(...),
     current_user: ProfileModel = Depends(session),
 ):
-    return await UserController.insert_birthday(request, current_user)
+    return await UserController.upload_background(image, current_user)
 
 
-@router.patch("/birthday")
+@router.put("/birthday")
 async def update_birthday(
-    request: UpdateBirthday,
+    request: RequestBirthday,
     current_user: ProfileModel = Depends(session),
 ):
     return await UserController.update_birthday(request, current_user)
