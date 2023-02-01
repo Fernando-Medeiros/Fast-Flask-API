@@ -9,9 +9,7 @@ class PostRequest(BaseModel):
 
     @validator("content")
     def _content(cls, value):
-        regex = r"^([A-Za-z0-9]).{3,1000}$"
-
-        if re.compile(regex).match(value):
+        if len(value) >= 3 and len(value) <= 1000:
             return value
-
-        raise HTTPException(400, "Invalid content")
+        else:
+            raise HTTPException(400, "Invalid content")

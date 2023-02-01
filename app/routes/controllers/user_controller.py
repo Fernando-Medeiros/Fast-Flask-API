@@ -57,6 +57,9 @@ class UserController:
     async def update_account(cls, request: UpdateAccount, current_user):
         data = request.dict(exclude_none=True)
 
+        if not data:
+            raise HTTPException(400, "No content")
+
         if request.email and await cls.backend.get_or_none(
             UserModel, email=request.email
         ):
@@ -64,7 +67,7 @@ class UserController:
 
         await current_user.account.update(**data)
 
-        return {"detail": "The data has been updated"}
+        return {"detail": f"The {', '.join(data.keys())} has been updated"}
 
     @classmethod
     async def upload_avatar(cls, image: str, current_user):
@@ -142,7 +145,7 @@ class UserController:
         else:
             await cls.backend.create_or_400(BirthdayModel, user=current_user.pk, **data)
 
-        return {"detail": "The data has been updated"}
+        return {"detail": "The birthday has been updated"}
 
     @classmethod
     async def delete_account(cls, current_user):
