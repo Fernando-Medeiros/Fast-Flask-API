@@ -72,6 +72,9 @@ def client_authenticated(client):
     # Create a new post
     client.post(UrlPosts.create, json=post.valid_content)
 
+    # Create a new reply
+    client.post("{}{}".format(UrlReply.create, 1), json=post.valid_content)
+
 
 @pytest.fixture(scope="function")
 def client():

@@ -28,9 +28,9 @@ class TestPost:
         assert response.status_code == 400
         assert response.json().get("detail")
 
-    # (WITHOUT AUTH) - INVALID
+    # (WITHOUT AUTH)
     def test_post_invalid_without_auth(self, client_one):
-        response = client_one.post(self.path, json=post.invalid_content)
+        response = client_one.post(self.path, json=post.valid_content)
 
         assert response.status_code == 401
         assert response.json().get("detail")
@@ -82,39 +82,77 @@ class TestGet:
 
 @pytest.mark.post
 class TestUpdate:
-    path = UrlPosts.update
-    id = 1
+    path = "{}{}".format(UrlPosts.update, 1)
 
     # (AUTH REQUIRED) - VALID
     def test_update_valid_content(self, client_three):
-        response = client_three.patch(
-            "{}{}".format(self.path, self.id), json=post_update.valid_content
-        )
+        response = client_three.patch(self.path, json=post_update.valid_content)
 
         assert response.status_code == 200
         assert response.json().get("detail")
 
     # (AUTH REQUIRED) - INVALID
     def test_update_invalid_content(self, client_three):
-        response = client_three.patch(
-            "{}{}".format(self.path, self.id), json=post_update.invalid_content
-        )
+        response = client_three.patch(self.path, json=post_update.invalid_content)
 
         assert response.status_code == 400
+        assert response.json().get("detail")
+
+    # (WITHOUT AUTH)
+    def test_update_without_auth(self, client_one):
+        response = client_one.patch(self.path, json=post_update.invalid_content)
+
+        assert response.status_code == 401
+        assert response.json().get("detail")
+
+
+@pytest.mark.post
+class TestLike:
+    path = UrlPosts.add_like(1)
+    path_invalid = UrlPosts.add_like(5)
+
+    # (AUTH REQUIRED)
+    def test_add_like(self, client_three):
+        response = client_three.post(self.path, json=post_update.valid_content)
+
+        assert response.status_code == 201
+        assert response.json().get("detail")
+
+    # (WITHOUT POST)
+    def test_add_like_without_post(self, client_three):
+        response = client_three.post(self.path_invalid, json=post_update.valid_content)
+
+        assert response.status_code == 404
+        assert response.json().get("detail")
+
+    # (WITHOUT AUTH)
+    def test_add_like_without_auth(self, client_one):
+        response = client_one.post(self.path, json=post_update.valid_content)
+
+        assert response.status_code == 401
         assert response.json().get("detail")
 
 
 @pytest.mark.post
 class TestDelete:
-    path = UrlPosts.delete
-    id = 1
+    path = "{}{}".format(UrlPosts.delete, 1)
 
     # (AUTH REQUIRED)
     def test_delete_post(self, client_three):
-        f_response = client_three.delete("{}{}".format(self.path, self.id))
-        s_response = client_three.delete("{}{}".format(self.path, self.id))
+        f_response = client_three.delete(self.path)
 
         assert f_response.status_code == 200
         assert f_response.json().get("detail")
+
+        # (WITHOUT REPLY)
+        s_response = client_three.delete(self.path)
+
         assert s_response.status_code == 404
         assert s_response.json().get("detail")
+
+    # (WITHOUT AUTH)
+    def test_delete_without_auth(self, client_one):
+        response = client_one.delete(self.path)
+
+        assert response.status_code == 401
+        assert response.json().get("detail")

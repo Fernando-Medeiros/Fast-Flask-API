@@ -71,7 +71,7 @@ class UpdateProfile(BaseModel):
 
     @validator("username", "bio")
     def exclude_unset(cls, value):
-        return None if value == "string" else value
+        return None if value in ["string", " ", ""] else value
 
 
 class UpdateAvatar(BaseModel):
@@ -79,7 +79,7 @@ class UpdateAvatar(BaseModel):
 
     @validator("avatar")
     def exclude_unset(cls, value):
-        return None if value == "string" else value
+        return None if value in ["string", " ", ""] else value
 
 
 class UpdateBackground(BaseModel):
@@ -87,7 +87,7 @@ class UpdateBackground(BaseModel):
 
     @validator("background")
     def exclude_unset(cls, value):
-        return None if value == "string" else value
+        return None if value in ["string", " ", ""] else value
 
 
 class UpdateAccess(BaseModel):

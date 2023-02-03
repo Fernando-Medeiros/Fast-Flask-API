@@ -11,7 +11,7 @@ from setup import build_database, get_cloudinary_uri, shutdown, startup
 def app() -> FastAPI:
     app = FastAPI(
         title="Fast-Flask-API",
-        version="1.1.2",
+        version="1.2.0",
         description="FFA is an api for a small social network",
         on_startup=[startup],
         on_shutdown=[shutdown],
