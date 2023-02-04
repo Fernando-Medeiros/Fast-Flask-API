@@ -44,10 +44,9 @@ class RequestBirthday(BaseModel):
     @validator("day", "month", "year")
     def exclude_unset(cls, value):
         try:
-            int(value)
+            return int(value)
         except:
-            raise HTTPException(400, "Invalid data format")
-        return value
+            raise HTTPException(400, "Date format is invalid")
 
 
 class RequestAccess(BaseModel):

@@ -140,17 +140,98 @@ class TestUpdate:
 
 
 @pytest.mark.user
+class TestUpdateProfile:
+    v_username, i_username = {"username": "TesterTes"}, {"username": "..."}
+    v_bio, i_bio = {"bio": "aAds-//|\\*&%@#!!'':;/<>.,~^`-=()"}, {"bio": " "}
+
+    path = UrlUsers.update_profile
+
+    # (AUTH REQUIRED)
+    # VALID
+    def test_valid_username(self, client_two_auth):
+        response = client_two_auth.patch(self.path, json=self.v_username)
+
+        assert response.status_code == 200
+        assert response.json().get("detail")
+
+    # VALID
+    def test_valid_bio(self, client_two_auth):
+        response = client_two_auth.patch(self.path, json=self.v_bio)
+
+        assert response.status_code == 200
+        assert response.json().get("detail")
+
+    # INVALID
+    def test_invalid_username(self, client_two_auth):
+        response = client_two_auth.patch(self.path, json=self.i_username)
+
+        assert response.status_code == 400
+        assert response.json().get("detail")
+
+    # INVALID
+    def test_invalid_bio(self, client_two_auth):
+        response = client_two_auth.patch(self.path, json=self.i_bio)
+
+        assert response.status_code == 400
+        assert response.json().get("detail")
+
+    # (WITHOUT AUTH)
+    def test_update_bio_and_username_without_auth(self, client_one):
+        f_response = client_one.patch(self.path, json=self.v_bio)
+
+        assert f_response.status_code == 401
+        assert f_response.json().get("detail")
+
+        s_response = client_one.patch(self.path, json=self.v_bio)
+
+        assert s_response.status_code == 401
+        assert s_response.json().get("detail")
+
+
+@pytest.mark.user
+class TestBirthday:
+    v_data: dict = {"day": "15", "month": "2", "year": "2000"}
+    i_data: dict = {"day": "0", "month": "20", "year": "00"}
+
+    path = UrlUsers.put_birthday
+
+    # (AUTH REQUIRED) - VALID
+    def test_put_valid_birthday(self, client_two_auth):
+        response = client_two_auth.put(self.path, json=self.v_data)
+
+        assert response.status_code == 200
+        assert response.json().get("detail")
+
+    # (AUTH REQUIRED) - INVALID
+    def test_put_invalid_birthday(self, client_two_auth):
+        response = client_two_auth.put(self.path, json=self.i_data)
+
+        assert response.status_code == 400
+        assert response.json().get("detail")
+
+    # (WITHOUT AUTH)
+    def test_put_without_auth(self, client_one):
+        response = client_one.put(self.path, json=self.v_data)
+
+        assert response.status_code == 401
+        assert response.json().get("detail")
+
+
+@pytest.mark.user
 class TestDelete:
     path = UrlUsers.delete
 
     # (AUTH REQUIRED)
     def test_delete_auth_user(self, client_two_auth):
         f_response = client_two_auth.delete(self.path)
-        s_response = client_two_auth.delete(self.path)
 
         assert f_response.status_code == 200
-        assert s_response.status_code == 404
         assert f_response.json().get("detail")
+
+        # (WITHOUT USER)
+        s_response = client_two_auth.delete(self.path)
+
+        assert s_response.status_code == 404
         assert s_response.json().get("detail")
 
     # (WITHOUT AUTH)

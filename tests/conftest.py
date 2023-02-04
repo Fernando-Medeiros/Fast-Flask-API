@@ -26,8 +26,8 @@ class UrlUsers:
     get_account = _v_ + "users/account/"
     update_profile = _v_ + "users/profile"
     update_avatar = _v_ + "users/avatar"
-    update_birthday = _v_ + "users/birthday"
     update_account = _v_ + "users/account"
+    put_birthday = _v_ + "users/birthday"
 
 
 class UrlPassword:

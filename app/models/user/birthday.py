@@ -1,8 +1,6 @@
 from typing import Dict, Optional, Union
 
 import ormar
-from fastapi import HTTPException
-from pydantic import validator
 
 from setup import BaseMeta
 
@@ -24,9 +22,3 @@ class BirthdayModel(ormar.Model):
     day = ormar.String(max_length=2, nullable=False)
     month = ormar.String(max_length=2, nullable=False)
     year = ormar.String(min_length=2, max_length=4, nullable=False)
-
-    @validator("day", "month", "year")
-    def _bday(cls, value):
-        if str(value).isnumeric():
-            return value
-        raise HTTPException(400, "Date format is invalid, enter numbers only")
