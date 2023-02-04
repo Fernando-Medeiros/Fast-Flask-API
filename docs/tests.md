@@ -1,4 +1,5 @@
 ## Auth
+
 - [x] Routes
   - [x] Token
   - [x] Refresh
@@ -15,9 +16,9 @@
   - [x] TokenData
   - [x] TokenRefresh
 
-
 ## Users
-- [ ] Routes 
+
+- [x] Routes 
   - [x] Create
   - [x] Get all profiles
   - [x] Get profile by username
@@ -25,8 +26,8 @@
   - [x] Get Profile
   - [x] Delete
   - [x] Update account
-  - [ ] Update profile
-  - [ ] Update birthday
+  - [x] Update profile
+  - [x] Update birthday
 - [ ] Models
   - [x] UserModel
   - [ ] ProfileModel
@@ -45,34 +46,38 @@
     - [x] AccountDataResponse
 
 ## Password
+
 - [x] Routes
   - [x] Update
   - [x] Recover
   - [x] Reset
-- [ ] Models
-  - [ ] RecoverPassword
+- [x] Request
+  - [x] RecoverPassword
   - [x] UpdatePassword
 
 ## Posts
-- [ ] Routes
+
+- [x] Routes
   - [x] Create
   - [x] Get all
   - [x] Get by id
   - [x] Get by username
   - [x] Delete
   - [x] Update
-  - [ ] Add like
+  - [x] Add like
 - [x] Models
   - [x] PostModel
-  - [x] PostResponse
+- [x] Request
   - [x] PostRequest
-
+- [x] Response
+  - [x] PostResponse
 
 ## Replies
-- [ ] Routes
-  - [ ] Create
-  - [ ] Update
-  - [ ] Delete
-  - [ ] Add like
-- [ ] Models
-  - [ ] ReplyModel
+
+- [x] Routes
+  - [x] Create
+  - [x] Update
+  - [x] Delete
+  - [x] Add like
+- [x] Models
+  - [x] ReplyModel

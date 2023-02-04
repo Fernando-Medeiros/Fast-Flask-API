@@ -1,8 +1,6 @@
 # FastAPI
 
-
 ![](endpoints.png)
-
 
 O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas rotas e diferentes tipos de relacionamentos do banco de dados.
 
@@ -13,7 +11,6 @@ O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas r
 - [**Tarefas**](tasks.md)
 
 - [**Testes**](tests.md)
-
 
 ## Resumo 
 - [FastAPI](#fastapi)
@@ -44,6 +41,7 @@ O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas r
 - [x] Deletar conta
 
 ### Segurança
+
 - [x] Autenticação
   - [x] Access token
   - [x] Refresh Token
@@ -71,14 +69,12 @@ O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas r
 - [x] Listagem por post
 - [x] Curtidas em comentários
 
-
 ## Requisitos
 
 - Git
 - Python 3.10
 - virtualenv ou semelhante
 - Um editor de códigos como VSCode, Sublime, Vim, Pycharm ...
-
 
 ## Ambiente
 
@@ -107,7 +103,6 @@ pip install -r requirements-dev.txt
 ## Iniciar o servidor
 
 Inicie o localhost
-
 
 ```console
 uvicorn app:app --reload --factory
@@ -170,10 +165,7 @@ pytest
 │       └── token.py
 ├── docs
 │   ├── endpoints.png
-│   ├── Fast-Flask-API - - Fast-Deploy.postman_collection.json
-│   ├── Fast-Flask-API - - LocalHost.postman_collection.json
 │   ├── MBD.png
-│   ├── postman.png
 │   ├── README.md
 │   ├── tasks.md
 │   └── tests.md
@@ -188,6 +180,7 @@ pytest
     ├── __init__.py
     ├── models
     │   ├── __init__.py
+    │   ├── test_password.py
     │   ├── test_post.py
     │   ├── test_reply.py
     │   ├── test_token.py
@@ -207,7 +200,7 @@ pytest
         ├── client.py
         └── post.py
 
-14 directories, 63 files
+14 directories, 61 files
 ```
 
 ## Modelagem do banco de dados

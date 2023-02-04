@@ -1,4 +1,5 @@
 ## Auth
+
 - [x] Routes
   - [x] Token
   - [x] Refresh
@@ -16,7 +17,8 @@
   - [x] TokenRefresh
 
 ## Users
-- [x] Routes 
+
+- [x] Routes
   - [x] Create
   - [x] Delete
   - [x] Get all profiles
@@ -43,6 +45,7 @@
     - [x] AccountDataResponse
 
 ## Password
+
 - [x] Routes
   - [x] Update
   - [x] Recover
@@ -52,6 +55,7 @@
   - [x] UpdatePassword
 
 ## Posts
+
 - [x] Routes
   - [x] Create
   - [x] Delete
@@ -67,6 +71,7 @@
   - [x] LikeModel
 
 ## Replies
+
 - [x] Routes
   - [x] Create
   - [x] Delete
