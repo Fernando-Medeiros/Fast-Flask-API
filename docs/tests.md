@@ -28,6 +28,8 @@
   - [x] Update account
   - [x] Update profile
   - [x] Update birthday
+  - [x] Upload avatar
+  - [x] Upload background
 - [ ] Models
   - [x] UserModel
   - [ ] ProfileModel

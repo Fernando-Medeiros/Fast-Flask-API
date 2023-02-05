@@ -27,6 +27,8 @@
   - [x] Update account
   - [x] Update profile
   - [x] Update birthday
+  - [x] Upload avatar
+  - [x] Upload background
 - [x] Models
   - [x] UserModel
   - [x] ProfileModel

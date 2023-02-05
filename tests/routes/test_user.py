@@ -1,3 +1,5 @@
+import base64
+
 import pytest
 
 from tests.conftest import UrlUsers
@@ -195,14 +197,15 @@ class TestBirthday:
 
     path = UrlUsers.put_birthday
 
-    # (AUTH REQUIRED) - VALID
+    # (AUTH REQUIRED)
+    # VALID
     def test_put_valid_birthday(self, client_two_auth):
         response = client_two_auth.put(self.path, json=self.v_data)
 
         assert response.status_code == 200
         assert response.json().get("detail")
 
-    # (AUTH REQUIRED) - INVALID
+    # INVALID
     def test_put_invalid_birthday(self, client_two_auth):
         response = client_two_auth.put(self.path, json=self.i_data)
 
@@ -212,6 +215,83 @@ class TestBirthday:
     # (WITHOUT AUTH)
     def test_put_without_auth(self, client_one):
         response = client_one.put(self.path, json=self.v_data)
+
+        assert response.status_code == 401
+        assert response.json().get("detail")
+
+
+def read_file(file) -> str:
+    with open(f"../docs/{file}", mode="rb") as f:
+        return base64.b64encode(f.read()).decode("utf-8")
+
+
+@pytest.mark.user
+class TestUploadAvatar:
+    v_data = {"image": read_file("endpoints.png")}
+    i_data = {"image": read_file("tasks.md")}
+
+    content_type = {"Content-Type": "application/x-www-form-urlencoded"}
+
+    path = UrlUsers.upload_avatar
+
+    # (AUTH REQUIRED)
+    # VALID
+    def test_upload_valid_avatar_base64(self, client_two_auth):
+        response = client_two_auth.patch(
+            self.path, data=self.v_data, headers=self.content_type
+        )
+
+        assert response.status_code == 200
+        assert response.json().get("detail")
+
+    # INVALID
+    def test_upload_invalid_avatar_base64(self, client_two_auth):
+        response = client_two_auth.patch(
+            self.path, data=self.i_data, headers=self.content_type
+        )
+
+        assert response.status_code == 400
+        assert response.json().get("detail")
+
+    # (WITHOUT AUTH)
+    def test_upload_without_auth(self, client_one):
+        response = client_one.patch(self.path, data=self.v_data)
+
+        assert response.status_code == 401
+        assert response.json().get("detail")
+
+
+@pytest.mark.user
+class TestUploadBackground:
+    v_data = {"image": read_file("endpoints.png")}
+    i_data = {"image": read_file("tasks.md")}
+
+    content_type = {"Content-Type": "application/x-www-form-urlencoded"}
+
+    path = UrlUsers.upload_background
+
+    # (AUTH REQUIRED)
+    # VALID
+    def test_upload_valid_background_base64(self, client_two_auth):
+        response = client_two_auth.patch(
+            self.path, data=self.v_data, headers=self.content_type
+        )
+
+        assert response.status_code == 200
+        assert response.json().get("detail")
+
+    # INVALID
+    def test_upload_invalid_background_base64(self, client_two_auth):
+        response = client_two_auth.patch(
+            self.path, data=self.i_data, headers=self.content_type
+        )
+
+        assert response.status_code == 400
+        assert response.json().get("detail")
+
+    # (WITHOUT AUTH)
+    def test_upload_without_auth(self, client_one):
+        response = client_one.patch(self.path, data=self.v_data)
 
         assert response.status_code == 401
         assert response.json().get("detail")

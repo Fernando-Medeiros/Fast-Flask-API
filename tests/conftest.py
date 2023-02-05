@@ -4,6 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 os.environ["ENV"] = "TEST"
+os.environ["FOLDER_AVATAR"] = "FFA-media/testAvatar"
+os.environ["FOLDER_BACKGROUND"] = "FFA-media/testBackground"
 
 from app import app
 from setup import build_database_test
@@ -25,8 +27,9 @@ class UrlUsers:
     get_profile = _v_ + "users/"
     get_account = _v_ + "users/account/"
     update_profile = _v_ + "users/profile"
-    update_avatar = _v_ + "users/avatar"
     update_account = _v_ + "users/account"
+    upload_avatar = _v_ + "users/avatar"
+    upload_background = _v_ + "users/background"
     put_birthday = _v_ + "users/birthday"
 
 
