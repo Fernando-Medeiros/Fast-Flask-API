@@ -23,7 +23,6 @@ class TestPost:
         response = client.post(self.path, json=data)
 
         assert response.status_code == 201
-        assert response.json().get("detail")
 
     # UNIQUE CONSTRAINTS
     def test_unique_username(self, client_one):
@@ -125,8 +124,7 @@ class TestUpdate:
     def test_valid_email(self, client_two_auth):
         response = client_two_auth.patch(self.path, json=self.v_email)
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert response.status_code == 204
 
     def test_invalid_email(self, client_two_auth):
         response = client_two_auth.patch(self.path, json=self.i_email)
@@ -153,15 +151,13 @@ class TestUpdateProfile:
     def test_valid_username(self, client_two_auth):
         response = client_two_auth.patch(self.path, json=self.v_username)
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert response.status_code == 204
 
     # VALID
     def test_valid_bio(self, client_two_auth):
         response = client_two_auth.patch(self.path, json=self.v_bio)
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert response.status_code == 204
 
     # INVALID
     def test_invalid_username(self, client_two_auth):
@@ -202,8 +198,7 @@ class TestBirthday:
     def test_put_valid_birthday(self, client_two_auth):
         response = client_two_auth.put(self.path, json=self.v_data)
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert response.status_code == 204
 
     # INVALID
     def test_put_invalid_birthday(self, client_two_auth):
@@ -241,8 +236,7 @@ class TestUploadAvatar:
             self.path, data=self.v_data, headers=self.content_type
         )
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert response.status_code == 204
 
     # INVALID
     def test_upload_invalid_avatar_base64(self, client_two_auth):
@@ -277,8 +271,7 @@ class TestUploadBackground:
             self.path, data=self.v_data, headers=self.content_type
         )
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert response.status_code == 204
 
     # INVALID
     def test_upload_invalid_background_base64(self, client_two_auth):
@@ -305,8 +298,7 @@ class TestDelete:
     def test_delete_auth_user(self, client_two_auth):
         f_response = client_two_auth.delete(self.path)
 
-        assert f_response.status_code == 200
-        assert f_response.json().get("detail")
+        assert f_response.status_code == 204
 
         # (WITHOUT USER)
         s_response = client_two_auth.delete(self.path)

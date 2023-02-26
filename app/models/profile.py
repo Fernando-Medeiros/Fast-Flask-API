@@ -5,7 +5,7 @@ import ormar
 from fastapi import HTTPException
 from pydantic import validator
 
-from setup import BaseMeta
+from app.services.database import BaseMeta
 
 from .user import UserModel
 

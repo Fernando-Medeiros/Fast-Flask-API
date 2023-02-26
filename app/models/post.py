@@ -3,26 +3,19 @@ from typing import Dict, Optional, Union
 
 import ormar
 
-from setup import BaseMeta
+from app.services.database import BaseMeta
 
-from ..user import ProfileModel
-from .post import PostModel
+from .profile import ProfileModel
 
 
-class ReplyModel(ormar.Model):
+class PostModel(ormar.Model):
     class Meta(BaseMeta):
-        tablename = "replies"
+        tablename = "posts"
 
     id = ormar.Integer(primary_key=True, autoincrement=True)
     author: Optional[Union[ProfileModel, Dict]] = ormar.ForeignKey(
         ProfileModel,
-        related_name="replies",
-        onupdate=ormar.ReferentialAction("CASCADE"),
-        ondelete=ormar.ReferentialAction("CASCADE"),
-    )
-    post: Optional[Union[PostModel, Dict]] = ormar.ForeignKey(
-        PostModel,
-        related_name="replies",
+        related_name="posts",
         onupdate=ormar.ReferentialAction("CASCADE"),
         ondelete=ormar.ReferentialAction("CASCADE"),
     )

@@ -10,7 +10,7 @@ class ProfileResponse(BaseModel):
     bio: str
 
 
-class AccountDataResponse(BaseModel):
+class AccountResponse(BaseModel):
     id: int
     username: Optional[str]
     avatar: Optional[str]

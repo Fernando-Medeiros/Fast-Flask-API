@@ -1,8 +1,7 @@
 import email.message
 import os
 import smtplib
-
-from fastapi import HTTPException, status
+from app.helpers import InternalServerError
 
 
 def send_mail(_email, TOKEN):
@@ -12,10 +11,9 @@ def send_mail(_email, TOKEN):
         EMAIL: str = os.environ["MAIL_USERNAME"]
         PASSWORD: str = os.environ["MAIL_PASSWORD"]
         EXPIRE: str = os.environ["PWD_RECOVER_TOKEN_EXPIRE_MINUTES"]
-    except:
-        raise HTTPException(
-            status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Problems in the internal settings to send the recovery email",
+    except Exception:
+        raise InternalServerError(
+            "Problems in the internal settings to send the recovery email"
         )
     else:
         try:
@@ -39,8 +37,7 @@ def send_mail(_email, TOKEN):
 
             s.login(msg["From"], PASSWORD)
             s.sendmail(msg["From"], [msg["To"]], msg.as_string().encode("utf-8"))
-        except:
-            raise HTTPException(
-                status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Connection to email server failed",
+        except Exception:
+            raise InternalServerError(
+                "Connection to email server failed",
             )

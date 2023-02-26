@@ -1,6 +1,6 @@
 import pytest
 
-from app.models.token import RefreshToken, Token, TokenData
+from app.responses import RefreshToken, Token, TokenData
 from app.security.token import TokenJwt
 
 

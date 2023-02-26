@@ -2,10 +2,10 @@ from typing import Dict, Optional, Union
 
 import ormar
 
-from setup import BaseMeta
+from app.services.database import BaseMeta
 
-from ..user import ProfileModel
 from .post import PostModel
+from .profile import ProfileModel
 from .reply import ReplyModel
 
 

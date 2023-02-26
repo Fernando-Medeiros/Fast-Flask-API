@@ -2,11 +2,12 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
-from app.models.post import PostRequest, PostResponse
-from app.models.user import ProfileModel
+from app.controllers import PostController
+from app.helpers import StatusCreated, StatusOk, StatusOkNoContent
+from app.models import ProfileModel
+from app.requests import PostRequest
+from app.responses import PostResponse
 from app.security.session import session
-
-from .controllers.post_controller import PostController
 
 router = APIRouter()
 
@@ -18,7 +19,9 @@ router = APIRouter()
     response_model_exclude_unset=True,
 )
 async def list_all_posts():
-    return await PostController.get_all()
+    resp = await PostController.get_all()
+
+    return StatusOk(resp)
 
 
 @router.get(
@@ -27,7 +30,9 @@ async def list_all_posts():
     response_model_exclude_unset=True,
 )
 async def get_post_by_id(postId: int):
-    return await PostController.get_post_by_id(postId)
+    resp = await PostController.get_post_by_id(postId)
+
+    return StatusOk(resp)
 
 
 @router.get(
@@ -36,23 +41,29 @@ async def get_post_by_id(postId: int):
     response_model_exclude_unset=True,
 )
 async def get_posts_by_username(username: str):
-    return await PostController.get_post_by_username(username)
+    resp = await PostController.get_post_by_username(username)
+
+    return StatusOk(resp)
 
 
 # PRIVATE ROUTES
-@router.post("", status_code=201)
+@router.post("")
 async def create_new_post(
     request: PostRequest, current_user: ProfileModel = Depends(session)
 ):
-    return await PostController.create_post(request, current_user)
+    resp = await PostController.create_post(request, current_user)
+
+    return StatusCreated(resp)
 
 
-@router.post("/{postId}/like", status_code=201)
+@router.post("/{postId}/like")
 async def add_like_on_post(
     postId: int,
     current_user: ProfileModel = Depends(session),
 ):
-    return await PostController.add_or_remove_like(postId, current_user)
+    resp = await PostController.add_or_remove_like(postId, current_user)
+
+    return StatusCreated(resp)
 
 
 @router.patch("/{postId}")
@@ -61,10 +72,13 @@ async def edit_post(
     request: PostRequest,
     current_user: ProfileModel = Depends(session),
 ):
-    return await PostController.edit_post(postId, request, current_user)
+    resp = await PostController.edit_post(postId, request, current_user)
+
+    return StatusOkNoContent(resp)
 
 
 @router.delete("/{postId}")
 async def delete_post(postId: int, current_user: ProfileModel = Depends(session)):
+    resp = await PostController.delete_post(postId, current_user)
 
-    return await PostController.delete_post(postId, current_user)
+    return StatusOkNoContent(resp)

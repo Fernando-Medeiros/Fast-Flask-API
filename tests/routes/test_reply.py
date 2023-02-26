@@ -18,7 +18,6 @@ class TestPost:
         response = client_two_auth.post(self.path, json=post.valid_content)
 
         assert response.status_code == 201
-        assert response.json().get("detail")
 
     # (AUTH REQUIRED) - INVALID
     def test_reply_invalid(self, client_two_auth):
@@ -70,8 +69,7 @@ class TestUpdate:
     def test_update_valid_content(self, client_three):
         response = client_three.patch(self.path, json=post_update.valid_content)
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert response.status_code == 204
 
     # (AUTH REQUIRED) - INVALID
     def test_update_invalid_content(self, client_three):
@@ -98,7 +96,6 @@ class TestLike:
         response = client_three.post(self.path, json=post_update.valid_content)
 
         assert response.status_code == 201
-        assert response.json().get("detail")
 
     # (WITHOUT REPLY)
     def test_add_like_without_reply(self, client_three):
@@ -123,8 +120,7 @@ class TestDelete:
     def test_delete_reply(self, client_three):
         f_response = client_three.delete(self.path)
 
-        assert f_response.status_code == 200
-        assert f_response.json().get("detail")
+        assert f_response.status_code == 204
 
         # (WITHOUT REPLY)
         s_response = client_three.delete(self.path)

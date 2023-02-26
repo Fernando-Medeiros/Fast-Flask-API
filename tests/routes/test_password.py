@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from app.models.user import RecoverPassword
+from app.requests import RecoverPassword
 from app.security.token import TokenJwt
 from tests.conftest import UrlPassword
 from tests.utils.client import CaseLogin
@@ -58,8 +58,7 @@ class TestUpdate:
             self.path, data=self.v_data, headers=self.content_type
         )
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert response.status_code == 204
 
     # (AUTH REQUIRED) - INVALID
     def test_update_invalid_password(self, client_two_auth):
@@ -102,8 +101,7 @@ class TestReset:
             self.path + self.v_token, data=self.v_data, headers=self.content_type
         )
 
-        assert response.status_code == 200
-        assert response.json().get("detail")
+        assert response.status_code == 204
 
     # INVALID PASSWORD
     def test_reset_invalid_password(self, client_one):

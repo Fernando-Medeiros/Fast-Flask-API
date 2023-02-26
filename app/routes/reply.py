@@ -2,11 +2,12 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
-from app.models.post import PostRequest, PostResponse
-from app.models.user import ProfileModel
+from app.controllers import ReplyController
+from app.helpers import StatusCreated, StatusOk, StatusOkNoContent
+from app.models import ProfileModel
+from app.requests import PostRequest
+from app.responses import PostResponse
 from app.security.session import session
-
-from .controllers.reply_controller import ReplyController
 
 router = APIRouter()
 
@@ -18,7 +19,7 @@ router = APIRouter()
     response_model_exclude_unset=True,
 )
 async def get_reply_by_id(replyId: int):
-    return await ReplyController.get_reply_by_id(replyId)
+    return StatusOk(await ReplyController.get_reply_by_id(replyId))
 
 
 @router.get(
@@ -27,29 +28,29 @@ async def get_reply_by_id(replyId: int):
     response_model_exclude_unset=True,
 )
 async def get_replies_by_post_id(postId: int):
-    return await ReplyController.get_replies_by_post_id(postId)
+    return StatusOk(await ReplyController.get_replies_by_post_id(postId))
 
 
 # PRIVATE ROUTES
-@router.post(
-    "/{postId}",
-    response_model_exclude_none=True,
-    status_code=201,
-)
+@router.post("/{postId}", response_model_exclude_none=True)
 async def create_new_reply(
     postId: int,
     request: PostRequest,
     current_user: ProfileModel = Depends(session),
 ):
-    return await ReplyController.create_reply(postId, request, current_user)
+    return StatusCreated(
+        await ReplyController.create_reply(postId, request, current_user)
+    )
 
 
-@router.post("/{replyId}/like", response_model_exclude_none=True, status_code=201)
+@router.post("/{replyId}/like", response_model_exclude_none=True)
 async def add_or_remove_like(
     replyId: int,
     current_user: ProfileModel = Depends(session),
 ):
-    return await ReplyController.add_or_remove_like(replyId, current_user)
+    return StatusCreated(
+        await ReplyController.add_or_remove_like(replyId, current_user)
+    )
 
 
 @router.patch("/{replyId}")
@@ -58,10 +59,12 @@ async def edit_reply(
     request: PostRequest,
     current_user: ProfileModel = Depends(session),
 ):
-    return await ReplyController.edit_reply(replyId, request, current_user)
+    return StatusOkNoContent(
+        await ReplyController.edit_reply(replyId, request, current_user)
+    )
 
 
 @router.delete("/{replyId}")
 async def delete_reply(replyId: int, current_user: ProfileModel = Depends(session)):
 
-    return await ReplyController.delete_reply(replyId, current_user)
+    return StatusOkNoContent(await ReplyController.delete_reply(replyId, current_user))

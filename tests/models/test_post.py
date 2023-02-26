@@ -1,6 +1,8 @@
 import pytest
 
-from app.models.post import PostModel, PostRequest, PostResponse
+from app.models import PostModel
+from app.requests import PostRequest
+from app.responses import PostResponse
 from tests.utils.post import CasePostCreate
 
 

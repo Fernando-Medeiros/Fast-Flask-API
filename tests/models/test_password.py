@@ -1,7 +1,7 @@
 import pytest
 from werkzeug.security import check_password_hash
 
-from app.models.user import RecoverPassword, UpdatePassword
+from app.requests import RecoverPassword, UpdatePassword
 from tests.utils.client import CaseCreate
 
 

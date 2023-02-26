@@ -1,6 +1,6 @@
 import pytest
 
-from app.models.token import Token
+from app.responses import Token
 from app.security.token import DecodeTokenJwt
 from tests.conftest import UrlToken
 from tests.utils.client import CaseLogin
@@ -23,7 +23,7 @@ class TestAccessToken:
 
 
 @pytest.mark.token
-class TestRefeshToken:
+class TestRefreshToken:
     data, content = CaseLogin.login, CaseLogin.content_type
 
     path_access: str = UrlToken.token
