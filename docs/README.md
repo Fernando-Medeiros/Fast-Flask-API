@@ -1,10 +1,10 @@
 # FastAPI
 
-![endpoints](endpoints.png)
+![](endpoints.png)
 
 O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas rotas e diferentes tipos de relacionamentos do banco de dados.
 
-> - Para construir o projeto isolei cada aplicação em seu próprio ecosistema e embiente virtual.
+> - Para construir o projeto isolei cada aplicação em seu próprio ecosistema e embiente virtual. 
 
 > - [**Link do Deploy do projeto Coffee-Break** -> "Rede social minimalista" que consome essa api! \o/](https://coffee-break-network.herokuapp.com/)
 
@@ -12,8 +12,7 @@ O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas r
 
 - [**Testes**](tests.md)
 
-## Resumo
-
+## Resumo 
 - [FastAPI](#fastapi)
   - [Resumo](#resumo)
   - [Funcionalidades](#funcionalidades)
@@ -27,7 +26,6 @@ O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas r
   - [Testes](#testes)
   - [Estrutura](#estrutura)
   - [Modelagem do banco de dados](#modelagem-do-banco-de-dados)
-
 ---
 
 ## Funcionalidades
@@ -80,13 +78,14 @@ O projeto será modelado no contexto de Rede Social, afim de utilizar CRUD nas r
 
 ## Ambiente
 
+
 Crie o ambiente virtual desta aplicação
 
 ```console
 virtualenv .venv
 ```
 
-Ative o ambiente
+Ative o ambiente 
 
 ```console
 # Linux Bash
@@ -111,7 +110,8 @@ uvicorn app:app --reload --factory
 
 Acesse o docs de endpoints do Fastapi em:
 
-<http://127.0.0.1:8000/docs#/> ou <http://127.0.0.1:8000/redoc/>
+http://127.0.0.1:8000/docs#/ ou http://127.0.0.1:8000/redoc/
+
 
 ## Testes
 
@@ -125,94 +125,84 @@ pytest
 ```console
 .
 ├── app
-│   ├── controllers
-│   │   ├── auth_controller.py
-│   │   ├── __init__.py
-│   │   ├── password_controller.py
-│   │   ├── post_controller.py
-│   │   ├── reply_controller.py
-│   │   └── user_controller.py
-│   ├── helpers
-│   │   ├── http_exceptions.py
-│   │   ├── http_protocols.py
-│   │   └── __init__.py
-│   ├── middlewares
-│   │   └── __init__.py
+│   ├── __init__.py
 │   ├── models
-│   │   ├── access.py
-│   │   ├── birthday.py
-│   │   ├── __init__.py
-│   │   ├── like.py
-│   │   ├── post.py
-│   │   ├── profile.py
-│   │   ├── reply.py
-│   │   └── user.py
-│   ├── repositories
-│   │   ├── backend.py
-│   │   └── __init__.py
-│   ├── requests
-│   │   ├── __init__.py
-│   │   ├── post_requests.py
-│   │   └── user_requests.py
-│   ├── responses
-│   │   ├── __init__.py
-│   │   ├── post_responses.py
-│   │   ├── token_responses.py
-│   │   └── user_responses.py
+│   │   ├── post
+│   │   │   ├── __init__.py
+│   │   │   ├── like.py
+│   │   │   ├── post.py
+│   │   │   ├── reply.py
+│   │   │   ├── request.py
+│   │   │   └── response.py
+│   │   ├── token
+│   │   │   ├── __init__.py
+│   │   │   └── token_model.py
+│   │   └── user
+│   │       ├── access.py
+│   │       ├── birthday.py
+│   │       ├── __init__.py
+│   │       ├── profile.py
+│   │       ├── request.py
+│   │       ├── response.py
+│   │       └── user.py
+│   ├── routers.py
 │   ├── routes
 │   │   ├── auth.py
+│   │   ├── controllers
+│   │   │   ├── auth_controller.py
+│   │   │   ├── password_controller.py
+│   │   │   ├── post_controller.py
+│   │   │   ├── reply_controller.py
+│   │   │   └── user_controller.py
 │   │   ├── password.py
 │   │   ├── post.py
 │   │   ├── reply.py
 │   │   └── user.py
-│   ├── security
-│   │   ├── recovery.py
-│   │   ├── session.py
-│   │   └── token.py
-│   ├── services
-│   │   ├── database.py
-│   │   └── storage.py
-│   ├── __init__.py
-│   └── routers.py
+│   └── security
+│       ├── backend.py
+│       ├── recovery_pwd.py
+│       ├── session.py
+│       └── token.py
 ├── docs
 │   ├── endpoints.png
 │   ├── MBD.png
 │   ├── README.md
 │   ├── tasks.md
 │   └── tests.md
-├── tests
-│   ├── models
-│   │   ├── __init__.py
-│   │   ├── test_password.py
-│   │   ├── test_post.py
-│   │   ├── test_reply.py
-│   │   ├── test_token.py
-│   │   └── test_user.py
-│   ├── routes
-│   │   ├── __init__.py
-│   │   ├── test_auth.py
-│   │   ├── test_password.py
-│   │   ├── test_post.py
-│   │   ├── test_reply.py
-│   │   └── test_user.py
-│   ├── unity
-│   │   ├── __init__.py
-│   │   └── test_token_jwt.py
-│   ├── utils
-│   │   ├── client.py
-│   │   └── post.py
-│   ├── conftest.py
-│   ├── __init__.py
-│   └── pytest.ini
 ├── LICENSE
 ├── Procfile
 ├── requirements-dev.txt
 ├── requirements.txt
-└── runtime.txt
+├── runtime.txt
+├── setup.py
+└── tests
+    ├── conftest.py
+    ├── __init__.py
+    ├── models
+    │   ├── __init__.py
+    │   ├── test_password.py
+    │   ├── test_post.py
+    │   ├── test_reply.py
+    │   ├── test_token.py
+    │   └── test_user.py
+    ├── pytest.ini
+    ├── routes
+    │   ├── __init__.py
+    │   ├── test_auth.py
+    │   ├── test_password.py
+    │   ├── test_post.py
+    │   ├── test_reply.py
+    │   └── test_user.py
+    ├── unity
+    │   ├── __init__.py
+    │   └── test_token_jwt.py
+    └── utils
+        ├── client.py
+        └── post.py
 
-17 directories, 68 files
+14 directories, 61 files
 ```
 
 ## Modelagem do banco de dados
 
-![MDB](MBD.png)
+![](MBD.png)

@@ -5,7 +5,7 @@ import ormar
 from fastapi import HTTPException
 from pydantic import validator
 
-from app.services.database import BaseMeta
+from setup import BaseMeta
 
 regex = {
     "name": r"^[A-Za-z]+[A-Za-z]$",

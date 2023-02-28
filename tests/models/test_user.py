@@ -2,9 +2,14 @@ import pytest
 from fastapi import HTTPException
 from werkzeug.security import check_password_hash
 
-from app.models import UserModel
-from app.requests import RequestCreateAccount, UpdateAccount, UpdatePassword
-from app.responses import AccountResponse, ProfileResponse
+from app.models.user import (
+    AccountDataResponse,
+    ProfileResponse,
+    RequestCreateAccount,
+    UpdateAccount,
+    UpdatePassword,
+    UserModel,
+)
 from tests.utils.client import CaseProfileModel, CaseUserModel
 
 
@@ -58,6 +63,6 @@ class TestUserResponse:
         data: dict = {"id": 1}
         data.update(CaseUserModel.data)
         data.update(CaseProfileModel.data)
-        response = AccountResponse(**data)
+        response = AccountDataResponse(**data)
 
         assert response.dict(include={*data.keys()})

@@ -8,7 +8,7 @@ os.environ["FOLDER_AVATAR"] = "FFA-media/testAvatar"
 os.environ["FOLDER_BACKGROUND"] = "FFA-media/testBackground"
 
 from app import app
-from app.services.database import BuildDatabase
+from setup import build_database_test
 from tests.utils.client import CaseLogin
 from tests.utils.post import CasePostCreate
 
@@ -59,7 +59,7 @@ class UrlReply:
 
 
 def client_authenticated(client):
-    BuildDatabase.build_database_test()
+    build_database_test()
     case, post = CaseLogin(), CasePostCreate()
 
     # Register new user
@@ -81,7 +81,7 @@ def client_authenticated(client):
 
 @pytest.fixture(scope="function")
 def client():
-    BuildDatabase.build_database_test()
+    build_database_test()
     with TestClient(app()) as client:
         yield client
 
@@ -89,7 +89,7 @@ def client():
 # Client with a user in the database
 @pytest.fixture(scope="function")
 def client_one():
-    BuildDatabase.build_database_test()
+    build_database_test()
     with TestClient(app()) as client:
         client.post(UrlUsers.create, json=CaseLogin.data)
         yield client

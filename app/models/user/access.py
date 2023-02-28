@@ -2,7 +2,7 @@ from typing import Dict, Optional, Union
 
 import ormar
 
-from app.services.database import BaseMeta
+from setup import BaseMeta
 
 from .profile import ProfileModel
 

@@ -1,12 +1,12 @@
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError
 from werkzeug.security import check_password_hash
-from app.helpers import Unauthorized
-from app.models import ProfileModel, UserModel
-from app.responses import TokenData
 
-from ..repositories.backend import BackendDatabase
+from app.models.token import TokenData
+from app.models.user import ProfileModel, UserModel
+
+from .backend import BackendDatabase
 from .token import DecodeTokenJwt
 
 
@@ -23,9 +23,10 @@ def validate_credentials(token: str) -> TokenData:
         return TokenData(**payload)
 
     except JWTError:
-        raise Unauthorized(
-            "Could not validate credentials",
-            {"WWW-Authenticate": "Bearer"},
+        raise HTTPException(
+            401,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
 
@@ -35,9 +36,10 @@ async def authenticate_user(email, password) -> UserModel:
     if user and check_password_hash(user.password, password):
         return user
 
-    raise Unauthorized(
-        "User not found or invalid password",
-        {"WWW-Authenticate": "Bearer"},
+    raise HTTPException(
+        401,
+        detail="User not found or invalid password",
+        headers={"WWW-Authenticate": "Bearer"},
     )
 
 
